@@ -5,7 +5,7 @@ public class Matrix {
     private int maxR, maxC;
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
-        this.m = new int[maxR+1][maxC+1];
+        this.m = new float[maxR+1][maxC+1];
     }
     public void set(int r, int c, float v) {
         m[r][c] = v;
@@ -22,31 +22,31 @@ public class Matrix {
     }
     public float[] getSistemPersamaanLinear() {
         // TODO: implement
-        return null;
+        return new float[maxC+1];
     }
     public float getDeterminan() {
         // TODO: implement
-        return null;
+        return 0;
     }
     public Matrix getInverseMatrix() {
         // TODO: implement
-        return null;
+        return new Matrix(maxR, maxC);
     }
     public Matrix getCofactorMatrix() {
         // TODO: implement
-        return null;
+        return new Matrix(maxR, maxC);        
     }
     public Matrix getAdjoinMatrix() {
         // TODO: implement
-        return null;
+        return new Matrix(maxR, maxC);
     }
     public Matrix getEchelonForm() {
         // TODO: implement
-        return null;
+        return new Matrix(maxR, maxC);
     }
     public Matrix getReducedEchelonForm() {
         // TODO: implement
-        return null;
+        return new Matrix(maxR, maxC);
     }
     // Tambahin lagi, klo bisa conventionnya sama, biar rapi..
 }

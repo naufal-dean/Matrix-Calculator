@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-import sun.security.util.Length;
 //echelon form baru sistem persamaan yg matriksnya persegi??gatau dahh
 class nyoba{
     static double[][] echelon(double[][] M){
