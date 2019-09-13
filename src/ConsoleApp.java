@@ -13,7 +13,7 @@ public class ConsoleApp {
 // 7. Keluar
     private Matrix matrix;
     public ConsoleApp() {
-        this.matrix = new Matrix();
+        this.matrix = new Matrix(5, 5);
         init();
     }
     public ConsoleApp(Matrix matrix) {
