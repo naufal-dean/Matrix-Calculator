@@ -13,10 +13,12 @@ public class Matrix {
         this.maxC = maxC;
         this.content = new float[maxR+1][maxC+1];
     }
+    
     public Matrix(float[][] arr) {
         this(arr.length, arr[0].length);
         setContent(arr);
     }
+
     public Matrix(Matrix m) {
         this(m.content);
     }
@@ -26,33 +28,42 @@ public class Matrix {
     public int getBaris() {
       return this.maxR;
     }
+
     public int getKolom() {
         return this.maxC;
     }
+
     public float[][] getContent() {
         return this.content;
     }
+
     public float getElmt(int r, int c) {
         return this.content[r][c];
     }
+
     //-- Selektor: Set --//
     public void setBaris(int maxR) {
         this.maxR = maxR;
     }
+
     public void setKolom(int maxC) {
         this.maxC = maxC;
     }
+
     public void setContent(float[][] arr) {
         for (int r = 1; r <= this.maxR; ++r)
             this.content[r] = Arrays.copyOf(arr[r], arr[r].length);
     }
+
     public void setElement(int r, int c, float val) {
         this.content[r][c] = val;
     }
+
     public float[] getARow(int r) {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
-    public void setARow(int r,float[] row) {
+
+    public void setARow(int r, float[] row) {
         this.content[r] = Arrays.copyOf(row, row.length);
     }
 
@@ -81,6 +92,7 @@ public class Matrix {
             }
         }
     }
+
     public void tulisMatrix() {
         for (int i = 0; i < this.maxR; i++) {
             System.out.print("| ");
@@ -90,9 +102,11 @@ public class Matrix {
             System.out.println("|");
         }
     }
+
     public Matrix copyMatrix() {
         return new Matrix(this.content);
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -107,34 +121,8 @@ public class Matrix {
         // TODO: implement
         return new float[this.maxC+1];
     }
+
     public float getDeterminan() {
-        // TODO: implement
-        return 0;
-    }
-    public void transpose() {
-        // Kamus lokal
-        float tempVal[][];
-        int temp;
-        // Algoritma
-        // Transpose value
-        tempVal = new float[this.maxC][this.maxR];
-        for (int i = 0; i < this.maxR; i++) {
-            for (int j = 0; j < this.maxC; j++) {
-                tempVal[j][i] = this.content[i][j];
-            }
-        }
-        this.content = tempVal;
-        // Swap maxR maxC
-        temp = this.maxC;
-        this.maxC = this.maxR;
-        this.maxR = temp;
-    }
-    public Matrix getTransposeMatrix() {
-        // TODO: implement
-        return new float[this.maxC+1];
-    }
-    public void inverse() {
-        // TODO: implement
         Matrix M = this.copyMatrix();
         int  i,j, idx;
         float c;
@@ -172,29 +160,43 @@ public class Matrix {
 
         return det;
     }
+
+    public Matrix getTransposeMatrix() {
+        // Kamus lokal
+        float tempVal[][];
+        int temp;
+        // Algoritma
+        // Transpose value
+        tempVal = new float[this.maxC][this.maxR];
+        for (int i = 1; i <= this.maxR; i++) {
+            for (int j = 1; j <= this.maxC; j++) {
+                tempVal[j][i] = this.content[i][j];
+            }
+        }
+        // this.content = tempVal;
+        // // Swap maxR maxC
+        // temp = this.maxC;
+        // this.maxC = this.maxR;
+        // this.maxR = temp;
+        return new Matrix(tempVal);
+    }
+
     public Matrix getInverseMatrix() {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
-    public void cofactor() {
-        // TODO: implement
-    }
+
     public Matrix getCofactorMatrix() {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
-    public void adjoin() {
-        // TODO: implement
-    }
+
     public Matrix getAdjoinMatrix() {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
-    public void echelonForm() {
-        // TODO: implement
-    }
+
     public Matrix getEchelonForm() {
-        // TODO: implement
         Matrix M = this.copyMatrix();
         int  i,j, idx;
         float c;
@@ -225,9 +227,7 @@ public class Matrix {
         M.setARow(j,RowOperation.kaliC(M.getARow(j),1/M.getElmt(j,j)));
         return M; 
     }
-    public void reducedEchelonForm() {
-        // TODO: implement
-    }
+
     public Matrix getReducedEchelonForm() {
         Matrix M = new Matrix(maxR,maxC);
         M = this.getEchelonForm();
@@ -238,6 +238,7 @@ public class Matrix {
         }
         return M;
     }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Matrix))

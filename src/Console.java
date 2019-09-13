@@ -4,13 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Console {
-    private static Scanner scan;
-    public static void init() {
-        scan = new Scanner(System.in);
-    }
-    public static void close() {
-        scan.close();
-    }
+    private static Scanner scan = new Scanner(System.in);
     public static void outln() {
         out("\n");
     }
