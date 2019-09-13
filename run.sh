@@ -1,6 +1,3 @@
-if [ -d "./bin/" ]; then
-    rm -r ./bin/*
-fi
-javac -d ./bin/ $(find ./src/* | grep .java)
+./compile.sh
 cd bin/
-java -cp . com.nafkhanzam.Main
+java -cp . tubes.Main

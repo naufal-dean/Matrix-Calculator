@@ -1,6 +1,6 @@
-package com.nafkhanzam;
+package tubes;
 
-import static com.nafkhanzam.Console.*;
+import static tubes.Console.*;
 
 public class ConsoleApp {
 //    MENU

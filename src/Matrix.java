@@ -1,12 +1,12 @@
-package com.nafkhanzam;
+package tubes;
 
 public class Matrix {
-    public float[][] m;
+    public float[][] content;
     public int maxR, maxC;
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
         this.maxC = maxC;
-        this.m = new float[maxR+1][maxC+1];
+        this.content = new float[maxR+1][maxC+1];
     }
     public Matrix(float[][] arr) {
         this(arr.length, arr[0].length);
@@ -15,14 +15,14 @@ public class Matrix {
     public void setContent(float[][] arr) {
         for (int r = 1; r <= maxR; ++r)
             for (int c = 1; c <= maxC; ++c)
-                m[r][c] = arr[r][c];
+                content[r][c] = arr[r][c];
     }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int r = 1; r <= maxR; r++)
             for (int c = 1; c <= maxC; c++)
-                sb.append(get(r, c) + (c == maxC ? "\n" : " "));
+                sb.append(content[r][c] + (c == maxC ? "\n" : " "));
         return sb.toString();
     }
     public float[] getSistemPersamaanLinear() {

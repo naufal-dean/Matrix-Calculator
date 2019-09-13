@@ -1,6 +1,6 @@
-package com.nafkhanzam;
+package tubes;
 
-import static com.nafkhanzam.Console.*;
+import static tubes.Console.*;
 
 public class Main {
     public static void main(String[] args) {
