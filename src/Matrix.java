@@ -1,132 +1,97 @@
-package src;
-import java.util.Scanner;
+package com.nafkhanzam;
 
 public class Matrix {
-    private int row;
-    private int col;
-    private double[][] value;
-    private Scanner input = new Scanner(System.in);
-
-    // ** Constructor ** //
-    public Matrix() {}
-
-    public Matrix(int Row, int Col) {
-        this.row = Row;
-        this.col = Col;
-        value = new double[Row][Col];
+    //** Kamus **//
+    public float[][] m;
+    public int maxR, maxC;
+    //** Konstruktor **//
+    public Matrix(int maxR, int maxC) {
+        this.maxR = maxR;
+        this.maxC = maxC;
+        this.m = new float[maxR+1][maxC+1];
+    }
+    public Matrix(float[][] arr) {
+        this(arr.length, arr[0].length);
+        setContent(arr);
+    }
+    //** Selektor **//
+    //-- Selektor: Get --//
+    public int getBaris() {
+      return (this.maxR);
+    }
+    public int getKolom() {
+        return (this.maxC);
+    }
+    public float[][] getContent() {
+        return (this.m);
+    }
+    public float getElmt(int r, int c) {
+        return (this.m[r][c]);
+    }
+    //-- Selektor: Set --//
+    public void setBaris(int maxR) {
+        this.maxR = maxR;
+    }
+    public void setKolom(int maxC) {
+        this.maxC = maxC;
+    }
+    public void setContent(float[][] arr) {
+        for (int r = 1; r <= maxR; ++r)
+            for (int c = 1; c <= maxC; ++c)
+                m[r][c] = arr[r][c];
+    }
+    public void setElmt(int r, int c, float val) {
+      this.m[r][c] = val;
     }
 
-    public Matrix(double[][] Val) {
-        this.row = Val.length;
-        this.col = Val[0].length;
-
-        value = new double[this.row][this.col];
-        for (int i = 0; i < this.row; i++) {
-            for (int j = 0; j < this.col; j++) {
-                value[i][j] = Val[i][j];
-            }
-        }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int r = 1; r <= maxR; r++)
+            for (int c = 1; c <= maxC; c++)
+                sb.append(getElmt(r, c) + (c == maxC ? "\n" : " "));
+        return sb.toString();
     }
-
-    // ** Selektor **//
-    // -- Get -- //
-    public int GetBaris() {
-      return (this.row);
+    public float[] getSistemPersamaanLinear() {
+        // TODO: implement
+        return new float[maxC+1];
     }
-
-    public int GetKolom() {
-        return (this.col);
+    public float getDeterminan() {
+        // TODO: implement
+        return 0;
     }
-
-    public double[][] GetValue() {
-        return (this.value);
+    public Matrix getInverseMatrix() {
+        // TODO: implement
+        return new Matrix(maxR, maxC);
     }
-
-    public double GetElmt(int Row, int Col) {
-        return (this.value[Row][Col]);
+    public Matrix getCofactorMatrix() {
+        // TODO: implement
+        return new Matrix(maxR, maxC);
     }
-
-    // -- Set -- //
-    public void SetBaris(int Row) {
-        this.row = Row;
+    public Matrix getAdjoinMatrix() {
+        // TODO: implement
+        return new Matrix(maxR, maxC);
     }
-
-    public void SetKolom(int Col) {
-        this.col = Col;
+    public Matrix getEchelonForm() {
+        // TODO: implement
+        return new Matrix(maxR, maxC);
     }
-
-    public void SetValue(double[][] Val) {
-        this.value = Val;
+    public Matrix getReducedEchelonForm() {
+        // TODO: implement
+        return new Matrix(maxR, maxC);
     }
-
-    public void SetElmt(int Row, int Col, double El) {
-        this.value[Row][Col] = El;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Matrix))
+            return false;
+        Matrix m = (Matrix)o;
+        if (m.maxR != this.maxR || m.maxC != this.maxC)
+            return false;
+        for (int r = 1; r <= maxR; ++r)
+            for (int c = 1; c <= maxC; ++c)
+                if (m.content[r][c] != this.content[r][c])
+                    return false;
+        return true;
     }
-
-    // ** Fungsi Baca dan Tulis **//
-    public void BacaMatrix() {
-        // Input row dan col
-        System.out.print("Jumlah baris: ");
-        this.row = input.nextInt();
-        System.out.print("Jumlah kolom: ");
-        this.col = input.nextInt();
-        while ((this.row <= 0) || (this.col <= 0)) {
-            System.out.println("Jumlah kolom dan baris harus positif.");
-
-            System.out.print("Jumlah baris: ");
-            this.row = input.nextInt();
-            System.out.print("Jumlah kolom: ");
-            this.col = input.nextInt();
-        }
-        // Inisialisasi value
-        this.value = new double[this.row][this.col];
-        // Input elemen
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                System.out.printf("Elemen[%d,%d]: ", i, j);
-                this.value[i][j] = input.nextDouble();
-            }
-        }
-    }
-
-    public void TulisMatrix() {
-        for (int i = 0; i < row; i++) {
-            System.out.print("| ");
-            for (int j = 0; j < col; j++) {
-                System.out.printf("%f ", value[i][j]);
-            }
-            System.out.println("|");
-        }
-    }
-
-    // ** Fungsi utility **//
-    public Matrix CopyMatrix() {
-        Matrix M = new Matrix(this.row, this.col);
-        M.SetValue(this.value);
-        return (M);
-    }
-
-    // ** Fungsi pada matriks **//
-    public void Transpose(){
-        // Kamus lokal
-        double tempVal[][];
-        int temp;
-        // Algoritma
-        // Transpose value
-        tempVal = new double[col][row];
-        for (int i = 0; i < this.row; i++) {
-            for (int j = 0; j < this.col; j++) {
-                tempVal[j][i] = value[i][j];
-            }
-        }
-        value = tempVal;
-        // Swap row col
-        temp = this.col;
-        this.col = this.row;
-        this.row = temp;
-    }
-
-    public void Gauss() {
-
-    }
+    // Tambahin lagi, klo bisa conventionnya sama, biar rapi..
 }
