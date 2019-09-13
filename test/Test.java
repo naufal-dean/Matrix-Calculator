@@ -19,12 +19,11 @@ public class Test {
         red = "\u001b[1;31m";
         yellow = "\u001b[1;33m";
     }
-    private static void doTheTest() {
-        test(2 >= 2, "2 >= 2");
-        test(2 > 2, "2 > 2");
-    }
-    private static void test(boolean value, String msg) {
+    private static void test(String msg, boolean value) {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
         if (value) ++succeed; else ++failed;
+    }
+    private static void doTheTest() {
+        test("lmao", false);
     }
 }

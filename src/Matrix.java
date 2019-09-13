@@ -8,8 +8,6 @@ public class Matrix {
     private Scanner input = new Scanner(System.in);
 
     //** Konstruktor **//
-    public Matrix() {}
-
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
         this.maxC = maxC;
@@ -19,20 +17,23 @@ public class Matrix {
         this(arr.length, arr[0].length);
         setContent(arr);
     }
+    public Matrix(Matrix m) {
+        this(m.content);
+    }
 
     //** Selektor **//
     //-- Selektor: Get --//
     public int getBaris() {
-      return (this.maxR);
+      return this.maxR;
     }
     public int getKolom() {
-        return (this.maxC);
+        return this.maxC;
     }
     public float[][] getContent() {
-        return (this.content);
+        return this.content;
     }
     public float getElmt(int r, int c) {
-        return (this.content[r][c]);
+        return this.content[r][c];
     }
     //-- Selektor: Set --//
     public void setBaris(int maxR) {
@@ -43,17 +44,16 @@ public class Matrix {
     }
     public void setContent(float[][] arr) {
         for (int r = 1; r <= this.maxR; ++r)
-            for (int c = 1; c <= this.maxC; ++c)
-                this.content[r][c] = arr[r][c];
+            this.content[r] = Arrays.copyOf(arr[r], arr[r].length);
     }
-    public void setElmt(int r, int c, float val) {
-      this.content[r][c] = val;
+    public void setElement(int r, int c, float val) {
+        this.content[r][c] = val;
     }
-    public float [] getARow(int r){
-        return (content[r]);
+    public float[] getARow(int r) {
+        return Arrays.copyOf(this.content[r], this.content[r].length);
     }
-    public void setARow(int r,float[] R){
-        content[r] = R;
+    public void setARow(int r,float[] row) {
+        this.content[r] = Arrays.copyOf(row, row.length);
     }
 
     //** Utility **//
@@ -74,8 +74,8 @@ public class Matrix {
         // Inisialisasi content
         this.content = new float[this.maxR][this.maxC];
         // Input elemen
-        for (int i = 0; i < this.maxR; i++) {
-            for (int j = 0; j < this.maxC; j++) {
+        for (int i = 1; i <= this.maxR; i++) {
+            for (int j = 1; j <= this.maxC; j++) {
                 System.out.printf("Elemen[%d,%d]: ", i, j);
                 this.content[i][j] = input.nextFloat();
             }
@@ -91,8 +91,7 @@ public class Matrix {
         }
     }
     public Matrix copyMatrix() {
-        Matrix m = new Matrix(this.content);
-        return (m);
+        return new Matrix(this.content);
     }
     @Override
     public String toString() {
@@ -104,7 +103,15 @@ public class Matrix {
     }
     
     //** Fungsi matriks **//
-    public void transpose(){
+    public float[] getSistemPersamaanLinear() {
+        // TODO: implement
+        return new float[this.maxC+1];
+    }
+    public float getDeterminan() {
+        // TODO: implement
+        return 0;
+    }
+    public void transpose() {
         // Kamus lokal
         float tempVal[][];
         int temp;
@@ -122,11 +129,11 @@ public class Matrix {
         this.maxC = this.maxR;
         this.maxR = temp;
     }
-    public float[] getSistemPersamaanLinear() {
+    public Matrix getTransposeMatrix() {
         // TODO: implement
         return new float[this.maxC+1];
     }
-    public float getDeterminan() {
+    public void inverse() {
         // TODO: implement
         Matrix M = this.copyMatrix();
         int  i,j, idx;
@@ -169,13 +176,22 @@ public class Matrix {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
+    public void cofactor() {
+        // TODO: implement
+    }
     public Matrix getCofactorMatrix() {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
+    public void adjoin() {
+        // TODO: implement
+    }
     public Matrix getAdjoinMatrix() {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
+    }
+    public void echelonForm() {
+        // TODO: implement
     }
     public Matrix getEchelonForm() {
         // TODO: implement
@@ -208,6 +224,9 @@ public class Matrix {
         }
         M.setARow(j,RowOperation.kaliC(M.getARow(j),1/M.getElmt(j,j)));
         return M; 
+    }
+    public void reducedEchelonForm() {
+        // TODO: implement
     }
     public Matrix getReducedEchelonForm() {
         Matrix M = new Matrix(maxR,maxC);
