@@ -49,6 +49,12 @@ public class Matrix {
     public void setElmt(int r, int c, float val) {
       this.content[r][c] = val;
     }
+    public float [] getARow(int r){
+        return (content[r]);
+    }
+    public void setARow(int r,float[] R){
+        content[r] = R;
+    }
 
     //** Utility **//
     public void bacaMatrix() {
@@ -122,7 +128,42 @@ public class Matrix {
     }
     public float getDeterminan() {
         // TODO: implement
-        return 0;
+        Matrix M = this.copyMatrix();
+        int  i,j, idx;
+        float c;
+        float det=1;
+        //double M1[][];
+        //M1= new double[M.length][M[0].length];
+        //M1=M;
+        for(j=1; j<=M.getBaris() -1 ;j++){
+            i = j;
+            while((M.getElmt(i,j) == 0) && (i<=M.getBaris())){
+                i++;
+            }//cari ampe yang ga 0 dibarisannya
+            idx = i;
+            i = i+1;
+            for(;i<=M.getBaris();i++){
+                //eliminasi yang lainnya dengan baris idx
+                c = M.getElmt(i,j)/M.getElmt(idx,j);
+                if (c!=0){
+                    M.setARow(i,(RowOperation.kaliC(M.getARow(i), 1/c)));
+                    det *= c;
+                    M.setARow(i,(RowOperation.PlusTab(M.getARow(i),RowOperation.kaliC(M.getARow(idx),-1))));
+                }
+            }
+            //pindahin ke paling atas
+            if(j!=idx){
+                det *=-1;
+                float[] temp = M.getARow(j);
+                M.setARow(j, M.getARow(idx));
+                M.setARow(idx,temp) ;
+            }
+        }
+        for (i=1; i<=M.getBaris();i++){
+             det *= M.getElmt(i,i);
+        }
+
+        return det;
     }
     public Matrix getInverseMatrix() {
         // TODO: implement
@@ -138,11 +179,45 @@ public class Matrix {
     }
     public Matrix getEchelonForm() {
         // TODO: implement
-        return new Matrix(this.maxR, this.maxC);
+        Matrix M = this.copyMatrix();
+        int  i,j, idx;
+        float c;
+        //double M1[][];
+        //M1= new double[M.length][M[0].length];
+        //M1=M;
+        for(j=1; j<=M.getBaris() -1 ;j++){
+            i = j;
+            while((M.getElmt(i,j) == 0) && (i<M.getBaris())){
+                i++;
+            }//cari ampe yang ga 0 dibarisannya
+            idx = i;
+            i = i+1;
+            for(;i<=M.getBaris();i++){
+                //eliminasi yang lainnya dengan baris idx
+                c = M.getElmt(i,j)/M.getElmt(idx,j);
+                if (c!=0){
+                    M.setARow(i,(RowOperation.kaliC(M.getARow(i), 1/c)));
+                    M.setARow(i,(RowOperation.PlusTab(M.getARow(i),RowOperation.kaliC(M.getARow(idx),-1))));
+                }
+            }
+            M.setARow(idx, RowOperation.kaliC(M.getARow(idx),1/M.getElmt(idx,j)));
+            //pindahin ke paling atas
+            float[] temp = M.getARow(j);
+            M.setARow(j, M.getARow(idx));
+            M.setARow(idx,temp) ;
+        }
+        M.setARow(j,RowOperation.kaliC(M.getARow(j),1/M.getElmt(j,j)));
+        return M; 
     }
     public Matrix getReducedEchelonForm() {
-        // TODO: implement
-        return new Matrix(this.maxR, this.maxC);
+        Matrix M = new Matrix(maxR,maxC);
+        M = this.getEchelonForm();
+        for (int i = M.getBaris() -1; i>=0;i--){
+            for (int j = i; j>=1;j--){
+                M.setARow(j,RowOperation.PlusTab(M.getARow(j), RowOperation.kaliC(M.getARow(i+1), -1*M.getElmt(j,i+1))));
+            }
+        }
+        return M;
     }
     @Override
     public boolean equals(Object o) {

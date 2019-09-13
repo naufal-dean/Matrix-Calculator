@@ -8,7 +8,7 @@ class nyoba{
         //double M1[][];
         //M1= new double[M.length][M[0].length];
         //M1=M;
-        for(j=0; j<M[0].length - 2;j++){
+        for(j=1; j<M/*[0]*/.length -1 ;j++){
             i = j;
             while((M[i][j] == 0) && (i<M.length)){
                 i++;
@@ -20,7 +20,7 @@ class nyoba{
                 c = M[i][j]/M[idx][j];
                 if (c!=0){
                     M[i] = kaliC(M[i], 1/c);
-                    M[i] = MinTab(M[i],M[idx]);
+                    M[i] = PlusTab(M[i],kaliC(M[idx],-1));
                 }
             }
             M[idx]= kaliC(M[idx],1/M[idx][j]);
@@ -43,8 +43,8 @@ class nyoba{
 
         }*/
         for (int i = M1.length -2; i>=0;i--){
-            for (int j = i; j>=0;j--){
-                M1[j]=MinTab(M1[j], kaliC(M1[i+1], M1[j][i+1]));
+            for (int j = i; j>=1;j--){
+                M1[j]=PlusTab(M1[j], kaliC(M1[i+1], -1*M1[j][i+1]));
             }
         }
         return M1;
@@ -64,16 +64,16 @@ class nyoba{
     static double[] kaliC(double[] T,double c){
         double[] A= new double [T.length] ;
         int i;
-        for (i=0; i< T.length;i++){
+        for (i=1; i< T.length;i++){
             A[i]= T[i] * c;
         }
         return A;
     }
-    static double[] MinTab(double[] T1,double[] T2){
+    static double[] PlusTab(double[] T1,double[] T2){
         int i;
         double[] A= new double [T1.length] ;
-        for (i=0; i< T1.length;i++){
-            A[i] = T1[i] - T2[i];
+        for (i=1; i< T1.length;i++){
+            A[i] = T1[i] + T2[i];
         }
         return A;
     }
@@ -83,7 +83,7 @@ class nyoba{
         double c;
         //double[][] M1= new double[M.length][M.length+1];
         //M1 = M;
-        for(j=0; j<M[0].length - 2;j++){
+        for(j=1; j<M/*[0]*/.length - 1;j++){
             i = j;
             while((M[i][j] == 0) && (i<M.length)){
                 i++;
@@ -96,7 +96,7 @@ class nyoba{
                 if (c!=0){
                     M[i] = kaliC(M[i], 1/c);
                     d *= c; //dikali c detnya krena barsnya dibagi c
-                    M[i] = MinTab(M[i],M[idx]);
+                    M[i] = PlusTab(M[i],kaliC(M[idx],-1));
                 }
             }
             //pindahin ke paling atas
@@ -107,25 +107,25 @@ class nyoba{
                 M[idx] = temp ;
             }
         }
-        for (i=0; i<M.length;i++){
+        for (i=1; i<M.length;i++){
              d *= M[i][i];
         }
         return d; 
     }
     public static void main(String[] args){
-    double[][] M = {{1,2,3,4},{2,2,1,3},{1,5,4,2}/*{1,2,4},{1,3,5}*/};
+    double[][] M = {{0,0,0,0,0},{0,1,2,3,4},{0,2,2,1,3},/*{0,1,5,4,2}/*{1,2,4},{1,3,5}*/};
     //double[][] M = echelon(N);
     System.out.println(det(M));
     M = echelon(M);
-        for (int i=0; i<M.length;i++){
-            for(int j =0; j<M[0].length;j++){
+        for (int i=1; i<M.length;i++){
+            for(int j =1; j<M[0].length;j++){
                 System.out.print(M[i][j]+" ");
             }
             System.out.println();
         }
         M = REform(M);
-        for (int i=0; i<M.length;i++){
-            for(int j =0; j<M[0].length;j++){
+        for (int i=1; i<M.length;i++){
+            for(int j =1; j<M[0].length;j++){
                 System.out.print(M[i][j]+" ");
             }
             System.out.println();
