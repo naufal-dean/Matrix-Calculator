@@ -6,6 +6,9 @@ class nyoba{
     static double[][] echelon(double[][] M){
         int  i,j, idx;
         double c;
+        //double M1[][];
+        //M1= new double[M.length][M[0].length];
+        //M1=M;
         for(j=0; j<M[0].length - 2;j++){
             i = j;
             while((M[i][j] == 0) && (i<M.length)){
@@ -27,11 +30,12 @@ class nyoba{
             M[j] = M[idx];
             M[idx] = temp ;
         }
-        M[j]=kaliC(M[j],1/M[j][j]);
+        M[j] = kaliC (M[j],1/M[j][j]);
         return M; 
     }
    static double[][] REform(double[][] M){
-        M= echelon(M);
+        double[][] M1= new double[M.length][M[0].length];
+        M1= echelon(M);
         /*for(int j= M[0].length -2; j>0; j--){
             for(int i = j-1; i>=0;i--){
                double c= M[i][j]/M[j][j];
@@ -39,12 +43,12 @@ class nyoba{
             }
 
         }*/
-        for (int i = M.length -2; i>=0;i--){
+        for (int i = M1.length -2; i>=0;i--){
             for (int j = i; j>=0;j--){
-                M[j]=MinTab(M[j], kaliC(M[i+1], M[j][i+1]));
+                M1[j]=MinTab(M1[j], kaliC(M1[i+1], M1[j][i+1]));
             }
         }
-        return M;
+        return M1;
     }
     /*
     gatau cara bikin prosedur yang bisa ngubahhhh input nya helpp
@@ -74,10 +78,46 @@ class nyoba{
         }
         return A;
     }
+    static double det(double[][] M){
+        double d =1;//inisialisasi
+        int  i,j, idx;
+        double c;
+        //double[][] M1= new double[M.length][M.length+1];
+        //M1 = M;
+        for(j=0; j<M[0].length - 2;j++){
+            i = j;
+            while((M[i][j] == 0) && (i<M.length)){
+                i++;
+            }//cari ampe yang ga 0 dibarisannya
+            idx = i;
+            i = i+1;
+            for(;i<M.length;i++){
+                //eliminasi yang lainnya dengan baris idx
+                c = M[i][j]/M[idx][j];
+                if (c!=0){
+                    M[i] = kaliC(M[i], 1/c);
+                    d *= c; //dikali c detnya krena barsnya dibagi c
+                    M[i] = MinTab(M[i],M[idx]);
+                }
+            }
+            //pindahin ke paling atas
+            if (j!=idx){
+                d *= -1;//tukar dikali -1 detnya
+                double[] temp = M[j];
+                M[j] = M[idx];
+                M[idx] = temp ;
+            }
+        }
+        for (i=0; i<M.length;i++){
+             d *= M[i][i];
+        }
+        return d; 
+    }
     public static void main(String[] args){
     double[][] M = {{1,2,3,4},{2,2,1,3},{1,5,4,2}/*{1,2,4},{1,3,5}*/};
-        M = echelon(M);
-        M= echelon(M);
+    //double[][] M = echelon(N);
+    System.out.println(det(M));
+    M = echelon(M);
         for (int i=0; i<M.length;i++){
             for(int j =0; j<M[0].length;j++){
                 System.out.print(M[i][j]+" ");
@@ -91,6 +131,7 @@ class nyoba{
             }
             System.out.println();
         }
+        System.out.println(det(M));//sds bug gt jsdi M yg digunsinnys berubah ga ngerti gt ngatasinnya gimnaa
     }
 
 
