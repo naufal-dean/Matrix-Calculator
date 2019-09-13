@@ -1,6 +1,7 @@
 
 package tubes;
 
+//nopal
 public class RowOperation {
     static float[] kaliC(float[] R,float c){
         float[] A= new float [R.length] ;

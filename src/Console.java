@@ -3,6 +3,7 @@ package tubes;
 import java.io.*;
 import java.util.*;
 
+//camcam
 public class Console {
     private static Scanner scan = new Scanner(System.in);
     public static void outln() {
