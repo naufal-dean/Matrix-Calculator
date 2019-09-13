@@ -48,5 +48,17 @@ public class Matrix {
         // TODO: implement
         return new Matrix(maxR, maxC);
     }
+    public boolean equals(Object o) {
+        if (!(o instanceof Matrix))
+            return false;
+        Matrix m = (Matrix)o;
+        if (m.maxR != maxR || m.maxC != maxC)
+            return false;
+        for (int r = 1; r <= maxR; ++r)
+            for (int c = 1; c <= maxC; ++c)
+                if (get(r, c) != m.get(r, c))
+                    return false;
+        return true;
+    }
     // Tambahin lagi, klo bisa conventionnya sama, biar rapi..
 }
