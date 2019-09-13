@@ -1,10 +1,10 @@
 package tubes;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Matrix {
-    public float[][] content;
-    public int maxR, maxC;
+    private float[][] content;
+    private int maxR, maxC;
     private Scanner input = new Scanner(System.in);
 
     //** Konstruktor **//
@@ -23,23 +23,26 @@ public class Matrix {
 
     //** Selektor **//
     //-- Selektor: Get --//
-    public int getBaris() {
+    public int getMaxRow() {
       return this.maxR;
     }
-    public int getKolom() {
+
+    public int getMaxColumn() {
         return this.maxC;
     }
     public float[][] getContent() {
         return this.content;
     }
-    public float getElmt(int r, int c) {
+
+    public float getElement(int r, int c) {
         return this.content[r][c];
     }
     //-- Selektor: Set --//
-    public void setBaris(int maxR) {
+    public void setMaxRow(int maxR) {
         this.maxR = maxR;
     }
-    public void setKolom(int maxC) {
+
+    public void setMaxColumn(int maxC) {
         this.maxC = maxC;
     }
     public void setContent(float[][] arr) {
@@ -49,10 +52,12 @@ public class Matrix {
     public void setElement(int r, int c, float val) {
         this.content[r][c] = val;
     }
-    public float[] getARow(int r) {
+
+    public float[] getRow(int r) {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
-    public void setARow(int r,float[] row) {
+
+    public void setRow(int r, float[] row) {
         this.content[r] = Arrays.copyOf(row, row.length);
     }
 
@@ -103,38 +108,13 @@ public class Matrix {
     }
     
     //** Fungsi matriks **//
-    public float[] getSistemPersamaanLinear() {
+    public float[] getSistemPersamaanLinear(Method method) {
         // TODO: implement
         return new float[this.maxC+1];
     }
-    public float getDeterminan() {
-        // TODO: implement
-        return 0;
-    }
-    public void transpose() {
-        // Kamus lokal
-        float tempVal[][];
-        int temp;
-        // Algoritma
-        // Transpose value
-        tempVal = new float[this.maxC][this.maxR];
-        for (int i = 0; i < this.maxR; i++) {
-            for (int j = 0; j < this.maxC; j++) {
-                tempVal[j][i] = this.content[i][j];
-            }
-        }
-        this.content = tempVal;
-        // Swap maxR maxC
-        temp = this.maxC;
-        this.maxC = this.maxR;
-        this.maxR = temp;
-    }
-    public Matrix getTransposeMatrix() {
-        // TODO: implement
-        return new float[this.maxC+1];
-    }
-    public void inverse() {
-        // TODO: implement
+
+    //nopal (NOTE: tambahin lagi tiap method)
+    public float getDeterminan(Method method) {
         Matrix M = this.copyMatrix();
         int  i,j, idx;
         float c;
@@ -142,37 +122,59 @@ public class Matrix {
         //double M1[][];
         //M1= new double[M.length][M[0].length];
         //M1=M;
-        for(j=1; j<=M.getBaris() -1 ;j++){
+        for(j=1; j<=M.getMaxRow() -1 ;j++){
             i = j;
-            while((M.getElmt(i,j) == 0) && (i<=M.getBaris())){
+            while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
                 i++;
             }//cari ampe yang ga 0 dibarisannya
             idx = i;
             i = i+1;
-            for(;i<=M.getBaris();i++){
+            for(;i<=M.getMaxRow();i++){
                 //eliminasi yang lainnya dengan baris idx
-                c = M.getElmt(i,j)/M.getElmt(idx,j);
+                c = M.getElement(i,j)/M.getElement(idx,j);
                 if (c!=0){
-                    M.setARow(i,(RowOperation.kaliC(M.getARow(i), 1/c)));
+                    M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
                     det *= c;
-                    M.setARow(i,(RowOperation.PlusTab(M.getARow(i),RowOperation.kaliC(M.getARow(idx),-1))));
+                    M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
                 }
             }
             //pindahin ke paling atas
             if(j!=idx){
                 det *=-1;
-                float[] temp = M.getARow(j);
-                M.setARow(j, M.getARow(idx));
-                M.setARow(idx,temp) ;
+                float[] temp = M.getRow(j);
+                M.setRow(j, M.getRow(idx));
+                M.setRow(idx,temp) ;
             }
         }
-        for (i=1; i<=M.getBaris();i++){
-             det *= M.getElmt(i,i);
+        for (i=1; i<=M.getMaxRow();i++){
+             det *= M.getElement(i,i);
         }
 
         return det;
     }
-    public Matrix getInverseMatrix() {
+
+    //dean
+    public Matrix getTransposeMatrix() {
+        // Kamus lokal
+        float tempVal[][];
+        int temp;
+        // Algoritma
+        // Transpose value
+        tempVal = new float[this.maxC][this.maxR];
+        for (int i = 1; i <= this.maxR; i++) {
+            for (int j = 1; j <= this.maxC; j++) {
+                tempVal[j][i] = this.content[i][j];
+            }
+        }
+        // this.content = tempVal;
+        // // Swap maxR maxC
+        // temp = this.maxC;
+        // this.maxC = this.maxR;
+        // this.maxR = temp;
+        return new Matrix(tempVal);
+    }
+
+    public Matrix getInverseMatrix(Method method) {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
@@ -190,9 +192,8 @@ public class Matrix {
         // TODO: implement
         return new Matrix(this.maxR, this.maxC);
     }
-    public void echelonForm() {
-        // TODO: implement
-    }
+
+    //nopal
     public Matrix getEchelonForm() {
         // TODO: implement
         Matrix M = this.copyMatrix();
@@ -201,55 +202,55 @@ public class Matrix {
         //double M1[][];
         //M1= new double[M.length][M[0].length];
         //M1=M;
-        for(j=1; j<=M.getBaris() -1 ;j++){
+        for(j=1; j<=M.getMaxRow() -1 ;j++){
             i = j;
-            while((M.getElmt(i,j) == 0) && (i<M.getBaris())){
+            while((M.getElement(i,j) == 0) && (i<M.getMaxRow())){
                 i++;
             }//cari ampe yang ga 0 dibarisannya
             idx = i;
             i = i+1;
-            for(;i<=M.getBaris();i++){
+            for(;i<=M.getMaxRow();i++){
                 //eliminasi yang lainnya dengan baris idx
-                c = M.getElmt(i,j)/M.getElmt(idx,j);
+                c = M.getElement(i,j)/M.getElement(idx,j);
                 if (c!=0){
-                    M.setARow(i,(RowOperation.kaliC(M.getARow(i), 1/c)));
-                    M.setARow(i,(RowOperation.PlusTab(M.getARow(i),RowOperation.kaliC(M.getARow(idx),-1))));
+                    M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
+                    M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
                 }
             }
-            M.setARow(idx, RowOperation.kaliC(M.getARow(idx),1/M.getElmt(idx,j)));
+            M.setRow(idx, RowOperation.kaliC(M.getRow(idx),1/M.getElement(idx,j)));
             //pindahin ke paling atas
-            float[] temp = M.getARow(j);
-            M.setARow(j, M.getARow(idx));
-            M.setARow(idx,temp) ;
+            float[] temp = M.getRow(j);
+            M.setRow(j, M.getRow(idx));
+            M.setRow(idx,temp) ;
         }
-        M.setARow(j,RowOperation.kaliC(M.getARow(j),1/M.getElmt(j,j)));
+        M.setRow(j,RowOperation.kaliC(M.getRow(j),1/M.getElement(j,j)));
         return M; 
     }
-    public void reducedEchelonForm() {
-        // TODO: implement
-    }
+
+    //nopal
     public Matrix getReducedEchelonForm() {
         Matrix M = new Matrix(maxR,maxC);
         M = this.getEchelonForm();
-        for (int i = M.getBaris() -1; i>=0;i--){
+        for (int i = M.getMaxRow() -1; i>=0;i--){
             for (int j = i; j>=1;j--){
-                M.setARow(j,RowOperation.PlusTab(M.getARow(j), RowOperation.kaliC(M.getARow(i+1), -1*M.getElmt(j,i+1))));
+                M.setRow(j,RowOperation.PlusTab(M.getRow(j), RowOperation.kaliC(M.getRow(i+1), -1*M.getElement(j,i+1))));
             }
         }
         return M;
     }
+
+    //camcam
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Matrix))
             return false;
         Matrix m = (Matrix)o;
-        if (m.maxR != this.maxR || m.maxC != this.maxC)
+        if (m.getMaxRow() != this.maxR || m.getMaxColumn() != this.maxC)
             return false;
         for (int r = 1; r <= this.maxR; ++r)
             for (int c = 1; c <= this.maxC; ++c)
-                if (m.content[r][c] != this.content[r][c])
+                if (m.getElement(r, c) != this.content[r][c])
                     return false;
         return true;
     }
-    // Tambahin lagi, klo bisa conventionnya sama, biar rapi..
 }
