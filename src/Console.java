@@ -1,4 +1,4 @@
-package com.nafkhanzam;
+package tubes;
 
 import java.io.*;
 import java.util.*;

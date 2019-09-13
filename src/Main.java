@@ -1,10 +1,15 @@
-package com.nafkhanzam;
+package tubes;
 
-import static com.nafkhanzam.Console.*;
+import static tubes.Console.*;
 
 public class Main {
     public static void main(String[] args) {
         outln("Hello, world!");
         outln("TEST");
+        Matrix M = new Matrix();
+        M.bacaMatrix();
+        M.tulisMatrix(); System.out.println();
+        M.transpose();
+        M.tulisMatrix();
     }
 }
