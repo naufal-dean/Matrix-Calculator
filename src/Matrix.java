@@ -1,18 +1,23 @@
 package com.nafkhanzam;
 
 public class Matrix {
-    private float[][] m;
-    private int maxR, maxC;
+    public float[][] m;
+    public int maxR, maxC;
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
+        this.maxC = maxC;
         this.m = new float[maxR+1][maxC+1];
     }
-    public void set(int r, int c, float v) {
-        m[r][c] = v;
+    public Matrix(float[][] arr) {
+        this(arr.length, arr[0].length);
+        setContent(arr);
     }
-    public float get(int r, int c) {
-        return m[r][c];
+    public void setContent(float[][] arr) {
+        for (int r = 1; r <= maxR; ++r)
+            for (int c = 1; c <= maxC; ++c)
+                m[r][c] = arr[r][c];
     }
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int r = 1; r <= maxR; r++)
@@ -48,6 +53,7 @@ public class Matrix {
         // TODO: implement
         return new Matrix(maxR, maxC);
     }
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Matrix))
             return false;
@@ -56,7 +62,7 @@ public class Matrix {
             return false;
         for (int r = 1; r <= maxR; ++r)
             for (int c = 1; c <= maxC; ++c)
-                if (get(r, c) != m.get(r, c))
+                if (content[r][c] != m.content[r][c])
                     return false;
         return true;
     }
