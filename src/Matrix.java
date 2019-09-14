@@ -485,7 +485,7 @@ public class Matrix {
             }
             case INVERSE: {
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
-                coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM).tulisMatrix();
+                
                 for (int i = 1; i <= this.maxR; i++) {
                     sol[i] = Double.toString(solM.getElement(i, 1));
                 }
