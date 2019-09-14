@@ -41,6 +41,14 @@ public class Matrix {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
 
+    public double[] getColumn(int c) {
+        double[] col = new double[this.maxR];
+        for (int i = 0; i < this.maxR; i++) {
+            col[i] = this.getElement(i+1, c);
+        }
+        return col;
+    }
+
     //-- Selektor: Set --//
     public void setMaxRow(int maxR) {
         this.maxR = maxR;
@@ -62,6 +70,12 @@ public class Matrix {
 
     public void setRow(int r, double[] row) {
         this.content[r] = Arrays.copyOf(row, row.length);
+    }
+
+    public void setColumn(int c, double[] col) {
+        for (int i = 0; i < this.maxR; i++) {
+            this.setElement(i+1, c, col[i]);
+        }
     }
 
     //** Utility **//
@@ -212,28 +226,6 @@ public class Matrix {
     }
 
     //** Fungsi matriks **//
-    public String[] getSistemPersamaanLinear(Method method) {
-        switch (method) {
-            case CRAMER: {
-
-                break;
-            }
-            case GAUSS: {
-
-                break;
-            }
-            case GAUSS_JORDAN: {
-
-                break;
-            }
-            case INVERSE: {
-
-                break;
-            }
-        }
-        throw new RuntimeException("Method " + method + " is not valid!");
-    }
-
     //nopal (NOTE: tambahin lagi tiap method)
     public double getDeterminan(Method method) {
         switch (method) {
@@ -395,7 +387,7 @@ public class Matrix {
 
     private Matrix getEchelonForm(Matrix m, int rowStart, int colStart, int colMax) {
         // m.tulisMatrix();
-        // System.out.printf("\n\n");
+        // System.out.printf("%d %d\n\n", rowStart, colStart);
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             return m;
@@ -455,5 +447,37 @@ public class Matrix {
             }
         }
         return m;
+    }
+
+    //** Fungsi Sistem Persamaaan Linear **//
+    public String[] getSistemPersamaanLinear(Method method) {
+        // Prekondisi: matriks yang diproses adalah matriks augmented
+        switch (method) {
+            case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
+                Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
+                Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
+                String[] sol = new String[this.maxR+1];
+
+                for (int i = 1; i <= this.maxR; i++) {
+                    cramM.setColumn(i, this.getColumn(this.maxC));
+                    sol[i] = Double.toString(cramM.getDeterminan(Method.CRAMER)/coefM.getDeterminan(Method.CRAMER));
+                    cramM.setColumn(i, coefM.getColumn(i));
+                }
+                return sol;
+            }
+            case GAUSS: {
+
+                break;
+            }
+            case GAUSS_JORDAN: {
+
+                break;
+            }
+            case INVERSE: {
+
+                break;
+            }
+        }
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 }

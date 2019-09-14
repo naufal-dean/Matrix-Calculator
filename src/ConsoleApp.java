@@ -49,7 +49,7 @@ public class ConsoleApp {
                         m = readMatrix();
                         outln("Solusi-nya:");
                         String[] res = m.getSistemPersamaanLinear(method);
-                        for (int i = 1; i <= res.length; i++)
+                        for (int i = 1; i < res.length; i++)
                             outln("x" + i + " = " + res[i-1]);
                         break;
                     case 2:

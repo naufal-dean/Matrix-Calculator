@@ -10,8 +10,9 @@ public class Main {
     public static void main2() {
         outln("Hello, world!");
         outln("TEST");
-        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 8 }};
+        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }};
         double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
+        String[] buffer;
         Matrix M = new Matrix(test);
         Matrix Ma = new Matrix(test2);
         System.out.println("Normal: ");
@@ -32,8 +33,24 @@ public class Main {
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
-        outln(M);
-        outln(-0f == 0f);
+
+        double[][] test3 = { { 1, 2, 3 }, { 4, 5, 6 }};
+        // double[][] test4 = { { 1, 2, 10 }, { 4, 5, 10 }};
+        // double[] newcol = {10,10};
+        Matrix M3 = new Matrix(test3);
+        // Matrix M4 = new Matrix(test4);
+        System.out.println("Get Solution Cramer: ");
+        M3.tulisMatrix();
+        // M3.setColumn(1, M4.getColumn(M4.getMaxColumn()));
+        // M3.tulisMatrix();
+        buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
+        for (int i = 1; i < buffer.length; i++) {
+            System.out.printf("x%d = %s\n", i, buffer[i]);
+        }
+        System.out.println();
+
+        // outln(M);
+        // outln(-0f == 0f);
         // M.bacaMatrix();
         // M.appendMatrix(M.getIdentityMatrix()).tulisMatrix();;
         // Matrix M1 = M.getTransposeMatrix();
