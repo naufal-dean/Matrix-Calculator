@@ -169,7 +169,6 @@ public class Matrix {
         return new float[this.maxC+1];
     }
 
-    //dean
     public Matrix getIdentityMatrix() {
         // TODO: create exception
         // if (this.maxR != this.maxC)
@@ -182,6 +181,7 @@ public class Matrix {
         return m;
     }
 
+    //dean
     public Matrix getTransposeMatrix() {
         // Kamus lokal
         float[][] tempVal;

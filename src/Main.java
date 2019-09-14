@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         outln("Hello, world!");
         outln("TEST");
-        float[][] test = { { 1, 1, 1 }, { 1, 2, 2 }, { 1, 2, 3 }};
+        float[][] test = { { 1, 1, 1 }, { 1, 2, 2 }, { 1, 2, 3 }, { 1, 2, 3 }};
         float[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
         Matrix M = new Matrix(test);
         Matrix Ma = new Matrix(test2);
