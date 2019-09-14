@@ -5,6 +5,7 @@ import static tubes.Console.*;
 
 //camcam
 public class Test {
+    // region Test
     private static String green = "", red = "", yellow = "";
     private static boolean usingColor = false;
     private static int succeed, failed, index;
@@ -24,6 +25,7 @@ public class Test {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
         if (value) ++succeed; else ++failed;
     }
+    // endregion
     private static void doTheTest() {
         test("lmao", false);
     }

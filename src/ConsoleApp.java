@@ -1,20 +1,31 @@
 package tubes;
 
+
 import static tubes.Console.*;
 
 //camcam
 public class ConsoleApp {
-    String menu = "MENU\n"
+    private static final String menu = "MENU:\n"
                 + "1. Sistem Persamaaan Linier\n"
                 + "2. Determinan\n"
                 + "3. Matriks balikan\n"
                 + "4. Matriks kofaktor\n"
                 + "5. Adjoin\n"
                 + "6. Interpolasi Polinom\n"
-                + "7. Keluar\n"
-                + "\n";
+                + "7. Keluar\n";
+    private static final String subMenu = "Pilihan metode:\n"
+                + "1. Metode eliminasi Gauss\n"
+                + "2. Metode eliminasi Gauss-Jordan\n"
+                + "3. Metode matriks balikan\n"
+                + "4. Kaidah Cramer\n";
 
-    public void selectMenu(int menuIndex) {
+    public static void start() {
+        printMenu();
+        out("Pilih menu: ");
+        selectMenu(num());
+    }
+    
+    private static void selectMenu(int menuIndex) {
         switch (menuIndex) {
             case 1:
                 // spl();
@@ -35,21 +46,16 @@ public class ConsoleApp {
                 // pol();
                 break;
             case 7:
-                // exit();
+                System.exit(0);
                 break;
             default:
-                // notFound();
+                outln("Menu index '" + menuIndex + "' tidak termasuk pilihan index menu!");
                 break;
         }
+        start();
+    }
 
-    }
-    public void printMenu() {
-
-    }
-    public void ntf() {
-        // outln("Menu index '" + menuIndex + "' tidak termasuk pilihan index menu!");
-    }
-    public void exit() {
-        System.exit(0);
+    private static void printMenu() {
+        outln(menu);
     }
 }

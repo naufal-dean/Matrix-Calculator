@@ -136,7 +136,7 @@ public class Matrix {
         StringBuilder sb = new StringBuilder();
         for (int r = 1; r <= this.maxR; r++)
             for (int c = 1; c <= this.maxC; c++)
-                sb.append(this.content[r][c] + (c == this.maxC ? "\n" : " "));
+                sb.append(String.format("%f", this.content[r][c]) + (c == this.maxC ? "\n" : " "));
         return sb.toString();
     }
 
@@ -167,6 +167,46 @@ public class Matrix {
     public float[] getSistemPersamaanLinear(Method method) {
         // TODO: implement
         return new float[this.maxC+1];
+    }
+
+    //nopal (NOTE: tambahin lagi tiap method)
+    public float getDeterminan(Method method) {
+        Matrix M = this.copyMatrix();
+        int  i,j, idx;
+        float c;
+        float det=1;
+        //double M1[][];
+        //M1= new double[M.length][M[0].length];
+        //M1=M;
+        for(j=1; j<=M.getMaxRow() -1 ;j++){
+            i = j;
+            while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
+                i++;
+            }//cari ampe yang ga 0 dibarisannya
+            idx = i;
+            i = i+1;
+            for(;i<=M.getMaxRow();i++){
+                //eliminasi yang lainnya dengan baris idx
+                c = M.getElement(i,j)/M.getElement(idx,j);
+                if (c!=0){
+                    M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
+                    det *= c;
+                    M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
+                }
+            }
+            //pindahin ke paling atas
+            if(j!=idx){
+                det *=-1;
+                float[] temp = M.getRow(j);
+                M.setRow(j, M.getRow(idx));
+                M.setRow(idx,temp) ;
+            }
+        }
+        for (i=1; i<=M.getMaxRow();i++){
+             det *= M.getElement(i,i);
+        }
+    
+        return det;
     }
 
     //dean

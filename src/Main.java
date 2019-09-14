@@ -18,6 +18,7 @@ public class Main {
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
+        outln(M);
         // M.bacaMatrix();
         // M.appendMatrix(M.getIdentityMatrix()).tulisMatrix();;
         // Matrix M1 = M.getTransposeMatrix();
