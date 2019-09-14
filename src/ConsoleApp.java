@@ -1,6 +1,7 @@
 package tubes;
 
 
+
 import static tubes.Console.*;
 
 //camcam
@@ -22,19 +23,25 @@ public class ConsoleApp {
     public static void start() {
         printMenu();
         out("Pilih menu: ");
-        selectMenu(num());
+        int menu = num(), subMenu = -1;
+        if (menu >= 1 && menu <= 3) {
+            printSubMenu();
+            out("Pilih metode: ");
+            subMenu = num();
+        }
+        selectMenu(menu, subMenu);
     }
-    
-    private static void selectMenu(int menuIndex) {
+
+    private static void selectMenu(int menuIndex, int subMenuIndex) {
         switch (menuIndex) {
             case 1:
-                // spl();
+                // spl(subMenuIndex);
                 break;
             case 2:
-                // det();
+                // det(subMenuIndex);
                 break;
             case 3:
-                // bal();
+                // inv(subMenuIndex);
                 break;
             case 4:
                 // kof();
@@ -43,7 +50,7 @@ public class ConsoleApp {
                 // adj();
                 break;
             case 6:
-                // pol();
+                // intPol();
                 break;
             case 7:
                 System.exit(0);
@@ -57,5 +64,9 @@ public class ConsoleApp {
 
     private static void printMenu() {
         outln(menu);
+    }
+
+    private static void printSubMenu() {
+        outln(subMenu);
     }
 }
