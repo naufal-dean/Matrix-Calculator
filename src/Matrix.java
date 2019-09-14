@@ -143,22 +143,33 @@ public class Matrix {
         return sb.toString();
     }
 
-    public Matrix multiply(Matrix m) {
-        if (maxC != m.maxR)
+    //** Operasi pada matriks **//
+    public Matrix multiplyOPR(Matrix m) {
+        if (this.maxC != m.maxR)
             throw new RuntimeException("Column of the left matrix is not equal to row of the right matrix!");
-        Matrix res = new Matrix(maxR, m.maxC);
-        for (int i = 1; i <= maxR; i++)
+        Matrix res = new Matrix(this.maxR, m.maxC);
+        for (int i = 1; i <= this.maxR; i++)
             for (int j = 1; j <= m.maxC; j++)
-                for (int k = 1; k <= maxC; k++)
+                for (int k = 1; k <= this.maxC; k++)
                     res.setElement(i, j, getElement(i, k)*m.getElement(k, j));
         return res;
     }
 
-    public Matrix scalarMultiply(double x) {
+    public Matrix scalarMultiplyOPR(double x) {
+        Matrix res = copyMatrix();
+        for (int i = 1; i <= this.maxR; i++)
+            for (int j = 1; j <= this.maxC; j++)
+                res.content[i][j] *= x;
+        return res;
+    }
+
+    public Matrix addOPR(Matrix m) {
+        if (this.maxR != m.maxR || this.maxC != m.maxC)
+            throw new RuntimeException("Different matrix size!");
         Matrix res = copyMatrix();
         for (int i = 1; i <= maxR; i++)
             for (int j = 1; j <= maxC; j++)
-                res.content[i][j] *= x;
+                res.setElement(i, j, res.getElement(i,j) + m.getElement(i,j));
         return res;
     }
 
