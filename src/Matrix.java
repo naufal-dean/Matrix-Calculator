@@ -155,17 +155,17 @@ public class Matrix {
         }
     }
 
-    private void addOBE(int r1, int r2, float scale) {
-        float temp;
+    private void addOBE(int r1, int r2) {
+        addOBE(r1, r2, 1);
+    }
 
-        for (int c = 1; c <= maxC; c++) {
-            temp = this.content[r1][c] + (this.content[r2][c] * scale);
-            this.content[r1][c] = temp;
-        }
+    private void addOBE(int r1, int r2, float scale) {
+        for (int c = 1; c <= maxC; c++)
+            this.content[r1][c] += (this.content[r2][c] * scale);
     }
 
     //** Fungsi matriks **//
-    public float[] getSistemPersamaanLinear(Method method) {
+    public String[] getSistemPersamaanLinear(Method method) {
         switch (method) {
             case CRAMER: {
 
@@ -184,7 +184,7 @@ public class Matrix {
                 break;
             }
         }
-        throw new RuntimeException("Method " + method + "is not valid!");
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     //nopal (NOTE: tambahin lagi tiap method)
@@ -240,7 +240,7 @@ public class Matrix {
                 break;
             }
         }
-        throw new RuntimeException("Method " + method + "is not valid!");
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     //dean
@@ -252,7 +252,6 @@ public class Matrix {
         return m;
     }
 
-    //dean
     public Matrix getTransposeMatrix() {
         // Kamus lokal
         float[][] tempVal;
@@ -268,12 +267,18 @@ public class Matrix {
 
     public Matrix getEntryMatrix(int r, int c) {
         float[][] tempVal = new float[this.maxR-1][this.maxC-1];
-        float[][] m = this.subMatrixContent(1, 1);
 
-        for (int i = 0; i < (r-1); i++) {
-            tempVal[i] = Arrays.copyOfRange(this.content[i], startC, endC + 1);
-            for (int j = 0; j < m2[i].length; j++) {
-                tempVal[i][m1[i].length + j] = m2[i][j];
+        for (int i = 0; i < this.maxR; i++) {
+            for (int j = 0; j < this.maxC; j++) {
+                if (i < r-1 && j < c-1) {
+                    tempVal[i][j] = this.subMatrixContent(1, 1)[i][j];
+                } else if (i > r-1 && j < c-1) {
+                    tempVal[i-1][j] = this.subMatrixContent(1, 1)[i][j];
+                } else if (i < r-1 && j > c-1) {
+                    tempVal[i][j-1] = this.subMatrixContent(1, 1)[i][j];
+                } else if (i > r-1 && j > c-1) {
+                    tempVal[i-1][j-1] = this.subMatrixContent(1, 1)[i][j];
+                }
             }
         }
         return new Matrix(tempVal);
@@ -310,7 +315,7 @@ public class Matrix {
                 break;
             }
         }
-        throw new RuntimeException("Method " + method + "is not valid!");
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     public Matrix getEchelonForm(int colMax) {
