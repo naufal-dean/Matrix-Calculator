@@ -184,7 +184,7 @@ public class Matrix {
                 break;
             }
         }
-        throw new RuntimeException("Method " + method + "is not valid!");
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     //nopal (NOTE: tambahin lagi tiap method)
@@ -240,7 +240,7 @@ public class Matrix {
                 break;
             }
         }
-        throw new RuntimeException("Method " + method + "is not valid!");
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     //dean
@@ -250,6 +250,11 @@ public class Matrix {
             m.setElement(i, i, 1);
         }
         return m;
+    }
+
+    public Matrix getCofactorMatrix() {
+        // TODO: implement;
+        return null;
     }
 
     public Matrix getTransposeMatrix() {
@@ -270,7 +275,6 @@ public class Matrix {
         return new Matrix(this.maxR, this.maxC);
     }
 
-    // public Matrix getInverseMatrix(Method method) {
     public Matrix getInverseMatrix(Method method) {
         if (this.maxR != this.maxC)
             throw new RuntimeException("Max row and max column are not the same!");
@@ -293,7 +297,7 @@ public class Matrix {
                 break;
             }
         }
-        throw new RuntimeException("Method " + method + "is not valid!");
+        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     public Matrix getEchelonForm(int colMax) {

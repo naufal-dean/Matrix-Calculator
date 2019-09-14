@@ -1,6 +1,9 @@
 package tubes;
 
 
+
+
+
 import static tubes.Console.*;
 
 //camcam
@@ -42,31 +45,44 @@ public class ConsoleApp {
         if (menuIndex >= 1 && menuIndex <= 3 && (subMenuIndex < 1 || subMenuIndex > 4))
             outln("Index \"" + subMenuIndex + "\" tidak termasuk pilihan index menu metode!");
         else
-            switch (menuIndex) {
-                case 1:
-                    // spl(subMenuIndex);
-                    break;
-                case 2:
-                    // det(subMenuIndex);
-                    break;
-                case 3:
-                    // inv(subMenuIndex);
-                    break;
-                case 4:
-                    // kof();
-                    break;
-                case 5:
-                    // adj();
-                    break;
-                case 6:
-                    // intPol();
-                    break;
-                case 7:
-                    System.exit(0);
-                    break;
-                default:
-                    outln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
-                    break;
+            try {
+                Matrix m;
+                switch (menuIndex) {
+                    case 1:
+                        // spl(subMenuIndex);
+                        break;
+                    case 2:
+                        m = readSquareMatrix();
+                        outln("Determinan-nya:");
+                        outln(m.getDeterminan(Method.values()[subMenuIndex-1]));
+                        break;
+                    case 3:
+                        m = readMatrix();
+                        outln("Matrix inverse-nya:");
+                        outln(m.getInverseMatrix(Method.values()[subMenuIndex-1]));
+                        break;
+                    case 4:
+                        m = readMatrix();
+                        outln("Matrix kofaktor-nya:");
+                        outln(m.getCofactorMatrix());
+                        break;
+                    case 5:
+                        m = readMatrix();
+                        outln("Matrix adjoin-nya:");
+                        outln(m.getAdjoinMatrix());
+                        break;
+                    case 6:
+                        // intPol();
+                        break;
+                    case 7:
+                        System.exit(0);
+                        break;
+                    default:
+                        outln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
+                        break;
+                }
+            } catch (Exception _e) {
+                outln("Error: Input tidak valid!");
             }
         outln();
         enterToContinue();
@@ -78,12 +94,14 @@ public class ConsoleApp {
         int r = num();
         out("Ukuran kolom(column): ");
         int c = num();
+        line();
         return readMatrix(r, c);
     }
 
     private static Matrix readSquareMatrix() throws Exception {
         out("Ukuran matriks: ");
         int size = num();
+        line();
         return readMatrix(size, size);
     }
 
@@ -94,12 +112,14 @@ public class ConsoleApp {
             for (int j = 1; j <= c; j++)
                 m.setElement(i, j, Float.parseFloat(line[j-1]));
         }
+        outln("Matrix yang Anda masukkan:");
+        outln(m);
         return m;
     }
 
     private static void enterToContinue() {
         outln("Tekan enter untuk kembali ke menu.");
-        line();line();
+        line();
     }
 
     private static void printMenu() {

@@ -4,8 +4,8 @@ import static tubes.Console.*;
 
 public class Main {
     public static void main(String[] args) {
-        // ConsoleApp.start();
-        main2(args);
+        ConsoleApp.start();
+        // main2(args);
     }
     public static void main2(String[] args) {
         outln("Hello, world!");
