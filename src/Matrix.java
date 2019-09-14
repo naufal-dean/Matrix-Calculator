@@ -167,18 +167,22 @@ public class Matrix {
     //** Fungsi matriks **//
     public float[] getSistemPersamaanLinear(Method method) {
         switch (method) {
-            case CRAMER:
+            case CRAMER: {
+                
+                break;
+            }
+            case GAUSS: {
 
                 break;
-            case GAUSS:
-
+            }
+            case GAUSS_JORDAN: {
+                
                 break;
-            case GAUSS_JORDAN:
-
+            }
+            case INVERSE: {
+                
                 break;
-            case INVERSE:
-
-                break;
+            }
         }
         throw new RuntimeException("Method " + method + "is not valid!");
     }
@@ -186,10 +190,11 @@ public class Matrix {
     //nopal (NOTE: tambahin lagi tiap method)
     public float getDeterminan(Method method) {
         switch (method) {
-            case CRAMER:
-
+            case CRAMER: {
+                
                 break;
-            case GAUSS:
+            }
+            case GAUSS: {
                 Matrix M = this.copyMatrix();
                 int  i,j, idx;
                 float c;
@@ -225,12 +230,15 @@ public class Matrix {
                     det *= M.getElement(i,i);
                 }
                 return det;
-            case GAUSS_JORDAN:
-
+            }
+            case GAUSS_JORDAN: {
+                
                 break;
-            case INVERSE:
-
+            }
+            case INVERSE: {
+                
                 break;
+            }
         }
         throw new RuntimeException("Method " + method + "is not valid!");
     }
@@ -267,18 +275,25 @@ public class Matrix {
         if (this.maxR != this.maxC)
             throw new RuntimeException("Max row and max column are not the same!");
         switch (method) {
-            case CRAMER:
+            case CRAMER: {
+                
+                break;
+            }
+            case GAUSS: {
 
-            case GAUSS:
-
-            case GAUSS_JORDAN:
+                break;
+            }
+            case GAUSS_JORDAN: {
                 Matrix m = this.appendMatrix(Matrix.getIdentityMatrix(this.maxC));
                 m = m.getReducedEchelonForm(m.getMaxColumn()/2);
                 return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
-            case INVERSE:
-            
+            }
+            case INVERSE: {
+                
+                break;
+            }
         }
-        return null;
+        throw new RuntimeException("Method " + method + "is not valid!");
     }
 
     public Matrix getEchelonForm(int colMax) {
