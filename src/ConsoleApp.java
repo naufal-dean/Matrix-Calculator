@@ -1,5 +1,6 @@
 package tubes;
 
+
 import static tubes.Console.*;
 
 //camcam
@@ -70,6 +71,30 @@ public class ConsoleApp {
         outln();
         enterToContinue();
         start();
+    }
+
+    private static Matrix readMatrix() throws Exception {
+        out("Ukuran baris(row): ");
+        int r = num();
+        out("Ukuran kolom(column): ");
+        int c = num();
+        return readMatrix(r, c);
+    }
+
+    private static Matrix readSquareMatrix() throws Exception {
+        out("Ukuran matriks: ");
+        int size = num();
+        return readMatrix(size, size);
+    }
+
+    private static Matrix readMatrix(int r, int c) throws Exception {
+        Matrix m = new Matrix(r, c);
+        for (int i = 1; i <= r; i++) {
+            String[] line = line().split(" ");
+            for (int j = 1; j <= c; j++)
+                m.setElement(i, j, Float.parseFloat(line[j-1]));
+        }
+        return m;
     }
 
     private static void enterToContinue() {
