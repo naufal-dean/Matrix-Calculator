@@ -1,12 +1,5 @@
 package tubes;
 
-import tubes.Console.*;
-
-
-
-
-
-
 import static tubes.Console.*;
 
 //camcam
