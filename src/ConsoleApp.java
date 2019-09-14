@@ -1,5 +1,8 @@
 package tubes;
 
+import tubes.Console.*;
+
+
 
 
 
@@ -47,19 +50,24 @@ public class ConsoleApp {
         else
             try {
                 Matrix m;
+                Method method = Method.values()[subMenuIndex-1];
                 switch (menuIndex) {
                     case 1:
-                        // spl(subMenuIndex);
+                        m = readMatrix();
+                        outln("Solusi-nya:");
+                        String[] res = m.getSistemPersamaanLinear(method);
+                        for (int i = 1; i <= res.length; i++)
+                            outln("x" + i + " = " + res[i-1]);
                         break;
                     case 2:
                         m = readSquareMatrix();
                         outln("Determinan-nya:");
-                        outln(m.getDeterminan(Method.values()[subMenuIndex-1]));
+                        outln(m.getDeterminan(method));
                         break;
                     case 3:
                         m = readMatrix();
                         outln("Matrix inverse-nya:");
-                        outln(m.getInverseMatrix(Method.values()[subMenuIndex-1]));
+                        outln(m.getInverseMatrix(method));
                         break;
                     case 4:
                         m = readMatrix();

@@ -165,7 +165,7 @@ public class Matrix {
     }
 
     //** Fungsi matriks **//
-    public float[] getSistemPersamaanLinear(Method method) {
+    public String[] getSistemPersamaanLinear(Method method) {
         switch (method) {
             case CRAMER: {
                 

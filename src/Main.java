@@ -4,10 +4,10 @@ import static tubes.Console.*;
 
 public class Main {
     public static void main(String[] args) {
-        ConsoleApp.start();
-        // main2(args);
+        // ConsoleApp.start();
+        main2();
     }
-    public static void main2(String[] args) {
+    public static void main2() {
         outln("Hello, world!");
         outln("TEST");
         float[][] test = { { 1, 1, 1 }, { 1, 2, 2 }, { 1, 2, 3 }};
