@@ -136,9 +136,30 @@ public class Matrix {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int r = 1; r <= this.maxR; r++)
-            for (int c = 1; c <= this.maxC; c++)
-                sb.append(String.format("%f", this.content[r][c]) + (c == this.maxC ? "\n" : " "));
+            for (int c = 1; c <= this.maxC; c++) {
+                double v = this.content[r][c];
+                sb.append(String.format("%f", v == 0 ? 0 : v) + (c == this.maxC ? "\n" : " "));
+            }
         return sb.toString();
+    }
+
+    public Matrix multiply(Matrix m) {
+        if (maxC != m.maxR)
+            throw new RuntimeException("Column of the left matrix is not equal to row of the right matrix!");
+        Matrix res = new Matrix(maxR, m.maxC);
+        for (int i = 1; i <= maxR; i++)
+            for (int j = 1; j <= m.maxC; j++)
+                for (int k = 1; k <= maxC; k++)
+                    res.setElement(i, j, getElement(i, k)*m.getElement(k, j));
+        return res;
+    }
+
+    public Matrix scalarMultiply(double x) {
+        Matrix res = copyMatrix();
+        for (int i = 1; i <= maxR; i++)
+            for (int j = 1; j <= maxC; j++)
+                res.content[i][j] *= x;
+        return res;
     }
 
     //** OBE **//
