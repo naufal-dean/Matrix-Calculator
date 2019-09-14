@@ -22,8 +22,10 @@ public class Main {
         M.getCofactorMatrix().tulisMatrix(); System.out.println();
         System.out.println("Adjoint matrix: ");
         M.getAdjointMatrix().tulisMatrix(); System.out.println();
-        System.out.println("Inverse: ");
+        System.out.println("Inverse Gauss-Jordan: ");
         M.getInverseMatrix(Method.GAUSS_JORDAN).tulisMatrix(); System.out.println();
+        System.out.println("Inverse Crammer: ");
+        M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");

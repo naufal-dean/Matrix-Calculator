@@ -336,8 +336,7 @@ public class Matrix {
             throw new RuntimeException("Max row and max column are not the same!");
         switch (method) {
             case CRAMER: {
-
-                break;
+                return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
             }
             case GAUSS: {
 
