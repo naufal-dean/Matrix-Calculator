@@ -161,11 +161,17 @@ public class Matrix {
     public Matrix multiplyOPR(Matrix m) {
         if (this.maxC != m.maxR)
             throw new RuntimeException("Column of the left matrix is not equal to row of the right matrix!");
+        double temp = 0;
         Matrix res = new Matrix(this.maxR, m.maxC);
-        for (int i = 1; i <= this.maxR; i++)
-            for (int j = 1; j <= m.maxC; j++)
-                for (int k = 1; k <= this.maxC; k++)
-                    res.setElement(i, j, getElement(i, k)*m.getElement(k, j));
+        for (int i = 1; i <= this.maxR; i++) {
+            for (int j = 1; j <= m.maxC; j++) {
+                temp = 0;
+                for (int k = 1; k <= this.maxC; k++) {
+                    temp += this.getElement(i, k)*m.getElement(k, j);
+                }
+                res.setElement(i, j, temp);
+            }
+        }
         return res;
     }
 
@@ -451,12 +457,16 @@ public class Matrix {
 
     //** Fungsi Sistem Persamaaan Linear **//
     public String[] getSistemPersamaanLinear(Method method) {
+        // NOTE: mendingan outputnya double ae.. ntar baru ubah ke string pas dibutuhin di luar
+        // daripada string, terus diubah jadi double pas butuh buat perhitungan
         // Prekondisi: matriks yang diproses adalah matriks augmented
+        String[] sol = new String[this.maxR+1];
+        Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
+        Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
+
         switch (method) {
             case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
-                Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
-                String[] sol = new String[this.maxR+1];
 
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
@@ -474,8 +484,12 @@ public class Matrix {
                 break;
             }
             case INVERSE: {
-
-                break;
+                Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
+                coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM).tulisMatrix();
+                for (int i = 1; i <= this.maxR; i++) {
+                    sol[i] = Double.toString(solM.getElement(i, 1));
+                }
+                return sol;
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");

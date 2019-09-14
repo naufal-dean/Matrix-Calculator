@@ -35,15 +35,17 @@ public class Main {
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 
         double[][] test3 = { { 1, 2, 3 }, { 4, 5, 6 }};
-        // double[][] test4 = { { 1, 2, 10 }, { 4, 5, 10 }};
-        // double[] newcol = {10,10};
         Matrix M3 = new Matrix(test3);
-        // Matrix M4 = new Matrix(test4);
-        System.out.println("Get Solution Cramer: ");
+        System.out.println("Matriks SPL: ");
         M3.tulisMatrix();
-        // M3.setColumn(1, M4.getColumn(M4.getMaxColumn()));
-        // M3.tulisMatrix();
+        System.out.println("Get Solution Cramer: ");
         buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
+        for (int i = 1; i < buffer.length; i++) {
+            System.out.printf("x%d = %s\n", i, buffer[i]);
+        }
+        System.out.println();
+        System.out.println("Get Solution Inverse: ");
+        buffer = M3.getSistemPersamaanLinear(Method.INVERSE);
         for (int i = 1; i < buffer.length; i++) {
             System.out.printf("x%d = %s\n", i, buffer[i]);
         }
