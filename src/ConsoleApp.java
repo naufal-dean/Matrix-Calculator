@@ -70,7 +70,7 @@ public class ConsoleApp {
                     case 5:
                         m = readMatrix();
                         outln("Matrix adjoin-nya:");
-                        outln(m.getAdjoinMatrix());
+                        outln(m.getAdjointMatrix());
                         break;
                     case 6:
                         // intPol();

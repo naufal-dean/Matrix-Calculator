@@ -3,7 +3,7 @@ package tubes;
 import java.util.*;
 
 public class Matrix {
-    private float[][] content;
+    private double[][] content;
     private int maxR, maxC;
     private Scanner input = new Scanner(System.in);
 
@@ -11,10 +11,10 @@ public class Matrix {
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
         this.maxC = maxC;
-        this.content = new float[maxR+1][maxC+1];
+        this.content = new double[maxR+1][maxC+1];
     }
 
-    public Matrix(float[][] arr) {
+    public Matrix(double[][] arr) {
         this(arr.length, arr[0].length);
         setContent(arr);
     }
@@ -29,15 +29,15 @@ public class Matrix {
         return this.maxC;
     }
 
-    public float[][] getContent() {
+    public double[][] getContent() {
         return this.content;
     }
 
-    public float getElement(int r, int c) {
+    public double getElement(int r, int c) {
         return this.content[r][c];
     }
 
-    public float[] getRow(int r) {
+    public double[] getRow(int r) {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
 
@@ -50,17 +50,17 @@ public class Matrix {
         this.maxC = maxC;
     }
 
-    public void setContent(float[][] arr) {
+    public void setContent(double[][] arr) {
         for (int r = 0; r < this.maxR; r++)
             for (int c = 0; c < this.maxC; c++)
                 this.content[r+1][c+1] = arr[r][c];
     }
 
-    public void setElement(int r, int c, float val) {
+    public void setElement(int r, int c, double val) {
         this.content[r][c] = val;
     }
 
-    public void setRow(int r, float[] row) {
+    public void setRow(int r, double[] row) {
         this.content[r] = Arrays.copyOf(row, row.length);
     }
 
@@ -80,12 +80,12 @@ public class Matrix {
             this.maxC = input.nextInt();
         }
         // Inisialisasi content
-        this.content = new float[this.maxR+1][this.maxC+1];
+        this.content = new double[this.maxR+1][this.maxC+1];
         // Input elemen
         for (int i = 1; i <= this.maxR; i++) {
             for (int j = 1; j <= this.maxC; j++) {
                 System.out.printf("Elemen[%d,%d]: ", i, j);
-                this.content[i][j] = input.nextFloat();
+                this.content[i][j] = input.nextDouble();
             }
         }
     }
@@ -104,12 +104,12 @@ public class Matrix {
         return new Matrix(this.subMatrixContent(1, 1));
     }
 
-    public float[][] subMatrixContent(int startR, int startC) {
+    public double[][] subMatrixContent(int startR, int startC) {
         return subMatrixContent(startR, startC, this.maxR, this.maxC);
     }
 
-    public float[][] subMatrixContent(int startR, int startC, int endR, int endC) {
-        float[][] sub = new float[endR + 1 - startR][endC + 1 - startC];
+    public double[][] subMatrixContent(int startR, int startC, int endR, int endC) {
+        double[][] sub = new double[endR + 1 - startR][endC + 1 - startC];
         for (int i = 0; i < (endR + 1 - startR); i++) {
             sub[i] = Arrays.copyOfRange(this.content[i + startR], startC, endC + 1);
         }
@@ -119,9 +119,9 @@ public class Matrix {
     //dean
     public Matrix appendMatrix(Matrix mInput) {
         // Prekondisi: jumlah baris matriks ini == mInput
-        float[][] m1 = this.subMatrixContent(1, 1);
-        float[][] m2 = mInput.subMatrixContent(1, 1);
-        float[][] tempVal = new float[m1.length][m1[0].length + m2[0].length];
+        double[][] m1 = this.subMatrixContent(1, 1);
+        double[][] m2 = mInput.subMatrixContent(1, 1);
+        double[][] tempVal = new double[m1.length][m1[0].length + m2[0].length];
 
         for (int i = 0; i < m1.length; i++) {
             tempVal[i] = Arrays.copyOf(m1[i], tempVal[i].length);
@@ -143,13 +143,13 @@ public class Matrix {
 
     //** OBE **//
     private void swapOBE(int r1, int r2) {
-        float[] temp;
+        double[] temp;
         temp = this.content[r1];
         this.content[r1] = this.content[r2];
         this.content[r2] = temp;
     }
 
-    private void scaleOBE(int r, float scale) {
+    private void scaleOBE(int r, double scale) {
         for (int c = 1; c <= maxC; c++) {
             this.content[r][c] *= scale;
         }
@@ -159,7 +159,7 @@ public class Matrix {
         addOBE(r1, r2, 1);
     }
 
-    private void addOBE(int r1, int r2, float scale) {
+    private void addOBE(int r1, int r2, double scale) {
         for (int c = 1; c <= maxC; c++)
             this.content[r1][c] += (this.content[r2][c] * scale);
     }
@@ -188,7 +188,7 @@ public class Matrix {
     }
 
     //nopal (NOTE: tambahin lagi tiap method)
-    public float getDeterminan(Method method) {
+    public double getDeterminan(Method method) {
         switch (method) {
             case CRAMER: {
 
@@ -197,8 +197,8 @@ public class Matrix {
             case GAUSS: {
                 Matrix M = this.copyMatrix();
                 int  i,j, idx;
-                float c;
-                float det=1;
+                double c;
+                double det=1;
                 //double M1[][];
                 //M1= new double[M.length][M[0].length];
                 //M1=M;
@@ -221,7 +221,7 @@ public class Matrix {
                     //pindahin ke paling atas
                     if(j!=idx){
                         det *=-1;
-                        float[] temp = M.getRow(j);
+                        double[] temp = M.getRow(j);
                         M.setRow(j, M.getRow(idx));
                         M.setRow(idx,temp) ;
                     }
@@ -253,31 +253,31 @@ public class Matrix {
     }
 
     public Matrix getTransposeMatrix() {
-        // Kamus lokal
-        float[][] tempVal;
-        // Algoritma
-        tempVal = new float[this.maxC][this.maxR];
+        double[][] tempVal = new double[this.maxC][this.maxR];
+        double[][] subC = this.subMatrixContent(1, 1);
+
         for (int i = 0; i < this.maxR; i++) {
             for (int j = 0; j < this.maxC; j++) {
-                tempVal[j][i] = this.subMatrixContent(1, 1)[i][j];
+                tempVal[j][i] = subC[i][j];
             }
         }
         return new Matrix(tempVal);
     }
 
     public Matrix getEntryMatrix(int r, int c) {
-        float[][] tempVal = new float[this.maxR-1][this.maxC-1];
+        double[][] tempVal = new double[this.maxR-1][this.maxC-1];
+        double[][] subC = this.subMatrixContent(1, 1);
 
         for (int i = 0; i < this.maxR; i++) {
             for (int j = 0; j < this.maxC; j++) {
                 if (i < r-1 && j < c-1) {
-                    tempVal[i][j] = this.subMatrixContent(1, 1)[i][j];
+                    tempVal[i][j] = subC[i][j];
                 } else if (i > r-1 && j < c-1) {
-                    tempVal[i-1][j] = this.subMatrixContent(1, 1)[i][j];
+                    tempVal[i-1][j] = subC[i][j];
                 } else if (i < r-1 && j > c-1) {
-                    tempVal[i][j-1] = this.subMatrixContent(1, 1)[i][j];
+                    tempVal[i][j-1] = subC[i][j];
                 } else if (i > r-1 && j > c-1) {
-                    tempVal[i-1][j-1] = this.subMatrixContent(1, 1)[i][j];
+                    tempVal[i-1][j-1] = subC[i][j];
                 }
             }
         }
@@ -285,11 +285,18 @@ public class Matrix {
     }
 
     public Matrix getCofactorMatrix() {
-        // TODO: implement
-        return new Matrix(this.maxR, this.maxC);
+        double[][] tempVal = new double[this.maxR][this.maxC];
+
+        for (int i = 0; i < this.maxR; i++) {
+            for (int j = 0; j < this.maxC; j++) {
+                tempVal[i][j] = ((i + j) % 2 == 0)  ? ((this.getEntryMatrix(i+1, j+1)).getDeterminan(Method.GAUSS))
+                                                    : (-(this.getEntryMatrix(i+1, j+1)).getDeterminan(Method.GAUSS));
+            }
+        }
+        return new Matrix(tempVal);
     }
 
-    public Matrix getAdjoinMatrix() {
+    public Matrix getAdjointMatrix() {
         return (this.getCofactorMatrix()).getTransposeMatrix();
     }
 
@@ -355,7 +362,7 @@ public class Matrix {
     // public Matrix getEchelonForm() {
     //     Matrix M = this.copyMatrix();
     //     int  i,j, idx;
-    //     float c;
+    //     double c;
     //     //double M1[][];
     //     //M1= new double[M.length][M[0].length];
     //     //M1=M;
@@ -376,7 +383,7 @@ public class Matrix {
     //         }
     //         M.setRow(idx, RowOperation.kaliC(M.getRow(idx),1/M.getElement(idx,j)));
     //         //pindahin ke paling atas
-    //         float[] temp = M.getRow(j);
+    //         double[] temp = M.getRow(j);
     //         M.setRow(j, M.getRow(idx));
     //         M.setRow(idx,temp) ;
     //     }

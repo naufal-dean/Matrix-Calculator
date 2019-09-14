@@ -10,14 +10,18 @@ public class Main {
     public static void main2() {
         outln("Hello, world!");
         outln("TEST");
-        float[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }};
-        float[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
+        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 8 }};
+        double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
         Matrix M = new Matrix(test);
         Matrix Ma = new Matrix(test2);
         System.out.println("Normal: ");
         M.tulisMatrix(); System.out.println();
         System.out.println("Entry matrix: ");
         M.getEntryMatrix(2, 2).tulisMatrix(); System.out.println();
+        System.out.println("Cofactor matrix: ");
+        M.getCofactorMatrix().tulisMatrix(); System.out.println();
+        System.out.println("Adjoint matrix: ");
+        M.getAdjointMatrix().tulisMatrix(); System.out.println();
         System.out.println("Inverse: ");
         M.getInverseMatrix(Method.GAUSS_JORDAN).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
