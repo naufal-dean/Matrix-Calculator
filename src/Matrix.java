@@ -155,13 +155,13 @@ public class Matrix {
         }
     }
 
-    private void addOBE(int r1, int r2, float scale) {
-        float temp;
+    private void addOBE(int r1, int r2) {
+        addOBE(r1, r2, 1);
+    }
 
-        for (int c = 1; c <= maxC; c++) {
-            temp = this.content[r1][c] + (this.content[r2][c] * scale);
-            this.content[r1][c] = temp;
-        }
+    private void addOBE(int r1, int r2, float scale) {
+        for (int c = 1; c <= maxC; c++)
+            this.content[r1][c] += (this.content[r2][c] * scale);
     }
 
     //** Fungsi matriks **//
