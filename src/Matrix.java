@@ -116,6 +116,7 @@ public class Matrix {
         return sub;
     }
 
+    //dean
     public Matrix appendMatrix(Matrix mInput) {
         // Prekondisi: jumlah baris matriks ini == mInput
         float[][] m1 = this.subMatrixContent(1, 1);
@@ -165,58 +166,79 @@ public class Matrix {
 
     //** Fungsi matriks **//
     public float[] getSistemPersamaanLinear(Method method) {
-        // TODO: implement
-        return new float[this.maxC+1];
+        switch (method) {
+            case CRAMER:
+
+                break;
+            case GAUSS:
+
+                break;
+            case GAUSS_JORDAN:
+
+                break;
+            case INVERSE:
+
+                break;
+        }
+        throw new RuntimeException("Method " + method + "is not valid!");
     }
 
     //nopal (NOTE: tambahin lagi tiap method)
     public float getDeterminan(Method method) {
-        Matrix M = this.copyMatrix();
-        int  i,j, idx;
-        float c;
-        float det=1;
-        //double M1[][];
-        //M1= new double[M.length][M[0].length];
-        //M1=M;
-        for(j=1; j<=M.getMaxRow() -1 ;j++){
-            i = j;
-            while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
-                i++;
-            }//cari ampe yang ga 0 dibarisannya
-            idx = i;
-            i = i+1;
-            for(;i<=M.getMaxRow();i++){
-                //eliminasi yang lainnya dengan baris idx
-                c = M.getElement(i,j)/M.getElement(idx,j);
-                if (c!=0){
-                    M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
-                    det *= c;
-                    M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
+        switch (method) {
+            case CRAMER:
+
+                break;
+            case GAUSS:
+                Matrix M = this.copyMatrix();
+                int  i,j, idx;
+                float c;
+                float det=1;
+                //double M1[][];
+                //M1= new double[M.length][M[0].length];
+                //M1=M;
+                for(j=1; j<=M.getMaxRow() -1 ;j++){
+                    i = j;
+                    while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
+                        i++;
+                    }//cari ampe yang ga 0 dibarisannya
+                    idx = i;
+                    i = i+1;
+                    for(;i<=M.getMaxRow();i++){
+                        //eliminasi yang lainnya dengan baris idx
+                        c = M.getElement(i,j)/M.getElement(idx,j);
+                        if (c!=0){
+                            M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
+                            det *= c;
+                            M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
+                        }
+                    }
+                    //pindahin ke paling atas
+                    if(j!=idx){
+                        det *=-1;
+                        float[] temp = M.getRow(j);
+                        M.setRow(j, M.getRow(idx));
+                        M.setRow(idx,temp) ;
+                    }
                 }
-            }
-            //pindahin ke paling atas
-            if(j!=idx){
-                det *=-1;
-                float[] temp = M.getRow(j);
-                M.setRow(j, M.getRow(idx));
-                M.setRow(idx,temp) ;
-            }
+                for (i=1; i<=M.getMaxRow();i++){
+                    det *= M.getElement(i,i);
+                }
+                return det;
+            case GAUSS_JORDAN:
+
+                break;
+            case INVERSE:
+
+                break;
         }
-        for (i=1; i<=M.getMaxRow();i++){
-             det *= M.getElement(i,i);
-        }
-    
-        return det;
+        throw new RuntimeException("Method " + method + "is not valid!");
     }
 
     //dean
-    public Matrix getIdentityMatrix() {
-        // TODO: create exception
-        // if (this.maxR != this.maxC)
-        //     throw new Exception("Max row and max column are not the same!");
-
-        Matrix m = new Matrix(this.maxR, this.maxC);
-        for (int i = 1; i <= this.maxR; i++) {
+    public static Matrix getIdentityMatrix(int size) {
+        Matrix m = new Matrix(size, size);
+        for (int i = 1; i <= size; i++) {
             m.setElement(i, i, 1);
         }
         return m;
@@ -225,7 +247,6 @@ public class Matrix {
     public Matrix getTransposeMatrix() {
         // Kamus lokal
         float[][] tempVal;
-        int temp;
         // Algoritma
         tempVal = new float[this.maxC][this.maxR];
         for (int i = 0; i < this.maxR; i++) {
@@ -242,14 +263,22 @@ public class Matrix {
     }
 
     // public Matrix getInverseMatrix(Method method) {
-    public Matrix getInverseMatrix() {
-        // TODO: create exception
-        // if (this.maxR != this.maxC)
-        //     throw new Exception("Max row and max column are not the same!");
+    public Matrix getInverseMatrix(Method method) {
+        if (this.maxR != this.maxC)
+            throw new RuntimeException("Max row and max column are not the same!");
+        switch (method) {
+            case CRAMER:
 
-        Matrix m = this.appendMatrix(this.getIdentityMatrix());
-        m = m.getReducedEchelonForm(m.getMaxColumn()/2);
-        return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
+            case GAUSS:
+
+            case GAUSS_JORDAN:
+                Matrix m = this.appendMatrix(Matrix.getIdentityMatrix(this.maxC));
+                m = m.getReducedEchelonForm(m.getMaxColumn()/2);
+                return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
+            case INVERSE:
+            
+        }
+        return null;
     }
 
     public Matrix getEchelonForm(int colMax) {

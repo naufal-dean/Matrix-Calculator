@@ -4,6 +4,9 @@ import static tubes.Console.*;
 
 public class Main {
     public static void main(String[] args) {
+        ConsoleApp.start();
+    }
+    public static void main2(String[] args) {
         outln("Hello, world!");
         outln("TEST");
         float[][] test = { { 1, 1, 1 }, { 1, 2, 2 }, { 1, 2, 3 }};
@@ -13,7 +16,7 @@ public class Main {
         System.out.println("Normal: ");
         M.tulisMatrix(); System.out.println();
         System.out.println("Inverse: ");
-        M.getInverseMatrix().tulisMatrix(); System.out.println();
+        M.getInverseMatrix(Method.GAUSS).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
