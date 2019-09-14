@@ -199,9 +199,7 @@ public class Matrix {
                 int  i,j, idx;
                 double c;
                 double det=1;
-                //double M1[][];
-                //M1= new double[M.length][M[0].length];
-                //M1=M;
+
                 for(j=1; j<=M.getMaxRow() -1 ;j++){
                     i = j;
                     while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
@@ -246,6 +244,7 @@ public class Matrix {
     //dean
     public static Matrix getIdentityMatrix(int size) {
         Matrix m = new Matrix(size, size);
+
         for (int i = 1; i <= size; i++) {
             m.setElement(i, i, 1);
         }
