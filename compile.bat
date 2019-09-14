@@ -1,2 +1,4 @@
 rmdir /q /s bin
-javac -cp ./src/*.java -d ./bin/ **/**/*.java
+cd src
+dir /s /B *.java > sources.txt
+javac @sources.txt
