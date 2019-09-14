@@ -173,6 +173,21 @@ public class Matrix {
         return res;
     }
 
+    //camcam
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Matrix))
+            return false;
+        Matrix m = (Matrix)o;
+        if (m.getMaxRow() != this.maxR || m.getMaxColumn() != this.maxC)
+            return false;
+        for (int r = 1; r <= this.maxR; ++r)
+            for (int c = 1; c <= this.maxC; ++c)
+                if (m.getElement(r, c) != this.content[r][c])
+                    return false;
+        return true;
+    }
+
     //** OBE **//
     private void swapOBE(int r1, int r2) {
         double[] temp;
@@ -223,8 +238,13 @@ public class Matrix {
     public double getDeterminan(Method method) {
         switch (method) {
             case CRAMER: {
+                Matrix cofM = this.getCofactorMatrix();
+                double det = 0;
 
-                break;
+                for (int i = 1; i <= this.maxR; i++) {
+                    det += this.getElement(i, 1) * cofM.getElement(i, 1);
+                }
+                return det;
             }
             case GAUSS: {
                 Matrix M = this.copyMatrix();
@@ -435,20 +455,5 @@ public class Matrix {
             }
         }
         return m;
-    }
-
-    //camcam
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Matrix))
-            return false;
-        Matrix m = (Matrix)o;
-        if (m.getMaxRow() != this.maxR || m.getMaxColumn() != this.maxC)
-            return false;
-        for (int r = 1; r <= this.maxR; ++r)
-            for (int c = 1; c <= this.maxC; ++c)
-                if (m.getElement(r, c) != this.content[r][c])
-                    return false;
-        return true;
     }
 }

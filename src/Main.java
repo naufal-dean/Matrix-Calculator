@@ -16,6 +16,8 @@ public class Main {
         Matrix Ma = new Matrix(test2);
         System.out.println("Normal: ");
         M.tulisMatrix(); System.out.println();
+        System.out.printf("Determinan Cramer: %f\n", M.getDeterminan(Method.CRAMER));
+        System.out.printf("Determinan Gauss: %f\n\n", M.getDeterminan(Method.GAUSS));
         System.out.println("Entry matrix: ");
         M.getEntryMatrix(2, 2).tulisMatrix(); System.out.println();
         System.out.println("Cofactor matrix: ");
@@ -24,7 +26,7 @@ public class Main {
         M.getAdjointMatrix().tulisMatrix(); System.out.println();
         System.out.println("Inverse Gauss-Jordan: ");
         M.getInverseMatrix(Method.GAUSS_JORDAN).tulisMatrix(); System.out.println();
-        System.out.println("Inverse Crammer: ");
+        System.out.println("Inverse Cramer: ");
         M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
