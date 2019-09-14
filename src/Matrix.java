@@ -385,15 +385,15 @@ public class Matrix {
 
     private Matrix getEchelonFormSpecial(Matrix m, int rowStart, int colStart, int colMax) {
         m = m.getEchelonForm(m, 1, 1, colMax);
-        for (int i = m.getMaxRow(); i > colMax; i--) {
+        for (int i = m.getMaxRow(); i > colMax; i--)
             m.addOBE(i, colMax, -m.getElement(i, colMax));
-        }
         return m;
     }
 
     private Matrix getEchelonForm(Matrix m, int rowStart, int colStart, int colMax) {
         // m.tulisMatrix();
-        // System.out.printf("%d %d\n\n", rowStart, colStart);
+        // System.out.printf("\n\n");
+        m = copyMatrix();
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             return m;
