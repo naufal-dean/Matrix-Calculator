@@ -39,9 +39,9 @@ public class SPL {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= content.length; i++) {
+        for (int i = 1; i < content.length; i++) {
             sb.append("x" + i + " = ");
-            for (int j = 0; j <= content[i].length; j++) {
+            for (int j = 0; j < content[i].length; j++) {
                 double v = content[i][j];
                 if (j > 0) {
                     if (v < 0) {
