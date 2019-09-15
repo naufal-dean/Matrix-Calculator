@@ -12,7 +12,7 @@ public class Main {
         outln("TEST");
         double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }};
         double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
-        String[] buffer;
+        double[] buffer;
         Matrix M = new Matrix(test);
         Matrix Ma = new Matrix(test2);
         System.out.println("Normal: ");
