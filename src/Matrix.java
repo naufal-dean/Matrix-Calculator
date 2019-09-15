@@ -402,10 +402,15 @@ public class Matrix {
         } else { // recurrence
             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
             int curRow =rowStart;
-            while(m.getElement(rowStart,colStart)==0){
+            while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
                 rowStart++;
             }
-            if (curRow !=rowStart){
+            if (curRow != rowStart){
+                //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
+                if ((m.getMaxRow() == rowStart)||(colMax == rowStart)&&(m.getElement(rowStart,colStart) == 0)){
+                    return m.getEchelonForm(m, curRow+1, colStart+1 ,colMax);
+                }
+                //nuker ama yg ga 0
                 m.swapOBE(rowStart,curRow);
                 return m.getEchelonForm(m, curRow, colStart ,colMax);
             }
