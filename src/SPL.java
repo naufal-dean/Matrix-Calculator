@@ -10,8 +10,7 @@ public class SPL {
     // content[1][2] = 2;
 
     public SPL(Matrix m) {
-        int col = m.getMaxColumn();
-        init(new Matrix(m.subMatrixContent(1, 1, Math.min(m.getMaxRow(), col-1), col)).getReducedEchelonForm(col-1));
+        init(m.getReducedEchelonForm(m.getMaxColumn()-1));
     }
 
     public SPL(double[] sol) {
@@ -22,6 +21,10 @@ public class SPL {
 
     private void init(Matrix m) {
         int r = m.getMaxRow(), c = m.getMaxColumn()-1;
+        for (int i = c+1; i <= r; i++)
+            if (m.getElement(i, c+1) != 0)
+                throw new RuntimeException("Matrix is inconsistent!");
+        r = c;
         content = new double[c+1][c+1];
         for (int j = c; j >= 1; j--) {
             double v = content[j][0] = m.getElement(r, j);
