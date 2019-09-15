@@ -251,7 +251,7 @@ public class Matrix {
                 double det=1;
                 for(j=1; j<=M.getMaxRow() -1 ;j++){
                     i = j;
-                    while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
+                    while((M.getElement(i,j) == 0) && (i<M.getMaxRow())){
                         i++;
                     }//cari ampe yang ga 0 dibarisannya
                     idx = i;
