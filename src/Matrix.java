@@ -281,7 +281,7 @@ public class Matrix {
 
             }
             case GAUSS_JORDAN: {
-                
+
                 break;
             }
             case INVERSE: {
@@ -389,7 +389,7 @@ public class Matrix {
     private Matrix getEchelonForm(Matrix m, int rowStart, int colStart, int colMax) {
         // m.tulisMatrix();
         // System.out.printf("\n\n");
-        m = copyMatrix();
+        m = this.scaledPartialPivoting(rowStart, colStart, colMax);
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             //nambahin ini buat kasus baris matrix yang sama smua isinya
             if (m.getElement(rowStart, colStart)!=0){
@@ -420,39 +420,6 @@ public class Matrix {
         }
     }
 
-    // //nopal
-    // public Matrix getEchelonForm() {
-    //     Matrix M = this.copyMatrix();
-    //     int  i,j, idx;
-    //     double c;
-    //     //double M1[][];
-    //     //M1= new double[M.length][M[0].length];
-    //     //M1=M;
-    //     for(j=1; j<=M.getMaxRow() -1 ;j++){
-    //         i = j;
-    //         while((M.getElement(i,j) == 0) && (i<M.getMaxRow())){
-    //             i++;
-    //         }//cari ampe yang ga 0 dibarisannya
-    //         idx = i;
-    //         i = i+1;
-    //         for(;i<=M.getMaxRow();i++){
-    //             //eliminasi yang lainnya dengan baris idx
-    //             c = M.getElement(i,j)/M.getElement(idx,j);
-    //             if (c!=0){
-    //                 M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
-    //                 M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
-    //             }
-    //         }
-    //         M.setRow(idx, RowOperation.kaliC(M.getRow(idx),1/M.getElement(idx,j)));
-    //         //pindahin ke paling atas
-    //         double[] temp = M.getRow(j);
-    //         M.setRow(j, M.getRow(idx));
-    //         M.setRow(idx,temp) ;
-    //     }
-    //     M.setRow(j,RowOperation.kaliC(M.getRow(j),1/M.getElement(j,j)));
-    //     return M;
-    // }
-
     //nopal
     public Matrix getReducedEchelonForm(int colMax) {
         int rowMax;
@@ -466,6 +433,28 @@ public class Matrix {
                 // m.setRow(j,RowOperation.PlusTab(m.getRow(j), RowOperation.kaliC(m.getRow(i+1), -1*m.getElement(j,i+1))));
             }
         }
+        return m;
+    }
+
+    private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
+        double rowMax;
+        double scaledMax = 0;
+        int scaledMaxIdx = 0;
+        Matrix m = this.copyMatrix();
+
+        for (int i = rowStart; i <= this.maxR; i++) {
+            rowMax = 0;
+            for (int j = colStart; j <= colMax; j++) {
+                if (this.getElement(i, j) > rowMax) {
+                    rowMax = this.getElement(i, j);
+                }
+            }
+            if ((this.getElement(rowStart, colStart)/rowMax) > scaledMax) {
+                scaledMaxIdx = i;
+            }
+        }
+
+        m.swapOBE(scaledMaxIdx, rowStart);
         return m;
     }
 
