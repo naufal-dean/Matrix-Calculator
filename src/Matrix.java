@@ -231,6 +231,7 @@ public class Matrix {
             this.content[r1][c] += (this.content[r2][c] * scale);
     }
 
+
     //** Fungsi matriks **//
     //nopal (NOTE: tambahin lagi tiap method)
     public double getDeterminan(Method method) {
@@ -238,13 +239,12 @@ public class Matrix {
             throw new RuntimeException("Max row and max column are not the same! No determinant.");
         switch (method) {
             case CRAMER: {
-                Matrix cofM = this.getCofactorMatrix();
-                double det = 0;
-
-                for (int i = 1; i <= this.maxR; i++) {
-                    det += this.getElement(i, 1) * cofM.getElement(i, 1);
-                }
-                return det;
+                if (this.maxR == 1)
+                    return this.content[1][1];
+                float res = 0;
+                for (int j = 1; j <= this.maxC; j++)
+                    res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.CRAMER)*(j%2 == 0 ? -1 : 1);
+                return res;
             }
             case GAUSS: {
                 Matrix M = this.copyMatrix();
