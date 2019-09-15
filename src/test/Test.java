@@ -11,7 +11,8 @@ public class Test {
     public static void main(String[] args) {
         useColor();
         outln(yellow + "=====================================");
-        doTheTest();
+        doFileTests();
+        doTheTests();
         outln(yellow + "=====[" + green + "SUCCEED: " + succeed + yellow + "]====[" + red + "FAILED: " + failed + yellow + "]=====");
     }
     private static void useColor() {
@@ -24,8 +25,11 @@ public class Test {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
         if (value) ++succeed; else ++failed;
     }
+    private static void doFileTests() {
+        
+    }
     // endregion
-    private static void doTheTest() {
+    private static void doTheTests() {
         test("lmao", false);
     }
 }
