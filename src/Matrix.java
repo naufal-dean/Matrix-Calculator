@@ -247,9 +247,8 @@ public class Matrix {
             case GAUSS: {
                 Matrix M = this.copyMatrix();
                 int  i,j, idx;
-                double c;
+                //double c;
                 double det=1;
-
                 for(j=1; j<=M.getMaxRow() -1 ;j++){
                     i = j;
                     while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
@@ -259,25 +258,25 @@ public class Matrix {
                     i = i+1;
                     for(;i<=M.getMaxRow();i++){
                         //eliminasi yang lainnya dengan baris idx
-                        c = M.getElement(i,j)/M.getElement(idx,j);
-                        if (c!=0){
-                            M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
-                            det *= c;
-                            M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
+                        //c = M.getElement(i,j)/M.getElement(idx,j);
+                        if (M.getElement(i, j)!=0){
+                            M.addOBE(i, idx, -M.getElement(i, j)/M.getElement(idx, j));/*setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));*/
+                            //det *= M.getElement(idx, j)/M.getElement(i, j);
+                //M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
                         }
                     }
-                    //pindahin ke paling atas
+        
+                        //pindahin ke paling atas
                     if(j!=idx){
-                        det *=-1;
-                        double[] temp = M.getRow(j);
-                        M.setRow(j, M.getRow(idx));
-                        M.setRow(idx,temp) ;
+                    det *=-1;
+                    M.swapOBE(j,idx);
                     }
                 }
                 for (i=1; i<=M.getMaxRow();i++){
-                    det *= M.getElement(i,i);
+                det *= M.getElement(i,i);
                 }
                 return det;
+
             }
             case GAUSS_JORDAN: {
 
