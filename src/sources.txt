@@ -1,2 +1,10 @@
-ConsoleApp.java  Main.java    Method.java  Point.java
-Console.java	 Matrix.java  nyoba.java   RowOperation.java
+D:\AlgeoTB1\src\Console.java
+D:\AlgeoTB1\src\ConsoleApp.java
+D:\AlgeoTB1\src\Main.java
+D:\AlgeoTB1\src\Matrix.java
+D:\AlgeoTB1\src\Method.java
+D:\AlgeoTB1\src\nyoba.java
+D:\AlgeoTB1\src\Point.java
+D:\AlgeoTB1\src\RowOperation.java
+D:\AlgeoTB1\src\SquareMatrix.java
+D:\AlgeoTB1\src\test\Test.java
