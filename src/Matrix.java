@@ -470,7 +470,7 @@ public class Matrix {
     }
 
     //** Fungsi Sistem Persamaaan Linear **//
-    public double[] getSistemPersamaanLinear(Method method) {
+    public SPL getSistemPersamaanLinear(Method method) {
         // NOTE: mendingan outputnya double ae.. ntar baru ubah ke string pas dibutuhin di luar
         // daripada string, terus diubah jadi double pas butuh buat perhitungan
         // + ganti nama ae jadi getSolution :v
@@ -480,7 +480,7 @@ public class Matrix {
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
 
         switch (method) {
-            case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
+            case CRAMER: { // hanya untuk matriks augmented (n)*(n+1) -> (brarti harus validasi dulu dong(?)) + sama validasi klo det coefnya 0
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
 
                 for (int i = 1; i <= this.maxR; i++) {
@@ -488,29 +488,22 @@ public class Matrix {
                     sol[i] = cramM.getDeterminan(Method.GAUSS)/coefM.getDeterminan(Method.GAUSS);
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
-                return sol;
+                return new SPL(sol); // bingung gimana ngubahnya, sementara gini ae
             }
             case GAUSS: {
-                Matrix m = this.copyMatrix().getEchelonForm(this.maxC-1);
-                // TODO: Implement!
-                break;
+                return new SPL(getEchelonForm(this.maxC-1));
             }
             case GAUSS_JORDAN: {
-                Matrix m = this.copyMatrix().getReducedEchelonForm(this.maxC-1);
-                for (int i = 1; i <= this.maxR; i++)
-                    if (this.content[i][i] == 1)
-                        sol[i-1] = this.content[i][this.maxC]; // TODO: Do fix when there're free variables..!
-                    else
-                        sol[i-1] = Double.NEGATIVE_INFINITY; // TODO: Free Variable, need to fix and define.. Solusi gw sementara, return String[]
-                break;
+                return new SPL(getReducedEchelonForm(this.maxC-1));
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
-                Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
+                return new SPL(coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM));
+                // Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
-                for (int i = 1; i <= this.maxR; i++) {
-                    sol[i] = solM.getElement(i, 1);
-                }
-                return sol;
+                // for (int i = 1; i <= this.maxR; i++) {
+                //     sol[i] = solM.getElement(i, 1);
+                // }
+                // return sol;
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");

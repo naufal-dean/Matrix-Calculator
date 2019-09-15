@@ -26,10 +26,10 @@ public class Main {
         M.getCofactorMatrix().tulisMatrix(); System.out.println();
         System.out.println("Adjoint matrix: ");
         M.getAdjointMatrix().tulisMatrix(); System.out.println();
-        System.out.println("Inverse Gauss-Jordan: ");
-        M.getInverseMatrix(Method.GAUSS_JORDAN).tulisMatrix(); System.out.println();
-        System.out.println("Inverse Cramer: ");
-        M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
+        // System.out.println("Inverse Gauss-Jordan: ");
+        // M.getInverseMatrix(Method.GAUSS_JORDAN).tulisMatrix(); System.out.println();
+        // System.out.println("Inverse Cramer: ");
+        // M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
@@ -40,16 +40,22 @@ public class Main {
         System.out.println("Matriks SPL: ");
         M3.tulisMatrix();
         System.out.println("Get Solution Cramer: ");
-        buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
-        for (int i = 1; i < buffer.length; i++) {
-            System.out.printf("x%d = %.20f\n", i, buffer[i]);
-        }
+
+        out(M3.getSistemPersamaanLinear(Method.CRAMER));
+        // buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
+        // for (int i = 1; i < buffer.length; i++) {
+        //     System.out.printf("x%d = %.20f\n", i, buffer[i]);
+        // }
+        
         System.out.println();
         System.out.println("Get Solution Inverse: ");
-        buffer = M3.getSistemPersamaanLinear(Method.INVERSE);
-        for (int i = 1; i < buffer.length; i++) {
-            System.out.printf("x%d = %.20f\n", i, buffer[i]);
-        }
+        
+        out(M3.getSistemPersamaanLinear(Method.INVERSE));
+        // buffer = M3.getSistemPersamaanLinear(Method.INVERSE);
+        // for (int i = 1; i < buffer.length; i++) {
+        //     System.out.printf("x%d = %.20f\n", i, buffer[i]);
+        // }
+        
         System.out.println();
 
         // outln(M);
