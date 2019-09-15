@@ -394,7 +394,10 @@ public class Matrix {
         // System.out.printf("\n\n");
         m = copyMatrix();
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
-            m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
+            //nambahin ini buat kasus baris matrix yang sama smua isinya
+            if (m.getElement(rowStart, colStart)!=0){
+                m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
+            }
             return m;
         } else { // recurrence
             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
