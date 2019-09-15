@@ -455,11 +455,11 @@ public class Matrix {
     }
 
     //** Fungsi Sistem Persamaaan Linear **//
-    public String[] getSistemPersamaanLinear(Method method) {
+    public double[] getSistemPersamaanLinear(Method method) {
         // NOTE: mendingan outputnya double ae.. ntar baru ubah ke string pas dibutuhin di luar
         // daripada string, terus diubah jadi double pas butuh buat perhitungan
         // Prekondisi: matriks yang diproses adalah matriks augmented
-        String[] sol = new String[this.maxR+1];
+        double[] sol = new double[this.maxR+1];
         Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
 
@@ -469,7 +469,7 @@ public class Matrix {
 
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
-                    sol[i] = Double.toString(cramM.getDeterminan(Method.CRAMER)/coefM.getDeterminan(Method.CRAMER));
+                    sol[i] = cramM.getDeterminan(Method.CRAMER)/coefM.getDeterminan(Method.CRAMER);
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
                 return sol;
@@ -486,7 +486,7 @@ public class Matrix {
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
                 
                 for (int i = 1; i <= this.maxR; i++) {
-                    sol[i] = Double.toString(solM.getElement(i, 1));
+                    sol[i] = solM.getElement(i, 1);
                 }
                 return sol;
             }
