@@ -373,23 +373,23 @@ public class Matrix {
         Matrix m = this.copyMatrix();
 
         if (m.getMaxRow() > colMax) {
-            return m.getEchelonFormSpecial(m, 1, 1, colMax);
+            return m.getEchelonFormSpecial(1, 1, colMax);
         } else {
-            return m.getEchelonForm(m, 1, 1, colMax);
+            return m.getEchelonForm(1, 1, colMax);
         }
     }
 
-    private Matrix getEchelonFormSpecial(Matrix m, int rowStart, int colStart, int colMax) {
-        m = m.getEchelonForm(m, 1, 1, colMax);
+    private Matrix getEchelonFormSpecial(int rowStart, int colStart, int colMax) {
+        Matrix m = getEchelonForm(1, 1, colMax);
         for (int i = m.getMaxRow(); i > colMax; i--)
             m.addOBE(i, colMax, -m.getElement(i, colMax));
         return m;
     }
 
-    private Matrix getEchelonForm(Matrix m, int rowStart, int colStart, int colMax) {
+    private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
         // m.tulisMatrix();
         // System.out.printf("\n\n");
-        m = copyMatrix();
+        Matrix m = copyMatrix();
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             //nambahin ini buat kasus baris matrix yang sama smua isinya
             if (m.getElement(rowStart, colStart)!=0){
@@ -405,18 +405,18 @@ public class Matrix {
             if (curRow != rowStart){
                 //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
                 if ((m.getMaxRow() == rowStart)||(colMax == rowStart)&&(m.getElement(rowStart,colStart) == 0)){
-                    return m.getEchelonForm(m, curRow+1, colStart+1 ,colMax);
+                    return m.getEchelonForm(curRow+1, colStart+1 ,colMax);
                 }
                 //nuker ama yg ga 0
                 m.swapOBE(rowStart,curRow);
-                return m.getEchelonForm(m, curRow, colStart ,colMax);
+                return m.getEchelonForm(curRow, colStart ,colMax);
             }
             //nambahinnya sampe sini ya {nopal}
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
                 m.addOBE(i, rowStart, -m.getElement(i, colStart));
             }
-            return m.getEchelonForm(m, rowStart + 1, colStart + 1, colMax);
+            return m.getEchelonForm(rowStart + 1, colStart + 1, colMax);
         }
     }
 
