@@ -389,7 +389,7 @@ public class Matrix {
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
         // m.tulisMatrix();
         // System.out.printf("\n\n");
-        m = this.scaledPartialPivoting(rowStart, colStart, colMax);
+        Matrix m = this.scaledPartialPivoting(rowStart, colStart, colMax);
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             //nambahin ini buat kasus baris matrix yang sama smua isinya
             if (m.getElement(rowStart, colStart)!=0){
@@ -445,11 +445,11 @@ public class Matrix {
         for (int i = rowStart; i <= this.maxR; i++) {
             rowMax = 0;
             for (int j = colStart; j <= colMax; j++) {
-                if (this.getElement(i, j) > rowMax) {
+                if (Math.abs(this.getElement(i, j)) > rowMax) {
                     rowMax = this.getElement(i, j);
                 }
             }
-            if ((this.getElement(rowStart, colStart)/rowMax) > scaledMax) {
+            if (Math.abs(this.getElement(rowStart, colStart)/rowMax) > scaledMax) {
                 scaledMaxIdx = i;
             }
         }
