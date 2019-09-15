@@ -6,6 +6,7 @@ public class Main {
     public static void main(String[] args) {
         // ConsoleApp.start();
         main2();
+        // System.out.printf("%.100f", 0d);
     }
     public static void main2() {
         outln("Hello, world!");
