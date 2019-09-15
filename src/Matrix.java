@@ -397,6 +397,16 @@ public class Matrix {
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             return m;
         } else { // recurrence
+            // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
+            int curRow =rowStart;
+            while(m.getElement(rowStart,colStart)==0){
+                rowStart++;
+            }
+            if (curRow !=rowStart){
+                m.swapOBE(rowStart,curRow);
+                return m.getEchelonForm(m, curRow, colStart ,colMax);
+            }
+            //nambahinnya sampe sini ya {nopal}
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
                 m.addOBE(i, rowStart, -m.getElement(i, colStart));
