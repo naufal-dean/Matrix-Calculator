@@ -15,7 +15,7 @@ public class Matrix {
     }
 
     public Matrix(double[][] arr) {
-        this(arr.length, arr[0].length);
+        this(arr.length, arr.length > 0 ? arr[0].length : 0);
         setContent(arr);
     }
 

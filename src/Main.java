@@ -39,7 +39,8 @@ public class Main {
         Matrix M3 = new Matrix(test3);
         System.out.println("Matriks SPL: ");
         M3.tulisMatrix();
-        M3.getReducedEchelonForm(M3.getMaxColumn()).tulisMatrix();
+        outln("jadi gini:");
+        M3.getReducedEchelonForm(M3.getMaxColumn()-1).tulisMatrix();
         System.out.println("Get Solution Cramer: ");
 
         out(M3.getSistemPersamaanLinear(Method.CRAMER));
