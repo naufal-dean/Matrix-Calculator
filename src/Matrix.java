@@ -457,8 +457,10 @@ public class Matrix {
 
     //** Fungsi Sistem Persamaaan Linear **//
     public String[] getSistemPersamaanLinear(Method method) {
+        // TODO: urus kasus solusi banyak + tidak ada solusi di method gauss dan gauss-jordan
         // NOTE: mendingan outputnya double ae.. ntar baru ubah ke string pas dibutuhin di luar
         // daripada string, terus diubah jadi double pas butuh buat perhitungan
+        // + ganti nama ae jadi getSolution :v
         // Prekondisi: matriks yang diproses adalah matriks augmented
         String[] sol = new String[this.maxR+1];
         Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
@@ -483,9 +485,9 @@ public class Matrix {
 
                 break;
             }
-            case INVERSE: {
+            case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
-                
+
                 for (int i = 1; i <= this.maxR; i++) {
                     sol[i] = Double.toString(solM.getElement(i, 1));
                 }
