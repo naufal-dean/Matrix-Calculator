@@ -10,15 +10,15 @@ public class Main {
     public static void main2() {
         outln("Hello, world!");
         outln("TEST");
-        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }};
+        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
         double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
         double[] buffer;
         Matrix M = new Matrix(test);
         Matrix Ma = new Matrix(test2);
         System.out.println("Normal: ");
         M.tulisMatrix(); System.out.println();
-        System.out.printf("Determinan Cramer: %f\n", M.getDeterminan(Method.CRAMER));
-        System.out.printf("Determinan Gauss: %f\n\n", M.getDeterminan(Method.GAUSS));
+        System.out.printf("Determinan Cramer: %.20f %b\n", M.getDeterminan(Method.CRAMER), 0 == M.getDeterminan(Method.CRAMER));
+        System.out.printf("Determinan Gauss: %.20f %b\n\n", M.getDeterminan(Method.GAUSS), 0 == M.getDeterminan(Method.GAUSS));
         System.out.println("Entry matrix: ");
         M.getEntryMatrix(2, 2).tulisMatrix(); System.out.println();
         System.out.println("Cofactor matrix: ");
@@ -34,20 +34,20 @@ public class Main {
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 
-        double[][] test3 = { { 1, 2, 3 }, { 4, 5, 6 }};
+        double[][] test3 = { { 1, 2, 3 }, { 4, 5, 7 }};
         Matrix M3 = new Matrix(test3);
         System.out.println("Matriks SPL: ");
         M3.tulisMatrix();
         System.out.println("Get Solution Cramer: ");
         buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
         for (int i = 1; i < buffer.length; i++) {
-            System.out.printf("x%d = %s\n", i, buffer[i]);
+            System.out.printf("x%d = %.20f\n", i, buffer[i]);
         }
         System.out.println();
         System.out.println("Get Solution Inverse: ");
         buffer = M3.getSistemPersamaanLinear(Method.INVERSE);
         for (int i = 1; i < buffer.length; i++) {
-            System.out.printf("x%d = %s\n", i, buffer[i]);
+            System.out.printf("x%d = %.20f\n", i, buffer[i]);
         }
         System.out.println();
 

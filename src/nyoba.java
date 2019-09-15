@@ -30,7 +30,7 @@ class nyoba{
             M[idx] = temp ;
         }
         M[j] = kaliC (M[j],1/M[j][j]);
-        return M; 
+        return M;
     }
    static double[][] REform(double[][] M){
         double[][] M1= new double[M.length][M[0].length];
@@ -110,7 +110,7 @@ class nyoba{
         for (i=1; i<M.length;i++){
              d *= M[i][i];
         }
-        return d; 
+        return d;
     }
     public static void main(String[] args){
     double[][] M = {{0,0,0,0,0},{0,1,2,3,4},{0,2,2,1,3},/*{0,1,5,4,2}/*{1,2,4},{1,3,5}*/};
@@ -153,7 +153,7 @@ class nyoba{
                 *///det *= M.getElement(idx, j)/M.getElement(i, j);
                 //M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));*/
             }
-        }
+        // }
         //pindahin ke paling atas
    /*     if(j!=idx){
             det *=-1;
@@ -164,4 +164,4 @@ class nyoba{
         det *= M.getElement(i,i);
     }
     return det;
-}/*
+}*/

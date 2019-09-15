@@ -234,6 +234,8 @@ public class Matrix {
     //** Fungsi matriks **//
     //nopal (NOTE: tambahin lagi tiap method)
     public double getDeterminan(Method method) {
+        if (this.maxR != this.maxC)
+            throw new RuntimeException("Max row and max column are not the same! No determinant.");
         switch (method) {
             case CRAMER: {
                 Matrix cofM = this.getCofactorMatrix();
@@ -350,7 +352,9 @@ public class Matrix {
 
     public Matrix getInverseMatrix(Method method) {
         if (this.maxR != this.maxC)
-            throw new RuntimeException("Max row and max column are not the same!");
+            throw new RuntimeException("Max row and max column are not the same! No inverse matrix.");
+        if (this.getDeterminan(Method.GAUSS) == 0)
+            throw new RuntimeException("Matrix is singular! No inverse matrix.");
         switch (method) {
             case CRAMER: {
                 return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
@@ -488,7 +492,7 @@ public class Matrix {
 
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
-                    sol[i] = cramM.getDeterminan(Method.CRAMER)/coefM.getDeterminan(Method.CRAMER);
+                    sol[i] = cramM.getDeterminan(Method.GAUSS)/coefM.getDeterminan(Method.GAUSS);
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
                 return sol;
