@@ -10,7 +10,7 @@ public class Main {
     public static void main2() {
         outln("Hello, world!");
         outln("TEST");
-        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 2, 9 } };
         double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
         double[] buffer;
         Matrix M = new Matrix(test);
@@ -34,10 +34,11 @@ public class Main {
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 
-        double[][] test3 = { { 1, 2, 3 }, { 4, 5, 7 }};
+        double[][] test3 = { { 0.0000000000000003, 59.14, 59.17 }, { 5.29, -6.13, 46.78 } };
         Matrix M3 = new Matrix(test3);
         System.out.println("Matriks SPL: ");
         M3.tulisMatrix();
+        M3.getReducedEchelonForm(M3.getMaxColumn()).tulisMatrix();
         System.out.println("Get Solution Cramer: ");
         buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
         for (int i = 1; i < buffer.length; i++) {
