@@ -247,37 +247,36 @@ public class Matrix {
             case GAUSS: {
                 Matrix M = this.copyMatrix();
                 int  i,j, idx;
-                double c;
+                //double c;
                 double det=1;
-
                 for(j=1; j<=M.getMaxRow() -1 ;j++){
                     i = j;
-                    while((M.getElement(i,j) == 0) && (i<=M.getMaxRow())){
+                    while((M.getElement(i,j) == 0) && (i<M.getMaxRow())){
                         i++;
                     }//cari ampe yang ga 0 dibarisannya
                     idx = i;
                     i = i+1;
                     for(;i<=M.getMaxRow();i++){
                         //eliminasi yang lainnya dengan baris idx
-                        c = M.getElement(i,j)/M.getElement(idx,j);
-                        if (c!=0){
-                            M.setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));
-                            det *= c;
-                            M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
+                        //c = M.getElement(i,j)/M.getElement(idx,j);
+                        if (M.getElement(i, j)!=0){
+                            M.addOBE(i, idx, -M.getElement(i, j)/M.getElement(idx, j));/*setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));*/
+                            //det *= M.getElement(idx, j)/M.getElement(i, j);
+                //M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
                         }
                     }
-                    //pindahin ke paling atas
+
+                        //pindahin ke paling atas
                     if(j!=idx){
-                        det *=-1;
-                        double[] temp = M.getRow(j);
-                        M.setRow(j, M.getRow(idx));
-                        M.setRow(idx,temp) ;
+                    det *=-1;
+                    M.swapOBE(j,idx);
                     }
                 }
                 for (i=1; i<=M.getMaxRow();i++){
-                    det *= M.getElement(i,i);
+                det *= M.getElement(i,i);
                 }
                 return det;
+
             }
             case GAUSS_JORDAN: {
 
@@ -385,19 +384,37 @@ public class Matrix {
 
     private Matrix getEchelonFormSpecial(Matrix m, int rowStart, int colStart, int colMax) {
         m = m.getEchelonForm(m, 1, 1, colMax);
-        for (int i = m.getMaxRow(); i > colMax; i--) {
+        for (int i = m.getMaxRow(); i > colMax; i--)
             m.addOBE(i, colMax, -m.getElement(i, colMax));
-        }
         return m;
     }
 
     private Matrix getEchelonForm(Matrix m, int rowStart, int colStart, int colMax) {
         // m.tulisMatrix();
-        // System.out.printf("%d %d\n\n", rowStart, colStart);
+        // System.out.printf("\n\n");
+        m = copyMatrix();
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
-            m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
+            //nambahin ini buat kasus baris matrix yang sama smua isinya
+            if (m.getElement(rowStart, colStart)!=0){
+                m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
+            }
             return m;
         } else { // recurrence
+            // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
+            int curRow =rowStart;
+            while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
+                rowStart++;
+            }
+            if (curRow != rowStart){
+                //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
+                if ((m.getMaxRow() == rowStart)||(colMax == rowStart)&&(m.getElement(rowStart,colStart) == 0)){
+                    return m.getEchelonForm(m, curRow+1, colStart+1 ,colMax);
+                }
+                //nuker ama yg ga 0
+                m.swapOBE(rowStart,curRow);
+                return m.getEchelonForm(m, curRow, colStart ,colMax);
+            }
+            //nambahinnya sampe sini ya {nopal}
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
                 m.addOBE(i, rowStart, -m.getElement(i, colStart));
@@ -456,13 +473,12 @@ public class Matrix {
     }
 
     //** Fungsi Sistem Persamaaan Linear **//
-    public String[] getSistemPersamaanLinear(Method method) {
-        // TODO: urus kasus solusi banyak + tidak ada solusi di method gauss dan gauss-jordan
+    public double[] getSistemPersamaanLinear(Method method) {
         // NOTE: mendingan outputnya double ae.. ntar baru ubah ke string pas dibutuhin di luar
         // daripada string, terus diubah jadi double pas butuh buat perhitungan
         // + ganti nama ae jadi getSolution :v
         // Prekondisi: matriks yang diproses adalah matriks augmented
-        String[] sol = new String[this.maxR+1];
+        double[] sol = new double[this.maxR+1];
         Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
 
@@ -472,7 +488,7 @@ public class Matrix {
 
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
-                    sol[i] = Double.toString(cramM.getDeterminan(Method.CRAMER)/coefM.getDeterminan(Method.CRAMER));
+                    sol[i] = cramM.getDeterminan(Method.CRAMER)/coefM.getDeterminan(Method.CRAMER);
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
                 return sol;
@@ -489,7 +505,7 @@ public class Matrix {
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
                 for (int i = 1; i <= this.maxR; i++) {
-                    sol[i] = Double.toString(solM.getElement(i, 1));
+                    sol[i] = solM.getElement(i, 1);
                 }
                 return sol;
             }
