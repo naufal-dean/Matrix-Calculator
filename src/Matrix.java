@@ -281,7 +281,7 @@ public class Matrix {
 
             }
             case GAUSS_JORDAN: {
-
+                
                 break;
             }
             case INVERSE: {
@@ -359,21 +359,14 @@ public class Matrix {
             case CRAMER: {
                 return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
             }
-            case GAUSS: {
-
-                break;
-            }
             case GAUSS_JORDAN: {
                 Matrix m = this.appendMatrix(Matrix.getIdentityMatrix(this.maxC));
                 m = m.getReducedEchelonForm(m.getMaxColumn()/2);
                 return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
             }
-            case INVERSE: {
-
-                break;
-            }
+            default: // GAUSS and INVERSE are not supported (?)
+                throw new RuntimeException("Method " + method.toString().toLowerCase() + " is not supported for getting inverse matrix.");
         }
-        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     public Matrix getEchelonForm(int colMax) {
@@ -498,11 +491,17 @@ public class Matrix {
                 return sol;
             }
             case GAUSS: {
-
+                Matrix m = this.copyMatrix().getEchelonForm(this.maxC-1);
+                // TODO: Implement!
                 break;
             }
             case GAUSS_JORDAN: {
-
+                Matrix m = this.copyMatrix().getReducedEchelonForm(this.maxC-1);
+                for (int i = 1; i <= this.maxR; i++)
+                    if (this.content[i][i] == 1)
+                        sol[i-1] = this.content[i][this.maxC]; // TODO: Do fix when there're free variables..!
+                    else
+                        sol[i-1] = Double.NEGATIVE_INFINITY; // TODO: Free Variable, need to fix and define.. Solusi gw sementara, return String[]
                 break;
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
