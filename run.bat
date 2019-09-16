@@ -1,1 +1,2 @@
-compile.bat && java -cp . tubes.Main
+javac -d ./bin/ ./src/*.java
+java -cp ./bin/ tubes.Main
