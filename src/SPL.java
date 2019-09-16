@@ -1,8 +1,5 @@
 package tubes;
 
-
-
-
 import static tubes.Console.*;
 
 public class SPL {
@@ -27,38 +24,6 @@ public class SPL {
             content[i][0] = sol[i];
     }
 
-    // private void initREF(Matrix m) {
-    //     int r = m.getMaxRow(), c = m.getMaxColumn()-1;
-    //     for (int i = c+1; i <= r; i++)
-    //         if (m.getElement(i, m.getMaxColumn()) != 0)
-    //             throw new RuntimeException("Matrix is inconsistent!");
-    //     r = c;
-    //     content = new double[c+1][c+1];
-    //     while (r >= 1) {
-    //         int j = 1;
-    //         boolean found = false;
-    //         while (j <= c) {
-    //             if (m.getElement(r, j) != 0) {
-    //                 found = true;
-    //                 break;
-    //             }
-    //         }
-    //         content[j][0] = m.getElement(r, c+1);
-    //         if (!found) {
-    //             // outln(r + "," + j + "," + (c+1));
-    //             if (m.getElement(r, c+1) != 0)
-    //                 throw new RuntimeException("Matrix is inconsistent!");
-    //             content[j][j] = 1;
-    //         } else
-    //             for (int j2 = j+1; j2 <= c; j2++) {
-    //                 double v2 = m.getElement(r, j2);
-    //                 if (v2 != 0)
-    //                     content[j][j2] = -v2;
-    //             }
-    //         r--;
-    //     }
-    // }
-
     public void initREF(Matrix in) {
         int r = in.getMaxRow(), c = in.getMaxColumn()-1;
         for (int i = c+1; i <= r; i++)
@@ -71,8 +36,11 @@ public class SPL {
                 m.setElement(i, j, in.getElement(i, j));
         int j = 1;
         for (int i = 1; i <= c; i++) {
-            if (j > c)
+            if (j > c) {
+                if (m.getElement(i, j) != 0)
+                    throw new RuntimeException("Matrix is inconsistent!");
                 break;
+            }
             if (m.getElement(i, j) == 0) {
                 // outln(i + "," + j + " = " + 0);
                 content[j][j] = 1;
