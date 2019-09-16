@@ -38,10 +38,11 @@ public class Main {
         // System.out.println("Reduced Echelon Form: ");
         // M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 
-        double[][] test3 = { { 1, 0, 0, 0, 1 }, 
-                             { 0, 1, 0, 0, 2 }, 
-                             { 0, 0, 1, 0, 3 }, 
-                             { 0, 0, 0, 0, 4 } };
+        double[][] test3 = { { 1, 0, 0, 0, 1 },
+                             { 0, 1, 0, 0, 2 },
+                             { 0, 0, 1, 0, 3 },
+                             { 0, 0, 0, 1, 1 },
+                             { 0, 0, 0, 0, 0 } };
         Matrix M3 = new Matrix(test3);
         out(M3);
         outln("-");
