@@ -399,19 +399,22 @@ public class Matrix {
             return m;
         } else { // recurrence
             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
-            int curRow =rowStart;
-            while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
+             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
+            //int curRow =rowStart;
+            //krena dah di pivot jadi ga perlu lagi
+            /*while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
                 rowStart++;
             }
-            if (curRow != rowStart){
+            if (curRow != rowStart){*/
                 //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
-                if ((m.getMaxRow() == rowStart)||(colMax == rowStart)&&(m.getElement(rowStart,colStart) == 0)){
-                    return m.getEchelonForm(curRow+1, colStart+1 ,colMax);
-                }
-                //nuker ama yg ga 0
-                m.swapOBE(rowStart,curRow);
-                return m.getEchelonForm(curRow, colStart ,colMax);
+                if ((m.getElement(rowStart,colStart) == 0)){
+                    return m.getEchelonForm(rowStart, colStart+1 ,colMax);
+                    
             }
+                //nuker ama yg ga 0
+               /* m.swapOBE(rowStart,curRow);
+                return m.getEchelonForm(curRow, colStart ,colMax);
+            }*/
             //nambahinnya sampe sini ya {nopal}
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
