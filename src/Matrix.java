@@ -439,24 +439,28 @@ public class Matrix {
 
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
         double rowMax;
-        double scaledMax = 0;
+        double scaledMax = -1;
         int scaledMaxIdx = 0;
         Matrix m = this.copyMatrix();
 
-        for (int i = rowStart; i <= this.maxR; i++) {
+        for (int i = rowStart; i <= m.maxR; i++) {
             rowMax = 0;
             for (int j = colStart; j <= colMax; j++) {
-                if (Math.abs(this.getElement(i, j)) > rowMax) {
-                    rowMax = Math.abs(this.getElement(i, j));
+                if (Math.abs(m.getElement(i, j)) > rowMax) {
+                    rowMax = Math.abs(m.getElement(i, j));
                 }
             }
-            if (Math.abs(this.getElement(rowStart, colStart)/rowMax) > scaledMax) {
-                scaledMax = Math.abs(this.getElement(rowStart, colStart)/rowMax);
-                scaledMaxIdx = i;
+            if (rowMax!=0){
+                if (Math.abs(m.getElement(i, colStart)/rowMax) > scaledMax) {
+                    scaledMax = Math.abs(m.getElement(rowStart, colStart)/rowMax);
+                    scaledMaxIdx = i;
+                }
             }
         }
-
-        m.swapOBE(scaledMaxIdx, rowStart);
+        System.out.println(scaledMaxIdx);
+        if (scaledMaxIdx >= 0){
+            m.swapOBE(scaledMaxIdx, rowStart);
+        }
         return m;
     }
 
@@ -488,13 +492,13 @@ public class Matrix {
                 return new SPL(getReducedEchelonForm(this.maxC-1));
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
-                return new SPL(coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM));
-                // Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
+                //return new SPL(coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM));
+                Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
-                // for (int i = 1; i <= this.maxR; i++) {
-                //     sol[i] = solM.getElement(i, 1);
-                // }
-                // return sol;
+                for (int i = 1; i <= this.maxR; i++) {
+                    sol[i] = solM.getElement(i, 1);
+                }
+                return new SPL(sol);
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");
