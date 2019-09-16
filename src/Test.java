@@ -44,18 +44,22 @@ public class Test {
             {0,1}
         })));
 
-        Matrix m = new Matrix(new double[][] {
-            {0.0000000000000003,59.14,59.17},
-            {5.29, -6.13, 46.78}
-        });
-
-        test("Test scaled pivot", new Matrix(new double[][] {
+        test("Test presisi scaled pivot 1", new Matrix(new double[][] {
             {0.0000000000000003,59.14,59.17},
             {5.29, -6.13, 46.78}
         }).getSistemPersamaanLinear(Method.GAUSS_JORDAN).equals(new SPL(new double[] {
             0,
             Test.roundDouble(31292813d/3128506d, 16),
             Test.roundDouble(5917d/5914d, 16)
+        })));
+
+        test("Test presisi scaled pivot 2", new Matrix(new double[][] {
+            {3,59140,59170},
+            {5.29, -6.13, 46.78}
+        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN).equals(new SPL(new double[] {
+            0,
+            Test.roundDouble(312928130d/31286899d, 16),
+            Test.roundDouble(31286896d/31286899d, 16)
         })));
 
         test("Cek nilai SPL yang ada 1 free variable di x4", new Matrix(new double[][] {
@@ -98,19 +102,5 @@ public class Test {
             { 3, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0 }
         })));
-
-        out(new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 1, 0 }
-        }).getSistemPersamaanLinear(Method.CRAMER).content[1].length);
-        outln();
-        outln(new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 }
-        }).content[1].length);
     }
 }

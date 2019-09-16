@@ -36,8 +36,10 @@ public class SPL {
             if (content[i].length != content2[i].length)
                 return false;
             for (int j = 0; j < content[i].length; j++)
-                if (content[i][j] != content2[i][j])
-                    return false;
+                if (content[i][j] != content2[i][j]) {
+                  System.out.printf("con: %.20f %.20f\n",content[i][j],content2[i][j]);
+                  return false;
+                }
         }
         return true;
     }
