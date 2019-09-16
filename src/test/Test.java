@@ -1,6 +1,7 @@
 package tubes.test;
 
 import static tubes.Console.*;
+import tubes.*;
 
 //camcam
 public class Test {
@@ -11,7 +12,6 @@ public class Test {
     public static void main(String[] args) {
         useColor();
         outln(yellow + "=====================================");
-        doFileTests();
         doTheTests();
         outln(yellow + "=====[" + green + "SUCCEED: " + succeed + yellow + "]====[" + red + "FAILED: " + failed + yellow + "]=====");
     }
@@ -25,11 +25,61 @@ public class Test {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
         if (value) ++succeed; else ++failed;
     }
-    private static void doFileTests() {
-        
-    }
     // endregion
     private static void doTheTests() {
-        test("lmao", false);
+        test("Cek nilai SPL yang ada 1 free variable di x4", new Matrix(new double[][] {
+            { 1, 0, 0, 0, 1 },
+            { 0, 1, 0, 0, 2 },
+            { 0, 0, 1, 0, 3 },
+            { 0, 0, 0, 0, 0 }
+        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN).equals(new SPL(new double[][] {
+            { 1, 0, 0, 0, 0 },
+            { 2, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1 }
+        })));
+        
+        test("Cek nilai SPL rownya lebih banyak", new Matrix(new double[][] {
+            { 1, 0, 0, 0, 1 },
+            { 0, 1, 0, 0, 2 },
+            { 0, 0, 1, 0, 3 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN).equals(new SPL(new double[][] {
+            { 1, 0, 0, 0, 0 },
+            { 2, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1 }
+        })));
+
+        test("Cek nilai SPL tanpa free variabel dengan metode CRAMER", new Matrix(new double[][] {
+            { 1, 0, 0, 0, 1 },
+            { 0, 1, 0, 0, 2 },
+            { 0, 0, 1, 0, 3 },
+            { 0, 0, 0, 1, 0 }
+        }).getSistemPersamaanLinear(Method.CRAMER).equals(new SPL(new double[][] {
+            { 1, 0, 0, 0, 0 },
+            { 2, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 }
+        })));
+        
+        out(new Matrix(new double[][] {
+            { 1, 0, 0, 0, 1 },
+            { 0, 1, 0, 0, 2 },
+            { 0, 0, 1, 0, 3 },
+            { 0, 0, 0, 1, 0 }
+        }).getSistemPersamaanLinear(Method.CRAMER).content[1].length);
+        outln();
+        outln(new SPL(new double[][] {
+            { 1, 0, 0, 0, 0 },
+            { 2, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 }
+        }).content[1].length);
     }
 }
