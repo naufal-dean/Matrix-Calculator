@@ -455,12 +455,11 @@ public class Matrix {
             }
             if (rowMax!=0){
                 if (Math.abs(m.getElement(i, colStart)/rowMax) > scaledMax) {
-                    scaledMax = Math.abs(m.getElement(rowStart, colStart)/rowMax);
+                    scaledMax = Math.abs(m.getElement(i, colStart)/rowMax);
                     scaledMaxIdx = i;
                 }
             }
         }
-        System.out.println(scaledMaxIdx);
         if (scaledMaxIdx >= 0){
             m.swapOBE(scaledMaxIdx, rowStart);
         }
