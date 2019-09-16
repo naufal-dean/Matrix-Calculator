@@ -11,7 +11,7 @@ public class Main {
     public static void main2() {
         outln("Hello, world!");
         outln("TEST");
-        double[][] test = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 2, 9 } };
+        double[][] test = { { 1, 2, 3 }, { 1, 2, 6 }, { 2, 4, 9 } };
         double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
         double[] buffer;
         Matrix M = new Matrix(test);
@@ -31,7 +31,9 @@ public class Main {
         // System.out.println("Inverse Cramer: ");
         // M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
+        Matrix x = M.getEchelonForm(M.getMaxColumn()); System.out.println();
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
+        x.getEchelonForm(x.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 
@@ -48,16 +50,16 @@ public class Main {
         // for (int i = 1; i < buffer.length; i++) {
         //     System.out.printf("x%d = %.20f\n", i, buffer[i]);
         // }
-        
+
         System.out.println();
         System.out.println("Get Solution Inverse: ");
-        
+
         out(M3.getSistemPersamaanLinear(Method.INVERSE));
         // buffer = M3.getSistemPersamaanLinear(Method.INVERSE);
         // for (int i = 1; i < buffer.length; i++) {
         //     System.out.printf("x%d = %.20f\n", i, buffer[i]);
         // }
-        
+
         System.out.println();
 
         // outln(M);

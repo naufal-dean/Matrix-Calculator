@@ -6,5 +6,6 @@ E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\Method.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\nyoba.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\Point.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\RowOperation.java
+E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\SPL.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\SquareMatrix.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\test\Test.java

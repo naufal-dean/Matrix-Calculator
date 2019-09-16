@@ -440,7 +440,7 @@ public class Matrix {
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
         double rowMax;
         double scaledMax = 0;
-        int scaledMaxIdx = 0;
+        int scaledMaxIdx = rowStart;
         Matrix m = this.copyMatrix();
 
         for (int i = rowStart; i <= this.maxR; i++) {
