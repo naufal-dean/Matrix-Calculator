@@ -408,12 +408,13 @@ public class Matrix {
     public Matrix getReducedEchelonForm(int colMax) {
         Matrix m = this.copyMatrix();
 
+        m = this.getEchelonForm(colMax);
         return m.getReducedEchelonForm(1, 1, colMax);
     }
 
     public Matrix getReducedEchelonForm(int rowStart, int colStart, int colMax) {
-        Matrix m = new Matrix(this.maxR, this.maxC);
-        m = this.getEchelonForm(colMax);
+        Matrix m = this.copyMatrix();
+
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             for (int i = 1; i < rowStart; i++) {
                 m.addOBE(i, rowStart, -m.getElement(i, colStart));
