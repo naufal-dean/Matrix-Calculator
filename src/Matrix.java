@@ -441,7 +441,7 @@ public class Matrix {
                 return m.getReducedEchelonForm(rowStart, colStart+1 ,colMax);
             }
             for (int i = 1; i < rowStart; i++) {
-                m.addOBE(i, rowStart, -m.getElement(rowStart, colStart));
+                m.addOBE(i, rowStart, -m.getElement(i, colStart));
             }
             return m.getReducedEchelonForm(rowStart + 1, colStart + 1, colMax);
         }
