@@ -399,19 +399,22 @@ public class Matrix {
             return m;
         } else { // recurrence
             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
-            int curRow =rowStart;
-            while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
+             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
+            //int curRow =rowStart;
+            //krena dah di pivot jadi ga perlu lagi
+            /*while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
                 rowStart++;
             }
-            if (curRow != rowStart){
+            if (curRow != rowStart){*/
                 //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
-                if ((m.getMaxRow() == rowStart)||(colMax == rowStart)&&(m.getElement(rowStart,colStart) == 0)){
-                    return m.getEchelonForm(curRow+1, colStart+1 ,colMax);
-                }
-                //nuker ama yg ga 0
-                m.swapOBE(rowStart,curRow);
-                return m.getEchelonForm(curRow, colStart ,colMax);
+                if ((m.getElement(rowStart,colStart) == 0)){
+                    return m.getEchelonForm(rowStart, colStart+1 ,colMax);
+                    
             }
+                //nuker ama yg ga 0
+               /* m.swapOBE(rowStart,curRow);
+                return m.getEchelonForm(curRow, colStart ,colMax);
+            }*/
             //nambahinnya sampe sini ya {nopal}
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
@@ -439,24 +442,32 @@ public class Matrix {
 
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
         double rowMax;
+<<<<<<< HEAD
         double scaledMax = 0;
         int scaledMaxIdx = rowStart;
+=======
+        double scaledMax = -1;
+        int scaledMaxIdx = 0;
+>>>>>>> f5923b3ed0e2f884901478e6470eca33caf09d7b
         Matrix m = this.copyMatrix();
 
-        for (int i = rowStart; i <= this.maxR; i++) {
+        for (int i = rowStart; i <= m.maxR; i++) {
             rowMax = 0;
             for (int j = colStart; j <= colMax; j++) {
-                if (Math.abs(this.getElement(i, j)) > rowMax) {
-                    rowMax = Math.abs(this.getElement(i, j));
+                if (Math.abs(m.getElement(i, j)) > rowMax) {
+                    rowMax = Math.abs(m.getElement(i, j));
                 }
             }
-            if (Math.abs(this.getElement(rowStart, colStart)/rowMax) > scaledMax) {
-                scaledMax = Math.abs(this.getElement(rowStart, colStart)/rowMax);
-                scaledMaxIdx = i;
+            if (rowMax!=0){
+                if (Math.abs(m.getElement(i, colStart)/rowMax) > scaledMax) {
+                    scaledMax = Math.abs(m.getElement(i, colStart)/rowMax);
+                    scaledMaxIdx = i;
+                }
             }
         }
-
-        m.swapOBE(scaledMaxIdx, rowStart);
+        if (scaledMaxIdx >= 0){
+            m.swapOBE(scaledMaxIdx, rowStart);
+        }
         return m;
     }
 
@@ -488,13 +499,13 @@ public class Matrix {
                 return new SPL(getReducedEchelonForm(this.maxC-1));
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
-                return new SPL(coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM));
-                // Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
+                //return new SPL(coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM));
+                Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
-                // for (int i = 1; i <= this.maxR; i++) {
-                //     sol[i] = solM.getElement(i, 1);
-                // }
-                // return sol;
+                for (int i = 1; i <= this.maxR; i++) {
+                    sol[i] = solM.getElement(i, 1);
+                }
+                return new SPL(sol);
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");

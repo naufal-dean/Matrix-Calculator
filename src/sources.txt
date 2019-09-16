@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\Console.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\ConsoleApp.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\Main.java
@@ -9,3 +10,16 @@ E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\RowOperation.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\SPL.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\SquareMatrix.java
 E:\KULIAH\SEMESTER 3\Algeo\Tubes 1 Algeo\AlgeoTB1\src\test\Test.java
+=======
+D:\AlgeoTB1\src\Console.java
+D:\AlgeoTB1\src\ConsoleApp.java
+D:\AlgeoTB1\src\Main.java
+D:\AlgeoTB1\src\Matrix.java
+D:\AlgeoTB1\src\Method.java
+D:\AlgeoTB1\src\nyoba.java
+D:\AlgeoTB1\src\Point.java
+D:\AlgeoTB1\src\RowOperation.java
+D:\AlgeoTB1\src\SPL.java
+D:\AlgeoTB1\src\SquareMatrix.java
+D:\AlgeoTB1\src\test\Test.java
+>>>>>>> f5923b3ed0e2f884901478e6470eca33caf09d7b
