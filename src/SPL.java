@@ -27,26 +27,17 @@ public class SPL {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof SPL)) {
-            System.out.println("Not instanceof");
+        if (!(o instanceof SPL))
             return false;
-        }
         double[][] content2 = ((SPL)o).content;
-        if (content.length != content2.length) {
-            System.out.printf("length in: %d %d\n", content.length, content2.length);
+        if (content.length != content2.length)
             return false;
-        }
         for (int i = 1; i < content.length; i++) {
-            if (content[i].length != content2[i].length) {
-                System.out.printf("length in: %d %d\n", content[i].length, content2[i].length);
+            if (content[i].length != content2[i].length)
                 return false;
-            }
-            for (int j = 0; j < content[i].length; j++) {
-                if (content[i][j] != content2[i][j]) {
-                    System.out.printf("content: %.25f %.25f\n", content[i][j], content2[i][j]);
+            for (int j = 0; j < content[i].length; j++)
+                if (content[i][j] != content2[i][j])
                     return false;
-                }
-            }
         }
         return true;
     }
