@@ -1,3 +1,1 @@
-./compile.bat
-cd bin/
-java -cp . tubes.test.Test
+compile.bat && java -cp . tubes.test.Test
