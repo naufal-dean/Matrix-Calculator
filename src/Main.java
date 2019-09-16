@@ -31,9 +31,9 @@ public class Main {
         // System.out.println("Inverse Cramer: ");
         // M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
-        Matrix x = M.getEchelonForm(M.getMaxColumn()); System.out.println();
+        // Matrix x = M.getEchelonForm(M.getMaxColumn()); System.out.println();
+        // x.getEchelonForm(x.getMaxColumn()).tulisMatrix(); System.out.println();
         M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
-        x.getEchelonForm(x.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 

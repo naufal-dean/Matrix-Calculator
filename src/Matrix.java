@@ -372,18 +372,7 @@ public class Matrix {
     public Matrix getEchelonForm(int colMax) {
         Matrix m = this.copyMatrix();
 
-        if (m.getMaxRow() > colMax) {
-            return m.getEchelonFormSpecial(1, 1, colMax);
-        } else {
-            return m.getEchelonForm(1, 1, colMax);
-        }
-    }
-
-    private Matrix getEchelonFormSpecial(int rowStart, int colStart, int colMax) {
-        Matrix m = getEchelonForm(1, 1, colMax);
-        for (int i = m.getMaxRow(); i > colMax; i--)
-            m.addOBE(i, colMax, -m.getElement(i, colMax));
-        return m;
+        return m.getEchelonForm(1, 1, colMax);
     }
 
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
@@ -396,25 +385,17 @@ public class Matrix {
             if (m.getElement(rowStart, colStart)!=0){
                 m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             }
+
+            if (colStart == colMax && rowStart < m.getMaxRow()) {
+                for (int i = m.getMaxRow(); i > rowStart; i--) {
+                    m.addOBE(i, rowStart, -m.getElement(i, colMax));
+                }
+            }
             return m;
         } else { // recurrence
-            // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
-             // untuk yg ada 0 di konten matrixnya, prekondisi ga ada matrik yang se kolom 0 semua isinya
-            //int curRow =rowStart;
-            //krena dah di pivot jadi ga perlu lagi
-            /*while((m.getElement(rowStart,colStart)==0)&&(rowStart < m.getMaxRow())&&(rowStart < colMax)){
-                rowStart++;
+            if ((m.getElement(rowStart,colStart) == 0)){
+                return m.getEchelonForm(rowStart, colStart+1 ,colMax);
             }
-            if (curRow != rowStart){*/
-                //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
-                if ((m.getElement(rowStart,colStart) == 0)){
-                    return m.getEchelonForm(rowStart, colStart+1 ,colMax);
-
-            }
-                //nuker ama yg ga 0
-               /* m.swapOBE(rowStart,curRow);
-                return m.getEchelonForm(curRow, colStart ,colMax);
-            }*/
             //nambahinnya sampe sini ya {nopal}
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
@@ -424,20 +405,29 @@ public class Matrix {
         }
     }
 
-    //nopal
     public Matrix getReducedEchelonForm(int colMax) {
-        int rowMax;
+        Matrix m = this.copyMatrix();
 
+        return m.getReducedEchelonForm(1, 1, colMax);
+    }
+
+    public Matrix getReducedEchelonForm(int rowStart, int colStart, int colMax) {
         Matrix m = new Matrix(this.maxR, this.maxC);
         m = this.getEchelonForm(colMax);
-        rowMax = (m.getMaxRow() > colMax) ? (colMax) : (m.getMaxRow());
-        for (int i = rowMax - 1; i >= 0; i--) {
-            for (int j = i; j >= 1; j--){
-                m.addOBE(j, (i + 1), -m.getElement(j, i + 1));
-                // m.setRow(j,RowOperation.PlusTab(m.getRow(j), RowOperation.kaliC(m.getRow(i+1), -1*m.getElement(j,i+1))));
+        if (rowStart == m.getMaxRow() || colStart == colMax) { // base
+            for (int i = 1; i < rowStart; i++) {
+                m.addOBE(i, rowStart, -m.getElement(i, colStart));
             }
+            return m;
+        } else { // recurrence
+            if ((m.getElement(rowStart,colStart) == 0)){
+                return m.getReducedEchelonForm(rowStart, colStart+1 ,colMax);
+            }
+            for (int i = 1; i < rowStart; i++) {
+                m.addOBE(i, rowStart, -m.getElement(rowStart, colStart));
+            }
+            return m.getReducedEchelonForm(rowStart + 1, colStart + 1, colMax);
         }
-        return m;
     }
 
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
