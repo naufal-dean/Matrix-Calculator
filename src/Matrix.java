@@ -409,7 +409,7 @@ public class Matrix {
                 //buat yang kasus sekolom 0 semua atau dalam lebih dari sebaris akhir matrik 0 semua
                 if ((m.getElement(rowStart,colStart) == 0)){
                     return m.getEchelonForm(rowStart, colStart+1 ,colMax);
-                    
+
             }
                 //nuker ama yg ga 0
                /* m.swapOBE(rowStart,curRow);
@@ -442,13 +442,9 @@ public class Matrix {
 
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
         double rowMax;
-<<<<<<< HEAD
-        double scaledMax = 0;
-        int scaledMaxIdx = rowStart;
-=======
         double scaledMax = -1;
         int scaledMaxIdx = 0;
->>>>>>> f5923b3ed0e2f884901478e6470eca33caf09d7b
+
         Matrix m = this.copyMatrix();
 
         for (int i = rowStart; i <= m.maxR; i++) {
@@ -465,7 +461,7 @@ public class Matrix {
                 }
             }
         }
-        if (scaledMaxIdx >= 0){
+        if (scaledMaxIdx != 0){
             m.swapOBE(scaledMaxIdx, rowStart);
         }
         return m;
