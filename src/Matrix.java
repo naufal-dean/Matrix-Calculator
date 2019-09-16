@@ -275,7 +275,7 @@ public class Matrix {
                     }
                 }
                 for (i=1; i<=M.getMaxRow();i++){
-                det *= M.getElement(i,i);
+                    det *= M.getElement(i,i);
                 }
                 return det;
 
@@ -373,6 +373,22 @@ public class Matrix {
         Matrix m = this.copyMatrix();
 
         return m.getEchelonForm(1, 1, colMax);
+    }
+
+    public Matrix getEchelonFormCC(int colMax) {
+        return getEchelonFormCC(1, 1, colMax);
+    }
+
+    private Matrix getEchelonFormCC(int rowStart, int colStart, int colMax) {
+        if (colStart > colMax || rowStart > rowStart)
+            return this;
+        if (this.content[rowStart][colStart] == 0)
+            return getEchelonFormCC(rowStart, colStart+1, colMax);
+        Matrix m = this.scaledPartialPivoting(rowStart, colStart, colMax);
+        m.scaleOBE(rowStart, 1/m.content[rowStart][colStart]);
+        for (int r = rowStart+1; r <= m.maxR; r++)
+            m.addOBE(r, rowStart, -m.content[r][colStart]);
+        return m.getEchelonFormCC(rowStart+1, colStart+1, colMax);
     }
 
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {

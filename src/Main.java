@@ -31,21 +31,29 @@ public class Main {
         // System.out.println("Inverse Cramer: ");
         // M.getInverseMatrix(Method.CRAMER).tulisMatrix(); System.out.println();
         System.out.println("Echelon Form: ");
-        // Matrix x = M.getEchelonForm(M.getMaxColumn()); System.out.println();
-        // x.getEchelonForm(x.getMaxColumn()).tulisMatrix(); System.out.println();
-        M.getEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
+        Matrix x = M.getEchelonFormCC(M.getMaxColumn()); System.out.println();
+        M.getEchelonFormCC(M.getMaxColumn()).tulisMatrix(); System.out.println();
+        x.getEchelonFormCC(x.getMaxColumn()).tulisMatrix(); System.out.println();
         System.out.println("Reduced Echelon Form: ");
         M.getReducedEchelonForm(M.getMaxColumn()).tulisMatrix(); System.out.println();
 
-        double[][] test3 = { { 0.0000000000000003, 59.14, 59.17 }, { 5.29, -6.13, 46.78 } };
+        double[][] test3 = { { 1, 0, 0, 0, 1 }, { 0, 1, 0, 0, 1 }, { 0, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 } };
         Matrix M3 = new Matrix(test3);
         System.out.println("Matriks SPL: ");
         M3.tulisMatrix();
         outln("jadi gini:");
         M3.getReducedEchelonForm(M3.getMaxColumn()-1).tulisMatrix();
         System.out.println("Get Solution Cramer: ");
-
         out(M3.getSistemPersamaanLinear(Method.CRAMER));
+        outln("====");
+        out(M3.getSistemPersamaanLinear(Method.CRAMER));
+        outln("====");
+        out(M3.getSistemPersamaanLinear(Method.GAUSS));
+        outln("====");
+        out(M3.getSistemPersamaanLinear(Method.GAUSS_JORDAN));
+        outln("====");
+        out(M3.getSistemPersamaanLinear(Method.INVERSE));
+        outln("====");
         // buffer = M3.getSistemPersamaanLinear(Method.CRAMER);
         // for (int i = 1; i < buffer.length; i++) {
         //     System.out.printf("x%d = %.20f\n", i, buffer[i]);
