@@ -152,7 +152,7 @@ public class Matrix {
         for (int r = 1; r <= this.maxR; r++)
             for (int c = 1; c <= this.maxC; c++) {
                 double v = this.content[r][c];
-                sb.append(String.format("%f", v == 0 ? 0 : v) + (c == this.maxC ? "\n" : " "));
+                sb.append(String.format("%f", v == 0 ? 0 : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
             }
         return sb.toString();
     }
@@ -403,6 +403,10 @@ public class Matrix {
             }
             return m.getEchelonForm(rowStart + 1, colStart + 1, colMax);
         }
+    }
+
+    public Matrix getReducedEchelonForm() {
+        return getReducedEchelonForm(this.maxC-1);
     }
 
     public Matrix getReducedEchelonForm(int colMax) {

@@ -21,7 +21,6 @@ public class SPL {
 
     public SPL(double[][] sol) {
         this.content = new double[sol.length+1][];
-        this.content[0] = new double[0];
         for (int i = 0; i < sol.length; i++)
             this.content[i+1] = Arrays.copyOf(sol[i], sol[i].length);
     }
@@ -44,7 +43,7 @@ public class SPL {
     }
 
     public SPL(double[] sol) {
-        content = new double[sol.length][1];
+        content = new double[sol.length][sol.length];
         for (int i = 1; i < sol.length; i++)
             content[i][0] = sol[i];
     }
@@ -107,7 +106,8 @@ public class SPL {
             }
             if (!found)
                 sb.append(String.format("(%.2f)", content[i][0]));
-            sb.append("\n");
+            if (i < content.length-1)
+                sb.append("\n");
         }
         return sb.toString();
     }
