@@ -1,6 +1,7 @@
 package tubes;
 
 import static tubes.Console.*;
+import java.util.*;
 
 public class SPL {
     public double[][] content;
@@ -18,8 +19,40 @@ public class SPL {
         initREF(m.getReducedEchelonForm(m.getMaxColumn()-1));
     }
 
+    public SPL(double[][] sol) {
+        this.content = new double[sol.length+1][];
+        for (int i = 0; i < sol.length; i++)
+            this.content[i+1] = Arrays.copyOf(sol[i], sol[i].length);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof SPL)) {
+            System.out.println("Not instanceof");
+            return false;
+        }
+        double[][] content2 = ((SPL)o).content;
+        if (content.length != content2.length) {
+            System.out.printf("length in: %d %d\n", content.length, content2.length);
+            return false;
+        }
+        for (int i = 1; i < content.length; i++) {
+            if (content[i].length != content2[i].length) {
+                System.out.printf("length in: %d %d\n", content[i].length, content2[i].length);
+                return false;
+            }
+            for (int j = 0; j < content[i].length; j++) {
+                if (content[i][j] != content2[i][j]) {
+                    System.out.printf("content: %.25f %.25f\n", content[i][j], content2[i][j]);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public SPL(double[] sol) {
-        content = new double[sol.length][1];
+        content = new double[sol.length][sol.length];
         for (int i = 1; i < sol.length; i++)
             content[i][0] = sol[i];
     }
@@ -30,8 +63,9 @@ public class SPL {
             if (in.getElement(i, in.getMaxColumn()) != 0)
                 throw new RuntimeException("Matrix is inconsistent!");
         content = new double[c+1][c+1];
+        content[0] = new double[0];
         Matrix m = new Matrix(c, c+1);
-        for (int i = 1; i <= in.getMaxRow(); i++)
+        for (int i = 1; i <= c; i++)
             for (int j = 1; j <= c+1; j++)
                 m.setElement(i, j, in.getElement(i, j));
         int j = 1;
@@ -42,19 +76,15 @@ public class SPL {
                 break;
             }
             if (m.getElement(i, j) == 0) {
-                // outln(i + "," + j + " = " + 0);
                 content[j][j] = 1;
                 j++;
                 i--;
                 continue;
             }
             content[j][0] = m.getElement(i, c+1);
-            // outln(i + "," + j + " = " + m.getElement(i, j));
             for (int j2 = j+1; j2 <= c; j2++)
-                if (m.getElement(i, j2) != 0) {
+                if (m.getElement(i, j2) != 0)
                     content[i][j2] = -m.getElement(i, j2);
-                    outln(i + "," + j2 + " = " + m.getElement(i, j2));
-                }
             j++;
         }
     }

@@ -1,3 +1,5 @@
 bin/
 src/testCase1.txt
 src/sources.txt
+compile.bat
+run.bat
