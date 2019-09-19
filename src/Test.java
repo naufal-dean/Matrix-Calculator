@@ -33,9 +33,6 @@ public class Test {
             outln(b);
         }
     }
-    private static void doFileTests() {
-
-    }
     private static double roundDouble(double num, int decPlace) {
         num = num*Math.pow(10, decPlace);
         num = Math.round(num);
@@ -51,11 +48,6 @@ public class Test {
             {1,1},
             {0,1}
         })));
-
-        Matrix m = new Matrix(new double[][] {
-            {0.0000000000000003,59.14,59.17},
-            {5.29, -6.13, 46.78}
-        });
 
         test("Test scaled pivot", new Matrix(new double[][] {
             {0.0000000000000003,59.14,59.17},
@@ -111,23 +103,10 @@ public class Test {
             {1, 2, -1, -4},
             {2, 3, -1, -11},
             {-2, 0, -3, 22}
-        }).getReducedEchelonForm(), (new Matrix(new double[][] {
+        }).getReducedEchelonForm(), new Matrix(new double[][] {
             {1, 0, 0, -8},
             {0, 1, 0, 1},
-            {0, 0, 1, -3}
-        })));
-        out(new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 1, 0 }
-        }).getSistemPersamaanLinear(Method.CRAMER).content[1].length);
-        outln();
-        outln(new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 }
-        }).content[1].length);
+            {0, 0, 1, -2}
+        }));
     }
 }
