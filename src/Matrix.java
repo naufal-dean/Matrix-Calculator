@@ -5,6 +5,7 @@ import java.util.*;
 public class Matrix {
     private double[][] content;
     private int maxR, maxC;
+    private double scaledDet = 1;
     private Scanner input = new Scanner(System.in);
 
     //** Konstruktor **//
@@ -115,7 +116,9 @@ public class Matrix {
     }
 
     public Matrix copyMatrix() {
-        return new Matrix(this.subMatrixContent(1, 1));
+        Matrix M = new Matrix(this.subMatrixContent(1, 1));
+        M.scaledDet = this.scaledDet;
+        return M;
     }
 
     public double[][] subMatrixContent(int startR, int startC) {
@@ -281,8 +284,17 @@ public class Matrix {
 
             }
             case GAUSS_JORDAN: {
+                double newDet = 1;
+                this.scaledDet = 1;
+                Matrix M = this.getReducedEchelonForm(this.maxC);
+                // System.out.println(M.scaledDet);
 
-                break;
+                for (int i = 1; i <= M.maxC; i++) {
+                    // System.out.println(M.getElement(i, i));
+                    newDet *= M.getElement(i, i);
+                }
+                // System.out.println(M.scaledDet);
+                return (newDet/M.scaledDet);
             }
             case INVERSE: {
 
@@ -383,11 +395,13 @@ public class Matrix {
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             //nambahin ini buat kasus baris matrix yang sama smua isinya
             if (m.getElement(rowStart, colStart)!=0){
+                m.scaledDet *= (1/m.getElement(rowStart, colStart));
                 m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             }
 
             if (colStart == colMax && rowStart < m.getMaxRow()) {
                 for (int i = m.getMaxRow(); i > rowStart; i--) {
+                    m.scaledDet *= (1/m.getElement(rowStart, colStart));
                     m.addOBE(i, rowStart, -m.getElement(i, colMax));
                 }
             }
@@ -397,6 +411,7 @@ public class Matrix {
                 return m.getEchelonForm(rowStart, colStart+1 ,colMax);
             }
             //nambahinnya sampe sini ya {nopal}
+            m.scaledDet *= (1/m.getElement(rowStart, colStart));
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
                 m.addOBE(i, rowStart, -m.getElement(i, colStart));
@@ -457,6 +472,7 @@ public class Matrix {
             }
         }
         if (scaledMaxIdx != 0){
+            m.scaledDet *= (-1);
             m.swapOBE(scaledMaxIdx, rowStart);
         }
         return m;

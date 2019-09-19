@@ -12,15 +12,17 @@ public class Main {
     public static void main2() {
         // outln("Hello, world!");
         // outln("TEST");
-        // double[][] test = { { 1, 2, 3, 2 }, { 1, 2, 6, 2 }, { 2, 4, 9, 4 },{1,2,3,2} };
-        // double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
-        // double[] buffer;
-        // Matrix M = new Matrix(test);
-        // Matrix Ma = new Matrix(test2);
-        // System.out.println("Normal: ");
-        // M.tulisMatrix(); System.out.println();
-        // //System.out.printf("Determinan Cramer: %.20f %b\n", M.getDeterminan(Method.CRAMER), 0 == M.getDeterminan(Method.CRAMER));
-        // //System.out.printf("Determinan Gauss: %.20f %b\n\n", M.getDeterminan(Method.GAUSS), 0 == M.getDeterminan(Method.GAUSS));
+        double[][] test = { { 1, 20, 30 }, { 40, 1, 1 }, { 7, 0, 5 } };
+        double[][] test2 = { { 1 }, { 1 }, { 1 }, { 2 }};
+        double[] buffer;
+        Matrix M = new Matrix(test);
+        Matrix Ma = new Matrix(test2);
+        System.out.println("Normal: ");
+        M.tulisMatrix(); System.out.println();
+        System.out.printf("Determinan Cramer: %.26f %b\n", M.getDeterminan(Method.CRAMER), 0 == M.getDeterminan(Method.CRAMER));
+        System.out.printf("Determinan Gauss: %.26f %b\n\n", M.getDeterminan(Method.GAUSS), 0 == M.getDeterminan(Method.GAUSS));
+        System.out.printf("Determinan Gauss Jordan: %.26f %b\n\n", M.getDeterminan(Method.GAUSS_JORDAN), 0 == M.getDeterminan(Method.GAUSS_JORDAN));
+
         // System.out.println("Entry matrix: ");
         // //M.getEntryMatrix(2, 2).tulisMatrix(); System.out.println();
         // //System.out.println("Cofactor matrix: ");
