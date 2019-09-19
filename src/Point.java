@@ -1,5 +1,10 @@
 package tubes;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 
 public class Point {
     private double x, y;
@@ -45,6 +50,18 @@ public class Point {
     public static SPL interpolatePoint(Point[] p) {
         Matrix m = Point.toMatrix(p);
         return m.getSistemPersamaanLinear(Method.GAUSS);
+    }
+    
+    public static List<Point> readFile(String fileName) throws Exception {
+        Scanner scan = new Scanner(new File(fileName));
+        List<Point> list = new ArrayList<>();
+        String s = null;
+        while ((s = scan.nextLine()) != null) {
+            String[] strs = s.split(" ");
+            list.add(new Point(Double.parseDouble(strs[0]), Double.parseDouble(strs[1])));
+        }
+        scan.close();
+        return list;
     }
 
     //** Utility **//
