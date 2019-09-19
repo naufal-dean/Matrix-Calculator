@@ -33,9 +33,6 @@ public class Test {
             outln(b);
         }
     }
-    private static void doFileTests() {
-
-    }
     private static double roundDouble(double num, int decPlace) {
         num = num*Math.pow(10, decPlace);
         num = Math.round(num);
@@ -115,23 +112,10 @@ public class Test {
             {1, 2, -1, -4},
             {2, 3, -1, -11},
             {-2, 0, -3, 22}
-        }).getReducedEchelonForm(), (new Matrix(new double[][] {
+        }).getReducedEchelonForm(), new Matrix(new double[][] {
             {1, 0, 0, -8},
             {0, 1, 0, 1},
-            {0, 0, 1, -3}
-        })));
-        out(new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 1, 0 }
-        }).getSistemPersamaanLinear(Method.CRAMER).content[1].length);
-        outln();
-        outln(new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 }
-        }).content[1].length);
+            {0, 0, 1, -2}
+        }));
     }
 }

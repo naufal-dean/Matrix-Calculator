@@ -1,6 +1,5 @@
 package tubes;
 
-import java.util.*;
 
 public class Point {
     private double x, y;
@@ -45,7 +44,6 @@ public class Point {
 
     public static SPL interpolatePoint(Point[] p) {
         Matrix m = Point.toMatrix(p);
-
         return m.getSistemPersamaanLinear(Method.GAUSS);
     }
 
@@ -56,5 +54,10 @@ public class Point {
             return false;
         Point p = (Point)o;
         return x == p.x && y == p.y;
+    }
+
+    @Override
+    public String toString() {
+        return "<" + x + "," + y + ">";
     }
 }
