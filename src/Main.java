@@ -5,8 +5,8 @@ import static tubes.Console.*;
 
 public class Main {
     public static void main(String[] args) {
-        // ConsoleApp.start();
-        main2();
+        ConsoleApp.start();
+        // main2();
         // System.out.printf("%.100f", 0d);
     }
     public static void main2() {
@@ -46,9 +46,8 @@ public class Main {
                              { 0, 0, 0, 0, 0 } };
         Matrix M3 = new Matrix(test3);
         out(M3);
-        outln("-");
-        out(M3.getReducedEchelonForm(M3.getMaxColumn()-1));
-        out(M3.getSistemPersamaanLinear(Method.GAUSS_JORDAN));
+        outln(M3.getReducedEchelonForm(M3.getMaxColumn()-1));
+        outln(M3.getSistemPersamaanLinear(Method.GAUSS_JORDAN));
         // System.out.println("Matriks SPL: ");
         // M3.tulisMatrix();
         // outln("jadi gini:");

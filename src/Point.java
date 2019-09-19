@@ -48,8 +48,7 @@ public class Point {
     }
 
     public static SPL interpolatePoint(Point[] p) {
-        Matrix m = Point.toMatrix(p);
-        return m.getSistemPersamaanLinear(Method.GAUSS);
+        return Point.toMatrix(p).getSistemPersamaanLinear(Method.GAUSS);
     }
     
     public static List<Point> readFile(String fileName) throws Exception {

@@ -95,7 +95,7 @@ public class SPL {
                             v = -v;
                             sb.append(" - ");
                         } else
-                        sb.append(" + ");
+                            sb.append(" + ");
                     }
                 if (v != 0)
                     found = true;
@@ -109,6 +109,34 @@ public class SPL {
             if (i < content.length-1)
                 sb.append("\n");
         }
+        return sb.toString();
+    }
+
+    public String toPersamaanString() {
+        StringBuilder sb = new StringBuilder("y = ");
+        boolean found = false;
+        for (int i = content.length-1; i >= 1; i--) {
+            double v = content[i][0];
+            if (v == 0)
+                continue;
+            found = true;
+            if (i < content.length-1) {
+                if (v < 0) {
+                    v = -v;
+                    sb.append(" - ");
+                } else
+                    sb.append(" + ");
+            }
+            if (v == 1 && i == 1 || v != 1)
+                sb.append(String.format("(%.2f)", v));
+            if (i >= 2) {
+                sb.append("x");
+                if (i >= 3)
+                    sb.append("^" + (i-1));
+            }
+        }
+        if (!found)
+            sb.append(0);
         return sb.toString();
     }
 }

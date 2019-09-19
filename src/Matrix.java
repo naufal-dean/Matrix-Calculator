@@ -247,49 +247,17 @@ public class Matrix {
                 return res;
             }
             case GAUSS: {
-                Matrix M = this.copyMatrix();
-                int  i,j, idx;
-                //double c;
-                double det=1;
-                for(j=1; j<=M.getMaxRow() -1 ;j++){
-                    i = j;
-                    while((M.getElement(i,j) == 0) && (i<M.getMaxRow())){
-                        i++;
-                    }//cari ampe yang ga 0 dibarisannya
-                    idx = i;
-                    i = i+1;
-                    for(;i<=M.getMaxRow();i++){
-                        //eliminasi yang lainnya dengan baris idx
-                        //c = M.getElement(i,j)/M.getElement(idx,j);
-                        if (M.getElement(i, j)!=0){
-                            M.addOBE(i, idx, -M.getElement(i, j)/M.getElement(idx, j));/*setRow(i,(RowOperation.kaliC(M.getRow(i), 1/c)));*/
-                            //det *= M.getElement(idx, j)/M.getElement(i, j);
-                //M.setRow(i,(RowOperation.PlusTab(M.getRow(i),RowOperation.kaliC(M.getRow(idx),-1))));
-                        }
-                    }
-
-                        //pindahin ke paling atas
-                    if(j!=idx){
-                    det *=-1;
-                    M.swapOBE(j,idx);
-                    }
-                }
-                for (i=1; i<=M.getMaxRow();i++){
-                    det *= M.getElement(i,i);
-                }
-                return det;
+                double newDet = 1;
+                Matrix M = this.getEchelonForm(this.maxC);
+                for (int i = 1; i <= M.maxC; i++)
+                    newDet *= M.getElement(i, i);
+                return (newDet/M.scaledDet);
             }
             case GAUSS_JORDAN: {
                 double newDet = 1;
-                this.scaledDet = 1;
                 Matrix M = this.getReducedEchelonForm(this.maxC);
-                // System.out.println(M.scaledDet);
-
-                for (int i = 1; i <= M.maxC; i++) {
-                    // System.out.println(M.getElement(i, i));
+                for (int i = 1; i <= M.maxC; i++)
                     newDet *= M.getElement(i, i);
-                }
-                // System.out.println(M.scaledDet);
                 return (newDet/M.scaledDet);
             }
             case INVERSE: {
@@ -396,15 +364,10 @@ public class Matrix {
     }
 
     public Matrix getEchelonForm(int colMax) {
-        Matrix m = this.copyMatrix();
-
-        return m.getEchelonForm(1, 1, colMax);
+        return this.getEchelonForm(1, 1, colMax);
     }
 
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
-        // System.out.printf("%d %d %d\n", rowStart, colStart, colMax);
-        // this.tulisMatrix();
-        // System.out.printf("\n\n");
         Matrix m = this.scaledPartialPivoting(rowStart, colStart, colMax);
         if (rowStart == m.getMaxRow() || colStart == colMax) { // base
             //nambahin ini buat kasus baris matrix yang sama smua isinya
@@ -494,16 +457,13 @@ public class Matrix {
 
     //** Fungsi Sistem Persamaaan Linear **//
     public SPL getSistemPersamaanLinear(Method method) {
-        // NOTE: mendingan outputnya double ae.. ntar baru ubah ke string pas dibutuhin di luar
-        // daripada string, terus diubah jadi double pas butuh buat perhitungan
-        // + ganti nama ae jadi getSolution :v
         // Prekondisi: matriks yang diproses adalah matriks augmented
         double[] sol = new double[this.maxR+1];
         Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
 
         switch (method) {
-            case CRAMER: { // hanya untuk matriks augmented (n)*(n+1) -> (brarti harus validasi dulu dong(?)) + sama validasi klo det coefnya 0
+            case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
 
                 for (int i = 1; i <= this.maxR; i++) {
@@ -511,7 +471,7 @@ public class Matrix {
                     sol[i] = cramM.getDeterminan(Method.GAUSS)/coefM.getDeterminan(Method.GAUSS);
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
-                return new SPL(sol); // bingung gimana ngubahnya, sementara gini ae
+                return new SPL(sol);
             }
             case GAUSS: {
                 return new SPL(getEchelonForm(this.maxC-1));
@@ -520,7 +480,6 @@ public class Matrix {
                 return new SPL(getReducedEchelonForm(this.maxC-1));
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
-                //return new SPL(coefM.getInverseMatrix(Method.GAUSS_JORDAN).multiplyOPR(constM));
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
                 for (int i = 1; i <= this.maxR; i++) {

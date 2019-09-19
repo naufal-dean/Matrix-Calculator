@@ -33,8 +33,8 @@ public class ConsoleApp {
                 subMenu = num();
             }
             selectMenu(menu, subMenu);
-        } catch (Exception _e) {
-            outln("Error: Input tidak valid!");
+        } catch (Exception e) {
+            outln("Error: " + e.getMessage());
             enterToContinue();
             start();
         }
@@ -46,7 +46,7 @@ public class ConsoleApp {
         else
             try {
                 Matrix m;
-                Method method = Method.values()[subMenuIndex-1];
+                Method method = subMenuIndex >= 1 && subMenuIndex <= 4 ? Method.values()[subMenuIndex-1] : null;
                 switch (menuIndex) {
                     case 1:
                         m = readMatrix();
@@ -76,7 +76,7 @@ public class ConsoleApp {
                     case 6:
                         Point[] pts = readPoints();
                         outln("Hasil interpolasisasi point:");
-                        outln(Point.interpolatePoint(pts));
+                        outln(Point.interpolatePoint(pts).toPersamaanString());
                         break;
                     case 7:
                         System.exit(0);
@@ -85,8 +85,8 @@ public class ConsoleApp {
                         outln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
                         break;
                 }
-            } catch (Exception _e) {
-                outln("Error: Input tidak valid!");
+            } catch (Exception e) {
+                outln("Error: " + e.getMessage());
             }
         outln();
         enterToContinue();
@@ -125,7 +125,7 @@ public class ConsoleApp {
     private static Point[] readPoints() {
         out("Banyak point: ");
         int n = num();
-        outln("Masukkan point :");
+        outln("Masukkan point:");
         Point[] pts = new Point[n];
         for (int i = 0; i < n; i++)
             pts[i] = new Point(real(), real());
