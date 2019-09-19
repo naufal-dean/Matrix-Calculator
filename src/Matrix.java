@@ -1,5 +1,6 @@
 package tubes;
 
+import java.io.File;
 import java.util.*;
 
 public class Matrix {
@@ -222,10 +223,6 @@ public class Matrix {
         }
     }
 
-    private void addOBE(int r1, int r2) {
-        addOBE(r1, r2, 1);
-    }
-
     private void addOBE(int r1, int r2, double scale) {
         for (int c = 1; c <= maxC; c++)
             this.content[r1][c] += (this.content[r2][c] * scale);
@@ -278,7 +275,6 @@ public class Matrix {
                     det *= M.getElement(i,i);
                 }
                 return det;
-
             }
             case GAUSS_JORDAN: {
 
@@ -302,6 +298,24 @@ public class Matrix {
         return m;
     }
 
+    public static Matrix readFile(String fileName) throws Exception {
+        Scanner scan = new Scanner(new File(fileName));
+        List<String> list = new ArrayList<>();
+        String s = null;
+        while ((s = scan.nextLine()) != null)
+            list.add(s);
+        scan.close();
+        if (list.size() <= 0)
+            return new Matrix(0, 0);
+        Matrix m = new Matrix(list.size(), list.get(0).split(" ").length);
+        for (int i = 1; i <= m.maxR; i++) {
+            String[] strs = list.get(i-1).split(" ");
+            for (int j = 1; j <= m.maxC; j++)
+                m.setElement(i, j, Double.parseDouble(strs[j-1]));
+        }
+        return m;
+    }
+    
     public Matrix getTransposeMatrix() {
         double[][] tempVal = new double[this.maxC][this.maxR];
         double[][] subC = this.subMatrixContent(1, 1);

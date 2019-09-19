@@ -1,5 +1,8 @@
 package tubes;
 
+import java.io.FileWriter;
+
+
 import static tubes.Console.*;
 
 //camcam
@@ -71,7 +74,9 @@ public class ConsoleApp {
                         outln(m.getAdjointMatrix());
                         break;
                     case 6:
-                        // intPol();
+                        Point[] pts = readPoints();
+                        outln("Hasil interpolasisasi point:");
+                        outln(Point.interpolatePoint(pts));
                         break;
                     case 7:
                         System.exit(0);
@@ -105,6 +110,7 @@ public class ConsoleApp {
     }
 
     private static Matrix readMatrix(int r, int c) throws Exception {
+        outln("Masukkan matrix:");
         Matrix m = new Matrix(r, c);
         for (int i = 1; i <= r; i++) {
             String[] line = line().split(" ");
@@ -114,6 +120,16 @@ public class ConsoleApp {
         outln("Matrix yang Anda masukkan:");
         outln(m);
         return m;
+    }
+
+    private static Point[] readPoints() {
+        out("Banyak point: ");
+        int n = num();
+        outln("Masukkan point :");
+        Point[] pts = new Point[n];
+        for (int i = 0; i < n; i++)
+            pts[i] = new Point(real(), real());
+        return pts;
     }
 
     private static void enterToContinue() {
@@ -127,5 +143,12 @@ public class ConsoleApp {
 
     private static void printSubMenu() {
         outln(subMenu);
+    }
+
+    private static void writeFile(String fileName, Object o) throws Exception {
+        FileWriter writer = new FileWriter(fileName);
+        for (char c : o.toString().toCharArray())
+            writer.write(c);
+        writer.close();
     }
 }

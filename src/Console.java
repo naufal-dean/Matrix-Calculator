@@ -1,6 +1,5 @@
 package tubes;
 
-import java.io.*;
 import java.util.*;
 
 //camcam
@@ -19,8 +18,8 @@ public class Console {
     public static int num() {
         return scan.nextInt();
     }
-    public static float real() {
-        return scan.nextFloat();
+    public static double real() {
+        return scan.nextDouble();
     }
     public static String next() {
         return scan.next();
