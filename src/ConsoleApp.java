@@ -20,6 +20,7 @@ public class ConsoleApp {
                 + "2. Metode eliminasi Gauss-Jordan\n"
                 + "3. Metode matriks balikan\n"
                 + "4. Kaidah Cramer";
+    private static boolean testMode = false;
 
     public static void start() {
         try {
@@ -133,7 +134,7 @@ public class ConsoleApp {
     }
 
     private static void enterToContinue() {
-        outln("Tekan enter untuk kembali ke menu.");
+        outln("Tekan enter untuk kembali ke menu ~");
         line();
     }
 

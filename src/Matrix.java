@@ -7,7 +7,6 @@ public class Matrix {
     private double[][] content;
     private int maxR, maxC;
     private double scaledDet = 1;
-    private Scanner input = new Scanner(System.in);
 
     //** Konstruktor **//
     public Matrix(int maxR, int maxC) {
@@ -81,41 +80,6 @@ public class Matrix {
     }
 
     //** Utility **//
-    public void bacaMatrix() {
-        // Input maxR dan maxC
-        System.out.print("Jumlah baris: ");
-        this.maxR = input.nextInt();
-        System.out.print("Jumlah kolom: ");
-        this.maxC = input.nextInt();
-        while ((this.maxR <= 0) || (this.maxC <= 0)) {
-            System.out.println("Jumlah kolom dan baris harus positif.");
-
-            System.out.print("Jumlah baris: ");
-            this.maxR = input.nextInt();
-            System.out.print("Jumlah kolom: ");
-            this.maxC = input.nextInt();
-        }
-        // Inisialisasi content
-        this.content = new double[this.maxR+1][this.maxC+1];
-        // Input elemen
-        for (int i = 1; i <= this.maxR; i++) {
-            for (int j = 1; j <= this.maxC; j++) {
-                System.out.printf("Elemen[%d,%d]: ", i, j);
-                this.content[i][j] = input.nextDouble();
-            }
-        }
-    }
-
-    public void tulisMatrix() {
-        for (int i = 1; i <= this.maxR; i++) {
-            System.out.print("| ");
-            for (int j = 1; j <= this.maxC; j++) {
-                System.out.printf("%f ", this.content[i][j]);
-            }
-            System.out.println("|");
-        }
-    }
-
     public Matrix copyMatrix() {
         Matrix M = new Matrix(this.subMatrixContent(1, 1));
         M.scaledDet = this.scaledDet;
