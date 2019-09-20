@@ -69,7 +69,7 @@ public class Point {
         if (!(o instanceof Point))
             return false;
         Point p = (Point)o;
-        return x == p.x && y == p.y;
+        return Utils.doubleEquals(x, p.x) && Utils.doubleEquals(y, p.y);
     }
 
     @Override

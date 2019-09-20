@@ -12,17 +12,37 @@ public class SPL {
     // content[1][1] = -1;
     // content[1][2] = 2;
 
-    public SPL(Matrix m) {
-        // outln("BEFORE");
-        // out(m);
-        // outln("AFTER");
-        initREF(m.getReducedEchelonForm(m.getMaxColumn()-1));
-    }
+    public SPL() {}
 
     public SPL(double[][] sol) {
         this.content = new double[sol.length+1][];
         for (int i = 0; i < sol.length; i++)
             this.content[i+1] = Arrays.copyOf(sol[i], sol[i].length);
+    }
+
+    public static SPL getEchelonFormMethod(Matrix m) {
+        SPL spl = new SPL();
+        spl.initREF(m.getEchelonForm(m.getMaxColumn()-1));
+        spl.substituteEquations();
+        return spl;
+    }
+
+    public static SPL getReducedEchelonFormMethod(Matrix m) {
+        SPL spl = new SPL();
+        spl.initREF(m.getReducedEchelonForm(m.getMaxColumn()-1));
+        return spl;
+    }
+
+    public void substituteEquations() {
+        for (int i = this.content.length-2; i >= 1; i--) {
+            for (int j = i+1; j < this.content[i].length; j++) {
+                double s_up = this.content[i][j];
+                this.content[i][j] = 0;
+                this.content[i][0] += s_up*this.content[j][0];
+                for (int jj = j; jj < this.content[i].length-1; jj++)
+                    this.content[i][jj] += s_up*this.content[j][jj];
+            }
+        }
     }
 
     @Override
@@ -36,7 +56,7 @@ public class SPL {
             if (content[i].length != content2[i].length)
                 return false;
             for (int j = 0; j < content[i].length; j++)
-                if (content[i][j] != content2[i][j])
+                if (!Utils.doubleEquals(content[i][j], content2[i][j]))
                   return false;
         }
         return true;

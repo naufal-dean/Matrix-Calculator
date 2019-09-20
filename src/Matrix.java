@@ -207,7 +207,7 @@ public class Matrix {
             return false;
         for (int r = 1; r <= this.maxR; ++r)
             for (int c = 1; c <= this.maxC; ++c)
-                if (m.getElement(r, c) != this.content[r][c])
+                if (!Utils.doubleEquals(m.getElement(r, c), this.content[r][c]))
                     return false;
         return true;
     }
@@ -261,8 +261,7 @@ public class Matrix {
                 return (newDet/M.scaledDet);
             }
             case INVERSE: {
-
-                break;
+                return 1/this.getInverseMatrix(Method.CRAMER).getDeterminan(Method.CRAMER);
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");
@@ -363,6 +362,10 @@ public class Matrix {
         }
     }
 
+    public Matrix getEchelonForm() {
+        return this.getEchelonForm(this.maxC-1);
+    }
+
     public Matrix getEchelonForm(int colMax) {
         return this.getEchelonForm(1, 1, colMax);
     }
@@ -378,7 +381,6 @@ public class Matrix {
 
             if (colStart == colMax && rowStart < m.getMaxRow()) {
                 for (int i = m.getMaxRow(); i > rowStart; i--) {
-                    m.scaledDet *= (1/m.getElement(rowStart, colStart));
                     m.addOBE(i, rowStart, -m.getElement(i, colMax));
                 }
             }
@@ -430,25 +432,25 @@ public class Matrix {
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
         double rowMax;
         double scaledMax = -1;
-        int scaledMaxIdx = 0;
+        int scaledMaxIdx = rowStart;
 
         Matrix m = this.copyMatrix();
 
         for (int i = rowStart; i <= m.maxR; i++) {
-            rowMax = 0;
+            rowMax = -1;
             for (int j = colStart; j <= colMax; j++) {
                 if (Math.abs(m.getElement(i, j)) > rowMax) {
                     rowMax = Math.abs(m.getElement(i, j));
                 }
             }
-            if (rowMax!=0){
+            if (rowMax != 0) {
                 if (Math.abs(m.getElement(i, colStart)/rowMax) > scaledMax) {
                     scaledMax = Math.abs(m.getElement(i, colStart)/rowMax);
                     scaledMaxIdx = i;
                 }
             }
         }
-        if (scaledMaxIdx != 0){
+        if (scaledMaxIdx != rowStart) {
             m.scaledDet *= (-1);
             m.swapOBE(scaledMaxIdx, rowStart);
         }
@@ -464,22 +466,28 @@ public class Matrix {
 
         switch (method) {
             case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
+                if (!isAugmentedSize())
+                    throw new RuntimeException("Matrix is not augmented matrix!");
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
-
+                double detCoef = coefM.getDeterminan(Method.CRAMER);
+                if (Utils.doubleEquals(detCoef, 0))
+                    throw new RuntimeException("Determinant of coefficient matrix is zero!");
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
-                    sol[i] = cramM.getDeterminan(Method.GAUSS)/coefM.getDeterminan(Method.GAUSS);
+                    sol[i] = cramM.getDeterminan(Method.GAUSS)/detCoef;
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
                 return new SPL(sol);
             }
             case GAUSS: {
-                return new SPL(getEchelonForm(this.maxC-1));
+                return SPL.getEchelonFormMethod(this);
             }
             case GAUSS_JORDAN: {
-                return new SPL(getReducedEchelonForm(this.maxC-1));
+                return SPL.getReducedEchelonFormMethod(this);
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
+                if (!isAugmentedSize())
+                    throw new RuntimeException("Matrix is not augmented matrix!");
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
                 for (int i = 1; i <= this.maxR; i++) {
@@ -489,5 +497,9 @@ public class Matrix {
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");
+    }
+
+    public boolean isAugmentedSize() {
+        return this.maxC == this.maxR+1;
     }
 }

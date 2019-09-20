@@ -1,12 +1,11 @@
-package tubes.test;
+package tubes;
 
 import static tubes.Console.*;
-import tubes.*;
 
 //camcam
 public class Test {
     // region Test
-    private static String green = "", red = "", yellow = "";
+    public static String green = "", red = "", yellow = "", a = "\u001b[1;34m", b = "\u001b[1;35m", c = "\u001b[1;36m", d = "\u001b[1;37m";
     private static boolean usingColor = false;
     private static int succeed, failed, index;
     public static void main(String[] args) {
@@ -28,8 +27,10 @@ public class Test {
     }
     private static void test(String msg, Object a, Object b) {
         if (!test(msg, a.equals(b))) {
+            out(yellow);
             outln(a);
-            outln("IS NOT EQUAL");
+            outln(red + "DOESN'T EQUAL");
+            out(yellow);
             outln(b);
         }
     }
@@ -79,9 +80,9 @@ public class Test {
             { 0, 0, 0, 0, 1 }
         })));
 
-        test("Cek nilai SPL rownya lebih banyak", new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
+        test("Cek nilai SPL(gauss_jordan) rownya lebih banyak", new Matrix(new double[][] {
+            { 1, 1, 3, 0, 12 },
+            { 0, 1, 1, 0, 5 },
             { 0, 0, 1, 0, 3 },
             { 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0 },
@@ -90,6 +91,23 @@ public class Test {
             { 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0 },
         }).getSistemPersamaanLinear(Method.GAUSS_JORDAN).equals(new SPL(new double[][] {
+            { 1, 0, 0, 0, 0 },
+            { 2, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1 }
+        })));
+
+        test("Cek nilai SPL(gauss) rownya lebih banyak", new Matrix(new double[][] {
+            { 1, 1, 3, 0, 12 },
+            { 0, 1, 1, 0, 5 },
+            { 0, 0, 1, 0, 3 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+        }).getSistemPersamaanLinear(Method.GAUSS).equals(new SPL(new double[][] {
             { 1, 0, 0, 0, 0 },
             { 2, 0, 0, 0, 0 },
             { 3, 0, 0, 0, 0 },
@@ -107,6 +125,30 @@ public class Test {
             { 3, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0 }
         })));
+
+        test("Cek nilai SPL tanpa free variabel dengan metode GAUSS", new Matrix(new double[][] {
+            { 1, 0, 0, 0, 1 },
+            { 0, 1, 0, 0, 2 },
+            { 0, 0, 1, 0, 3 },
+            { 0, 0, 0, 1, 0 }
+        }).getSistemPersamaanLinear(Method.GAUSS).equals(new SPL(new double[][] {
+            { 1, 0, 0, 0, 0 },
+            { 2, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 }
+        })));
+
+        test("Cek nilai SPL tanpa free variabel dengan metode GAUSS no telp", new Matrix(new double[][] {
+            { 0, 8, 3, 2, 5 },
+            { 4, 0, 9, 3, 2 },
+            { 9, 1, 0, 8, 5 },
+            { 8, 1, 5, 8, 5 }
+        }).getSistemPersamaanLinear(Method.GAUSS), new SPL(new double[][] {
+            { 95d/727, 0, 0, 0, 0 },
+            { 372d/727, 0, 0, 0, 0 },
+            { 19d/727, 0, 0, 0, 0 },
+            { 301d/727, 0, 0, 0, 0 }
+        }));
 
         test("Cek REF", new Matrix(new double[][] {
             {1, 2, -1, -4},
