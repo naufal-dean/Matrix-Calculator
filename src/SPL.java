@@ -137,7 +137,7 @@ public class SPL {
         boolean found = false;
         for (int i = content.length-1; i >= 1; i--) {
             double v = content[i][0];
-            if (v == 0)
+            if (Utils.doubleEquals(v, 0))
                 continue;
             found = true;
             if (i < content.length-1) {
@@ -147,7 +147,8 @@ public class SPL {
                 } else
                     sb.append(" + ");
             }
-            if (v == 1 && i == 1 || v != 1)
+            boolean isOne = Utils.doubleEquals(v, 1);
+            if (isOne && i == 1 || !isOne)
                 sb.append(String.format("(%.2f)", v));
             if (i >= 2) {
                 sb.append("x");

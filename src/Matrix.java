@@ -119,7 +119,7 @@ public class Matrix {
         for (int r = 1; r <= this.maxR; r++)
             for (int c = 1; c <= this.maxC; c++) {
                 double v = this.content[r][c];
-                sb.append(String.format("%f", v == 0 ? 0 : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
+                sb.append(String.format("%.2f", v == 0 ? 0 : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
             }
         return sb.toString();
     }
@@ -201,7 +201,7 @@ public class Matrix {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.NOT_SQUARE_ERROR);
         switch (method) {
-            case CRAMER: {
+            case COFACTOR_EXPANSION: {
                 if (this.maxR == 1)
                     return this.content[1][1];
                 float res = 0;
@@ -243,9 +243,8 @@ public class Matrix {
     public static Matrix readFile(String fileName) throws Exception {
         Scanner scan = new Scanner(new File(fileName));
         List<String> list = new ArrayList<>();
-        String s = null;
-        while ((s = scan.nextLine()) != null)
-            list.add(s);
+        while (scan.hasNextLine())
+            list.add(scan.nextLine());
         scan.close();
         if (list.size() <= 0)
             return new Matrix(0, 0);
@@ -312,7 +311,7 @@ public class Matrix {
         if (this.getDeterminan(Method.GAUSS) == 0)
             throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
         switch (method) {
-            case CRAMER: {
+            case ADJOIN: {
                 return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
             }
             case GAUSS_JORDAN: {

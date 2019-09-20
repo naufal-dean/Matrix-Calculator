@@ -2,7 +2,6 @@ package tubes;
 
 import java.io.FileWriter;
 
-
 import static tubes.Console.*;
 
 //camcam
@@ -20,124 +19,120 @@ public class ConsoleApp {
                 + "2. Metode eliminasi Gauss-Jordan\n"
                 + "3. Metode matriks balikan\n"
                 + "4. Kaidah Cramer";
-    private static boolean testMode = false;
 
-    private static void start() {
-        ConsoleApp.start(ConsoleApp.testMode);
-    }
-
-    public static void start(boolean testMode) {
-        ConsoleApp.testMode = testMode;
+    public static void start() {
         try {
             printMenu();
-            info("Pilih menu: ");
+            out("Pilih menu: ");
             int menu = num(), subMenu = -1;
+            String fileName = "";
             if (menu >= 1 && menu <= 3) {
-                infoln();
+                outln();
                 printSubMenu();
-                info("Pilih metode: ");
+                out("Pilih metode: ");
                 subMenu = num();
             }
-            selectMenu(menu, subMenu);
+            // Error
+            out("Nama file input (kosongkan untuk menulis sendiri): ");
+            fileName = next();
+            selectMenu(menu, subMenu, fileName);
         } catch (Exception e) {
-            infoln("Error: " + e.getMessage());
+            error(e);
             enterToContinue();
             start();
         }
     }
 
-    private static void selectMenu(int menuIndex, int subMenuIndex) {
-        if (menuIndex >= 1 && menuIndex <= 3 && (subMenuIndex < 1 || subMenuIndex > 4))
-            infoln("Index \"" + subMenuIndex + "\" tidak termasuk pilihan index menu metode!");
-        else
-            try {
-                Matrix m;
+    private static void selectMenu(int menuIndex, int subMenuIndex, String fileName) {
+        try {
+            boolean useFile = !fileName.isBlank();
+            if (menuIndex >= 1 && menuIndex <= 3 && (subMenuIndex < 1 || subMenuIndex > 4))
+                outln("Index \"" + subMenuIndex + "\" tidak termasuk pilihan index menu metode!");
+            else {
+                Matrix m = 1 <= menuIndex && menuIndex <= 5 ? useFile ? Matrix.readFile(fileName) : 
+                    2 <= menuIndex && menuIndex <= 4 ? readSquareMatrix() : readMatrix() : null;
                 Method method = subMenuIndex >= 1 && subMenuIndex <= 4 ? Method.values()[subMenuIndex-1] : null;
+                Object res = null;
                 switch (menuIndex) {
                     case 1:
-                        m = readMatrix();
-                        infoln("Solusi-nya:");
-                        out(m.getSistemPersamaanLinear(method));
+                        outln("Solusi-nya:");
+                        out(res = m.getSistemPersamaanLinear(method));
                         break;
                     case 2:
-                        m = readSquareMatrix();
-                        infoln("Determinan-nya:");
-                        outln(m.getDeterminan(method));
+                        outln("Determinan-nya:");
+                        outln(res = m.getDeterminan(method));
                         break;
                     case 3:
-                        m = readMatrix();
-                        infoln("Matrix inverse-nya:");
-                        outln(m.getInverseMatrix(method));
+                        outln("Matrix inverse-nya:");
+                        outln(res = m.getInverseMatrix(method));
                         break;
                     case 4:
-                        m = readMatrix();
-                        infoln("Matrix kofaktor-nya:");
-                        outln(m.getCofactorMatrix());
+                        outln("Matrix kofaktor-nya:");
+                        outln(res = m.getCofactorMatrix());
                         break;
                     case 5:
-                        m = readMatrix();
-                        infoln("Matrix adjoin-nya:");
-                        outln(m.getAdjointMatrix());
+                        outln("Matrix adjoin-nya:");
+                        outln(res = m.getAdjointMatrix());
                         break;
                     case 6:
-                        Point[] pts = readPoints();
-                        infoln("Hasil interpolasisasi point:");
-                        outln(Point.interpolatePoint(pts).toPersamaanString());
+                        Point[] pts = useFile ? Point.readFile(fileName) : readPoints();
+                        outln("Hasil interpolasi poin:");
+                        outln(res = Point.interpolatePoint(pts).toPersamaanString());
                         break;
                     case 7:
                         System.exit(0);
                         break;
                     default:
-                        infoln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
+                        outln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
                         break;
                 }
-            } catch (Exception e) {
-                error(e);
-                infoln("Error: " + e.getMessage());
+                if (res != null) {
+                    // Error
+                    out("Nama file output (kosongkan jika tidak perlu): ");
+                    fileName = next();
+                    if (!fileName.isBlank())
+                        writeFile(fileName, res);
+                }
             }
-        infoln();
+        } catch (Exception e) {
+            error(e);
+        }
+        outln();
         enterToContinue();
         start();
     }
 
-    private static void error(Exception e) {
-        if (testMode && e instanceof MatrixException)
-            outln(((MatrixException)e).errorType.identifier);
-    }
-
     private static Matrix readMatrix() throws Exception {
-        info("Ukuran baris(row): ");
+        out("Ukuran baris(row): ");
         int r = num();
-        info("Ukuran kolom(column): ");
+        out("Ukuran kolom(column): ");
         int c = num();
-        line();
         return readMatrix(r, c);
     }
 
     private static Matrix readSquareMatrix() throws Exception {
-        info("Ukuran matriks: ");
+        out("Ukuran matriks: ");
         int size = num();
-        line();
         return readMatrix(size, size);
     }
 
     private static Matrix readMatrix(int r, int c) throws Exception {
-        infoln("Masukkan matrix:");
+        outln("Masukkan matrix:");
         Matrix m = new Matrix(r, c);
         for (int i = 1; i <= r; i++) {
             String[] line = line().split(" ");
             for (int j = 1; j <= c; j++)
                 m.setElement(i, j, Float.parseFloat(line[j-1]));
         }
-        infoln("Matrix yang Anda masukkan:");
-        infoln(m);
+        outln("Matrix yang Anda masukkan:");
+        outln(m);
         return m;
     }
 
     private static Point[] readPoints() {
-        info("Banyak point: ");
+        out("Banyak point: ");
         int n = num();
-        infoln("Masukkan point:");
+        outln("Masukkan point:");
         Point[] pts = new Point[n];
         for (int i = 0; i < n; i++)
             pts[i] = new Point(real(), real());
@@ -145,29 +140,22 @@ public class ConsoleApp {
     }
 
     private static void enterToContinue() {
-        infoln("Tekan enter untuk kembali ke menu ~");
+        outln("Tekan enter untuk kembali ke menu.");
         line();
     }
 
     private static void printMenu() {
-        infoln(menu);
+        outln(menu);
     }
 
     private static void printSubMenu() {
-        infoln(subMenu);
+        outln(subMenu);
     }
 
-    private static void info(Object o) {
-        if (!testMode)
-            out(o);
-    }
-
-    private static void infoln(Object o) {
-        info(o + "\n");
-    }
-
-    private static void infoln() {
-        infoln("");
+    private static void error(Exception e) {
+        outln("Error: " + e.getMessage());
+        //debug
+        e.printStackTrace();
     }
 
     private static void writeFile(String fileName, Object o) throws Exception {

@@ -2,9 +2,10 @@ package tubes;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.Set;
 
 public class Point {
     private double x, y;
@@ -51,16 +52,20 @@ public class Point {
         return Point.toMatrix(p).getSistemPersamaanLinear(Method.GAUSS);
     }
     
-    public static List<Point> readFile(String fileName) throws Exception {
+    public static Point[] readFile(String fileName) throws Exception {
         Scanner scan = new Scanner(new File(fileName));
         List<Point> list = new ArrayList<>();
-        String s = null;
-        while ((s = scan.nextLine()) != null) {
-            String[] strs = s.split(" ");
-            list.add(new Point(Double.parseDouble(strs[0]), Double.parseDouble(strs[1])));
+        Set<Double> xs = new HashSet<>();
+        while (scan.hasNextLine()) {
+            String[] strs = scan.nextLine().split(" ");
+            double x = Double.parseDouble(strs[0]);
+            if (xs.contains(x))
+                throw new MatrixException(MatrixErrorIdentifier.INTERPOLATION_ERROR);
+            xs.add(x);
+            list.add(new Point(x, Double.parseDouble(strs[1])));
         }
         scan.close();
-        return list;
+        return list.toArray(new Point[list.size()]);
     }
 
     //** Utility **//
@@ -74,6 +79,6 @@ public class Point {
 
     @Override
     public String toString() {
-        return "<" + x + "," + y + ">";
+        return String.format("<%.2f,%.2f>", x, y);
     }
 }

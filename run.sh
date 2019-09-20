@@ -1,3 +1,2 @@
 ./compile.sh
-cd bin/
-java -cp . tubes.Main
+java -cp ./bin/ tubes.Main

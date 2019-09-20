@@ -6,7 +6,8 @@ public enum MatrixErrorIdentifier {
     DIFFERENT_SIZE_ERROR("different_size_error", "Different matrix size!"),
     NOT_SQUARE_ERROR("not_square_error", "Max row and max column are not the same! No determinant."),
     DETERMINANT_ZERO_ERROR("determinant_zero_error", "Max row and max column are not the same! No determinant."),
-    NOT_AUGMENTED_ERROR("not_augmented_error", "Matrix is not augmented matrix!");
+    NOT_AUGMENTED_ERROR("not_augmented_error", "Matrix is not augmented matrix!"),
+    INTERPOLATION_ERROR("interpolation_error", "Interpolation error!");
     public String identifier, msg;
     private MatrixErrorIdentifier(String identifier, String msg) {
         this.identifier = identifier;

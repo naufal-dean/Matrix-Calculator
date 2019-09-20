@@ -27,4 +27,7 @@ public class Console {
     public static String line() {
         return scan.nextLine();
     }
+    public static boolean hasNextLine() {
+        return scan.hasNextLine();
+    }
 }
