@@ -92,9 +92,8 @@ public class Matrix {
 
     public double[][] subMatrixContent(int startR, int startC, int endR, int endC) {
         double[][] sub = new double[endR + 1 - startR][endC + 1 - startC];
-        for (int i = 0; i < (endR + 1 - startR); i++) {
+        for (int i = 0; i < (endR + 1 - startR); i++)
             sub[i] = Arrays.copyOfRange(this.content[i + startR], startC, endC + 1);
-        }
         return sub;
     }
 
@@ -128,7 +127,7 @@ public class Matrix {
     //** Operasi pada matriks **//
     public Matrix multiplyOPR(Matrix m) {
         if (this.maxC != m.maxR)
-            throw new RuntimeException("Column of the left matrix is not equal to row of the right matrix!");
+            throw new MatrixException(MatrixErrorIdentifier.MULTIPLY_ERROR);
         double temp = 0;
         Matrix res = new Matrix(this.maxR, m.maxC);
         for (int i = 1; i <= this.maxR; i++) {
@@ -153,7 +152,7 @@ public class Matrix {
 
     public Matrix addOPR(Matrix m) {
         if (this.maxR != m.maxR || this.maxC != m.maxC)
-            throw new RuntimeException("Different matrix size!");
+            throw new MatrixException(MatrixErrorIdentifier.DIFFERENT_SIZE_ERROR);
         Matrix res = copyMatrix();
         for (int i = 1; i <= maxR; i++)
             for (int j = 1; j <= maxC; j++)
@@ -200,7 +199,7 @@ public class Matrix {
     //nopal (NOTE: tambahin lagi tiap method)
     public double getDeterminan(Method method) {
         if (this.maxR != this.maxC)
-            throw new RuntimeException("Max row and max column are not the same! No determinant.");
+            throw new MatrixException(MatrixErrorIdentifier.NOT_SQUARE_ERROR);
         switch (method) {
             case CRAMER: {
                 if (this.maxR == 1)
@@ -309,9 +308,9 @@ public class Matrix {
 
     public Matrix getInverseMatrix(Method method) {
         if (this.maxR != this.maxC)
-            throw new RuntimeException("Max row and max column are not the same! No inverse matrix.");
+            throw new MatrixException(MatrixErrorIdentifier.DIFFERENT_SIZE_ERROR);
         if (this.getDeterminan(Method.GAUSS) == 0)
-            throw new RuntimeException("Matrix is singular! No inverse matrix.");
+            throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
         switch (method) {
             case CRAMER: {
                 return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
@@ -322,7 +321,7 @@ public class Matrix {
                 return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
             }
             default: // GAUSS and INVERSE are not supported (?)
-                throw new RuntimeException("Method " + method.toString().toLowerCase() + " is not supported for getting inverse matrix.");
+                throw new RuntimeException("Method " + method + " is not supported for getting inverse matrix.");
         }
     }
 
@@ -431,11 +430,11 @@ public class Matrix {
         switch (method) {
             case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
                 if (!isAugmentedSize())
-                    throw new RuntimeException("Matrix is not augmented matrix!");
+                    throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
                 double detCoef = coefM.getDeterminan(Method.CRAMER);
                 if (Utils.doubleEquals(detCoef, 0))
-                    throw new RuntimeException("Determinant of coefficient matrix is zero!");
+                    throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
                     sol[i] = cramM.getDeterminan(Method.GAUSS)/detCoef;
@@ -451,7 +450,7 @@ public class Matrix {
             }
             case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
                 if (!isAugmentedSize())
-                    throw new RuntimeException("Matrix is not augmented matrix!");
+                    throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
 
                 for (int i = 1; i <= this.maxR; i++) {

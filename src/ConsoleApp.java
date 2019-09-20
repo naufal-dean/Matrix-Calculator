@@ -22,20 +22,25 @@ public class ConsoleApp {
                 + "4. Kaidah Cramer";
     private static boolean testMode = false;
 
-    public static void start() {
+    private static void start() {
+        ConsoleApp.start(ConsoleApp.testMode);
+    }
+
+    public static void start(boolean testMode) {
+        ConsoleApp.testMode = testMode;
         try {
             printMenu();
-            out("Pilih menu: ");
+            info("Pilih menu: ");
             int menu = num(), subMenu = -1;
             if (menu >= 1 && menu <= 3) {
-                outln();
+                infoln();
                 printSubMenu();
-                out("Pilih metode: ");
+                info("Pilih metode: ");
                 subMenu = num();
             }
             selectMenu(menu, subMenu);
         } catch (Exception e) {
-            outln("Error: " + e.getMessage());
+            infoln("Error: " + e.getMessage());
             enterToContinue();
             start();
         }
@@ -43,7 +48,7 @@ public class ConsoleApp {
 
     private static void selectMenu(int menuIndex, int subMenuIndex) {
         if (menuIndex >= 1 && menuIndex <= 3 && (subMenuIndex < 1 || subMenuIndex > 4))
-            outln("Index \"" + subMenuIndex + "\" tidak termasuk pilihan index menu metode!");
+            infoln("Index \"" + subMenuIndex + "\" tidak termasuk pilihan index menu metode!");
         else
             try {
                 Matrix m;
@@ -51,82 +56,88 @@ public class ConsoleApp {
                 switch (menuIndex) {
                     case 1:
                         m = readMatrix();
-                        outln("Solusi-nya:");
+                        infoln("Solusi-nya:");
                         out(m.getSistemPersamaanLinear(method));
                         break;
                     case 2:
                         m = readSquareMatrix();
-                        outln("Determinan-nya:");
+                        infoln("Determinan-nya:");
                         outln(m.getDeterminan(method));
                         break;
                     case 3:
                         m = readMatrix();
-                        outln("Matrix inverse-nya:");
+                        infoln("Matrix inverse-nya:");
                         outln(m.getInverseMatrix(method));
                         break;
                     case 4:
                         m = readMatrix();
-                        outln("Matrix kofaktor-nya:");
+                        infoln("Matrix kofaktor-nya:");
                         outln(m.getCofactorMatrix());
                         break;
                     case 5:
                         m = readMatrix();
-                        outln("Matrix adjoin-nya:");
+                        infoln("Matrix adjoin-nya:");
                         outln(m.getAdjointMatrix());
                         break;
                     case 6:
                         Point[] pts = readPoints();
-                        outln("Hasil interpolasisasi point:");
+                        infoln("Hasil interpolasisasi point:");
                         outln(Point.interpolatePoint(pts).toPersamaanString());
                         break;
                     case 7:
                         System.exit(0);
                         break;
                     default:
-                        outln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
+                        infoln("Index \"" + menuIndex + "\" tidak termasuk pilihan index menu!");
                         break;
                 }
             } catch (Exception e) {
-                outln("Error: " + e.getMessage());
+                error(e);
+                infoln("Error: " + e.getMessage());
             }
-        outln();
+        infoln();
         enterToContinue();
         start();
     }
 
+    private static void error(Exception e) {
+        if (testMode && e instanceof MatrixException)
+            outln(((MatrixException)e).errorType.identifier);
+    }
+
     private static Matrix readMatrix() throws Exception {
-        out("Ukuran baris(row): ");
+        info("Ukuran baris(row): ");
         int r = num();
-        out("Ukuran kolom(column): ");
+        info("Ukuran kolom(column): ");
         int c = num();
         line();
         return readMatrix(r, c);
     }
 
     private static Matrix readSquareMatrix() throws Exception {
-        out("Ukuran matriks: ");
+        info("Ukuran matriks: ");
         int size = num();
         line();
         return readMatrix(size, size);
     }
 
     private static Matrix readMatrix(int r, int c) throws Exception {
-        outln("Masukkan matrix:");
+        infoln("Masukkan matrix:");
         Matrix m = new Matrix(r, c);
         for (int i = 1; i <= r; i++) {
             String[] line = line().split(" ");
             for (int j = 1; j <= c; j++)
                 m.setElement(i, j, Float.parseFloat(line[j-1]));
         }
-        outln("Matrix yang Anda masukkan:");
-        outln(m);
+        infoln("Matrix yang Anda masukkan:");
+        infoln(m);
         return m;
     }
 
     private static Point[] readPoints() {
-        out("Banyak point: ");
+        info("Banyak point: ");
         int n = num();
-        outln("Masukkan point:");
+        infoln("Masukkan point:");
         Point[] pts = new Point[n];
         for (int i = 0; i < n; i++)
             pts[i] = new Point(real(), real());
@@ -134,16 +145,29 @@ public class ConsoleApp {
     }
 
     private static void enterToContinue() {
-        outln("Tekan enter untuk kembali ke menu ~");
+        infoln("Tekan enter untuk kembali ke menu ~");
         line();
     }
 
     private static void printMenu() {
-        outln(menu);
+        infoln(menu);
     }
 
     private static void printSubMenu() {
-        outln(subMenu);
+        infoln(subMenu);
+    }
+
+    private static void info(Object o) {
+        if (!testMode)
+            out(o);
+    }
+
+    private static void infoln(Object o) {
+        info(o + "\n");
+    }
+
+    private static void infoln() {
+        infoln("");
     }
 
     private static void writeFile(String fileName, Object o) throws Exception {
