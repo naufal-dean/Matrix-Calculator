@@ -30,4 +30,7 @@ public class Console {
     public static boolean hasNextLine() {
         return scan.hasNextLine();
     }
+    public static void clear() {
+        outln("\033[H\033[2J");
+    }
 }

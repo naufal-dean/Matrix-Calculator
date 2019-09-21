@@ -1,5 +1,7 @@
 package tubes;
 
+import java.io.File;
+import java.util.Scanner;
 
 import static tubes.Console.*;
 
@@ -40,7 +42,19 @@ public class Test {
         }
     }
     private static void doTheTestFromFile() {
-
+        File[] files = new File("./test/").listFiles();
+        Scanner scan = null;
+        for (File f : files) {
+            try {
+                scan = new Scanner(f);
+                
+            } catch (Exception e) {
+                outln(red + "Skipping file: " + yellow + f);
+                outln(red + "Error: " + e.getMessage());
+            }
+            if (scan != null)
+                scan.close();
+        }
     }
     // endregion
     private static void doTheTests() {
