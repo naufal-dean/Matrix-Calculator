@@ -58,29 +58,34 @@ public class ConsoleApp {
             Object res = null;
             switch (menuIndex) {
                 case 1:
+                    res = m.getSistemPersamaanLinear(method);
                     outln("Solusi-nya:");
-                    out(res = m.getSistemPersamaanLinear(method));
+                    out(res);
                     break;
                 case 2:
+                    res = m.getDeterminan(method);
                     outln("Determinan-nya:");
-                    outln(res = m.getDeterminan(method));
+                    outln(res);
                     break;
                 case 3:
+                    res = m.getInverseMatrix(method);
                     outln("Matrix inverse-nya:");
-                    outln(res = m.getInverseMatrix(method));
+                    outln(res);
                     break;
                 case 4:
+                    res = m.getCofactorMatrix();
                     outln("Matrix kofaktor-nya:");
-                    outln(res = m.getCofactorMatrix());
+                    outln(res);
                     break;
                 case 5:
+                    res = m.getAdjointMatrix();
                     outln("Matrix adjoin-nya:");
-                    outln(res = m.getAdjointMatrix());
+                    outln(res);
                     break;
                 case 6:
-                    Point[] pts = useFile ? Point.readFile(fileName) : readPoints();
+                    res = Point.interpolatePoint(useFile ? Point.readFile(fileName) : readPoints()).toPersamaanString();
                     outln("Hasil interpolasi poin:");
-                    outln(res = Point.interpolatePoint(pts).toPersamaanString());
+                    outln(res);
                     break;
                 case 7:
                     System.exit(0);
