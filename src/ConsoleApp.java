@@ -30,7 +30,7 @@ public class ConsoleApp {
             String fileName = "";
             if (menu >= 1 && menu <= 3) {
                 outln();
-                printSubMenu();
+                printSubMenu(menu);
                 out("Pilih metode: ");
                 subMenu = num();line();
                 if (menu >= 1 && menu <= 3 && (subMenu < 1 || subMenu > 4))
@@ -147,7 +147,7 @@ public class ConsoleApp {
     }
 
     private static void enterToContinue() {
-        outln("Tekan enter untuk kembali ke menu.");
+        out("Tekan enter untuk kembali ke menu.");
         line();
         clear();
     }
@@ -156,16 +156,16 @@ public class ConsoleApp {
         outln(menu);
     }
 
-    private static void printSubMenu() {
+    private static void printSubMenu(int menu) {
         outln(subMenu);
     }
 
     private static void error(Exception e) {
-        out("Error: ");
+        out(red + "Error: ");
         if (e instanceof MatrixException) {
-            outln(((MatrixException)e).errorType.msg);
+            err(((MatrixException)e).errorType.msg);
         } else {
-            outln(e.getMessage());
+            err(e.getMessage());
         }
         //debug
         // e.printStackTrace();

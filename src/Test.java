@@ -8,21 +8,23 @@ import static tubes.Console.*;
 //camcam
 public class Test {
     // region Test
-    public static String green = "", red = "", yellow = "";
-    private static boolean usingColor = false;
     private static int succeed, failed, index;
     public static void main(String[] args) {
         useColor();
         outln(yellow + "=====================================");
-        doTheTestFromFile();
-        doTheTests();
+        outln(yellow + "Testing from test files:");
+        try {
+            doTheTestFromFile();
+        } catch (Exception e) {
+            err("~ Uncaught exception! Error while reading file tests.");
+        }
+        outln(yellow + "Testing from hard-coded tests:");
+        try {
+            doTheTests();
+        } catch (Exception e) {
+            err("~ Uncaught exception! Error while doing the hard-coded tests.");
+        }
         outln(yellow + "=====[" + green + "SUCCEED: " + succeed + yellow + "]====[" + red + "FAILED: " + failed + yellow + "]=====");
-    }
-    private static void useColor() {
-        usingColor = true;
-        green = "\u001b[1;32m";
-        red = "\u001b[1;31m";
-        yellow = "\u001b[1;33m";
     }
     private static boolean check(String msg, boolean value) {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
@@ -44,17 +46,18 @@ public class Test {
     private static void doTheTestFromFile() {
         File[] files = new File("./test/").listFiles();
         Scanner scan = null;
-        for (File f : files) {
-            try {
-                scan = new Scanner(f);
-                
-            } catch (Exception e) {
-                outln(red + "Skipping file: " + yellow + f);
-                outln(red + "Error: " + e.getMessage());
+        if (files != null)
+            for (File f : files) {
+                try {
+                    scan = new Scanner(f);
+                    
+                } catch (Exception e) {
+                    outln(red + "Skipping file: " + yellow + f);
+                    outln(red + "Error: " + e.getMessage());
+                }
+                if (scan != null)
+                    scan.close();
             }
-            if (scan != null)
-                scan.close();
-        }
     }
     // endregion
     private static void doTheTests() {
