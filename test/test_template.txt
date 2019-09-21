@@ -1,0 +1,33 @@
+<message>
+<menuIndex> <subMenuIndex(if needed)>
+if matrix {
+    <n> <m>
+    <a11> <a12> .. <a1m>
+    <a21> <a22> .. <a2m>
+    ..    ..   ..  ..
+    <an1> <an2> .. <anm>
+} else if points {
+    <n>
+    <x1> <y1>
+    <x2> <y2>
+    ..  ..
+    <xn> <yn>
+} else if spl {
+    <n>
+x1: <no-var> <coef-s1> <coef-s2> .. <coef-sn>
+x2: <no-var> <coef-s1> <coef-s2> .. <coef-sn>
+       ..       ..        ..     ..    ..
+xn: <no-var> <coef-s1> <coef-s2> .. <coef-sn>
+}
+<result>
+   or
+$<error_name>
+Error list: 
+- inconsistent_error
+- multiply_error
+- different_size_error
+- not_square_error
+- determinant_zero_error
+- not_augmented_error
+- interpolation_error
+<\n>

@@ -19,6 +19,7 @@ public class Test {
             doTheTests();
         } catch (Exception e) {
             err("~ Uncaught exception! Error while doing the hard-coded tests.");
+            e.printStackTrace();
         }
         outln(yellow + "=====[" + green + "SUCCEED: " + succeed + yellow + "]====[" + red + "FAILED: " + failed + yellow + "]=====");
     }
@@ -40,20 +41,108 @@ public class Test {
         }
     }
     private static void doTheTestFromFile() {
-        File[] files = new File("./test/").listFiles();
+        File[] files = new File("test/").listFiles();
         Scanner scan = null;
         if (files != null)
             for (File f : files) {
+                if (!f.getName().endsWith(".test"))
+                    continue;
                 try {
                     scan = new Scanner(f);
-                    
+                    while (scan.hasNextLine()) {
+                        String msg = scan.nextLine();
+                        while (msg.isEmpty() && scan.hasNextLine())
+                            msg = scan.nextLine();
+                        if (msg.isEmpty())
+                            break;
+                        Object expected = null;
+                        try {
+                            int menuIndex = scan.nextInt(), subMenuIndex = -1;
+                            if (menuIndex >= 1 && menuIndex <= 3)
+                                subMenuIndex = scan.nextInt();
+                            scan.nextLine();
+                            Object res = null;
+                            Method method = subMenuIndex > 0 ? Method.values()[subMenuIndex-1] : null;
+                            Matrix m = null;
+                            if (menuIndex >= 1 && menuIndex <= 5)
+                                if (menuIndex == 1)
+                                    m = readMatrix(scan);
+                                else
+                                    m = readSquareMatrix(scan);
+                            switch (menuIndex) {
+                                case 1:
+                                    res = m.getSistemPersamaanLinear(method);
+                                    expected = readSPL(scan);
+                                    break;
+                                case 2:
+                                    res = m.getDeterminan(subMenuIndex == 4 ? Method.COFACTOR_EXPANSION : method);
+                                    expected = scan.nextDouble();scan.nextLine();
+                                    break;
+                                case 3:
+                                    res = m.getInverseMatrix(subMenuIndex == 1 ? Method.GAUSS_JORDAN : Method.ADJOIN);
+                                    expected = readSquareMatrix(scan);
+                                    break;
+                                case 4:
+                                    res = m.getCofactorMatrix();
+                                    expected = readSquareMatrix(scan);
+                                    break;
+                                case 5:
+                                    res = m.getAdjointMatrix();
+                                    expected = readSquareMatrix(scan);
+                                    break;
+                                case 6:
+                                    res = Point.interpolatePoint(readPoints(scan)).toPersamaanString();
+                                    expected = scan.nextLine();
+                                    break;
+                                default:
+                                    continue;
+                            }
+                            test(msg, expected, res);
+                        } catch (Exception e) {
+                            if (e instanceof MatrixException && expected == null)
+                                test(msg, scan.nextLine(), ((MatrixException)e).errorType.identifier);
+                            else
+                                throw e;
+                        }
+                    }
                 } catch (Exception e) {
                     outln(red + "Skipping file: " + yellow + f);
                     outln(red + "Error: " + e.getMessage());
                 }
-                if (scan != null)
-                    scan.close();
             }
+    }
+    private static SPL readSPL(Scanner scan) {
+        int n = scan.nextInt();scan.nextLine();
+        double[][] sol = new double[n+1][n+1];
+        for (int i = 1; i <= n; i++)
+            for (int j = 0; j <= n; j++)
+                sol[i][j] = scan.nextDouble();
+        scan.nextLine();
+        return new SPL(sol);
+    }
+    private static Matrix readMatrix(Scanner scan) {
+        int r = scan.nextInt(), c = scan.nextInt();scan.nextLine();
+        return readMatrix(scan, r, c);
+    }
+    private static Matrix readSquareMatrix(Scanner scan) {
+        int size = scan.nextInt();scan.nextLine();
+        return readMatrix(scan, size, size);
+    }
+    private static Matrix readMatrix(Scanner scan, int r, int c) {
+        Matrix m = new Matrix(r, c);
+        for (int i = 1; i <= r; i++) {
+            String[] line = scan.nextLine().split(" ");
+            for (int j = 1; j <= c; j++)
+                m.setElement(i, j, Float.parseFloat(line[j-1]));
+        }
+        return m;
+    }
+    private static Point[] readPoints(Scanner scan) {
+        int n = scan.nextInt();scan.nextLine();
+        Point[] pts = new Point[n];
+        for (int i = 0; i < n; i++)
+            pts[i] = new Point(scan.nextDouble(), scan.nextDouble());
+        return pts;
     }
     // endregion
     private static void doTheTests() {

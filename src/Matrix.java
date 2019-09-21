@@ -216,14 +216,14 @@ public class Matrix {
                 return (newDet/M.scaledDet);
             }
             case INVERSE: {
-                return 1/this.getInverseMatrix(Method.CRAMER).getDeterminan(Method.CRAMER);
+                return 1/this.getInverseMatrix(Method.CRAMER).getDeterminan(Method.COFACTOR_EXPANSION);
             }
             case COFACTOR_EXPANSION: {
                 if (this.maxR == 1)
                     return this.content[1][1];
                 float res = 0;
                 for (int j = 1; j <= this.maxC; j++)
-                    res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.CRAMER)*(j%2 == 0 ? -1 : 1);
+                    res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.COFACTOR_EXPANSION)*(j%2 == 0 ? -1 : 1);
                 return res;
             }
         }
@@ -431,7 +431,7 @@ public class Matrix {
                 if (!isAugmentedSize())
                     throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
-                double detCoef = coefM.getDeterminan(Method.CRAMER);
+                double detCoef = coefM.getDeterminan(Method.GAUSS);
                 if (Utils.doubleEquals(detCoef, 0))
                     throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
                 for (int i = 1; i <= this.maxR; i++) {

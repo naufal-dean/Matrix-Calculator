@@ -32,23 +32,23 @@ public class ConsoleApp {
         try {
             printMenu();
             out("Pilih menu: ");
-            int menu = num(), subMenu = -1;line();
-            if (menu < 1 || menu > 7)
-                throw new RuntimeException("Menu " + menu + " tidak ada!");
+            int menuIndex = num(), subMenuIndex = -1;line();
+            if (menuIndex < 1 || menuIndex > 7)
+                throw new RuntimeException("Menu " + menuIndex + " tidak ada!");
             String fileName = "";
-            if (menu >= 1 && menu <= 3) {
+            if (menuIndex >= 1 && menuIndex <= 3) {
                 outln();
-                printSubMenu(menu);
+                printSubMenu(menuIndex);
                 out("Pilih metode: ");
-                subMenu = num();line();
-                if (menu >= 1 && menu <= 2 && subMenu > 4 || menu == 3 && subMenu > 2 || subMenu < 1)
-                    throw new RuntimeException("Index \"" + subMenu + "\" tidak termasuk pilihan index menu metode!");
+                subMenuIndex = num();line();
+                if (menuIndex >= 1 && menuIndex <= 2 && subMenuIndex > 4 || menuIndex == 3 && subMenuIndex > 2 || subMenuIndex < 1)
+                    throw new RuntimeException("Index \"" + subMenuIndex + "\" tidak termasuk pilihan index menu metode!");
             }
-            if (menu != 7) {
+            if (menuIndex != 7) {
                 out("Nama file input (kosongkan untuk menulis sendiri): ");
                 fileName = line();
             }
-            selectMenu(menu, subMenu, fileName);
+            selectMenu(menuIndex, subMenuIndex, fileName);
         } catch (Exception e) {
             error(e);
             enterToContinue();
@@ -63,7 +63,7 @@ public class ConsoleApp {
             if (menuIndex >= 1 && menuIndex <= 5) {
                 if (useFile)
                     m = Matrix.readFile(fileName);
-                else if (menuIndex >= 2 && menuIndex <= 4)
+                else if (menuIndex == 1)
                     m = readSquareMatrix();
                 else
                     m = readMatrix();
