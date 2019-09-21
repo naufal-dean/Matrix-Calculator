@@ -56,7 +56,7 @@ public class ConsoleApp {
                 switch (menuIndex) {
                     case 1:
                         outln("Solusi-nya:");
-                        out(res = m.getSistemPersamaanLinear(method));
+                        outln(res = m.getSistemPersamaanLinear(method));
                         break;
                     case 2:
                         outln("Determinan-nya:");
