@@ -13,11 +13,7 @@ public class Test {
         useColor();
         outln(yellow + "=====================================");
         outln(yellow + "Testing from test files:");
-        try {
-            doTheTestFromFile();
-        } catch (Exception e) {
-            err("~ Uncaught exception! Error while reading file tests.");
-        }
+        doTheTestFromFile();
         outln(yellow + "Testing from hard-coded tests:");
         try {
             doTheTests();

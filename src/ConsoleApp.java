@@ -74,7 +74,7 @@ public class ConsoleApp {
                 case 1:
                     res = m.getSistemPersamaanLinear(method);
                     outln("Solusi-nya:");
-                    out(res);
+                    outln(res);
                     break;
                 case 2:
                     res = m.getDeterminan(subMenuIndex == 4 ? Method.COFACTOR_EXPANSION : method);
