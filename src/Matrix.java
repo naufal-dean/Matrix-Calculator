@@ -201,14 +201,6 @@ public class Matrix {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.NOT_SQUARE_ERROR);
         switch (method) {
-            case COFACTOR_EXPANSION: {
-                if (this.maxR == 1)
-                    return this.content[1][1];
-                float res = 0;
-                for (int j = 1; j <= this.maxC; j++)
-                    res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.CRAMER)*(j%2 == 0 ? -1 : 1);
-                return res;
-            }
             case GAUSS: {
                 double newDet = 1;
                 Matrix M = this.getEchelonForm(this.maxC);
@@ -225,6 +217,14 @@ public class Matrix {
             }
             case INVERSE: {
                 return 1/this.getInverseMatrix(Method.CRAMER).getDeterminan(Method.CRAMER);
+            }
+            case COFACTOR_EXPANSION: {
+                if (this.maxR == 1)
+                    return this.content[1][1];
+                float res = 0;
+                for (int j = 1; j <= this.maxC; j++)
+                    res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.CRAMER)*(j%2 == 0 ? -1 : 1);
+                return res;
             }
         }
         throw new RuntimeException("Method " + method + " is not valid!");
@@ -311,15 +311,15 @@ public class Matrix {
         if (this.getDeterminan(Method.GAUSS) == 0)
             throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
         switch (method) {
-            case ADJOIN: {
-                return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
-            }
             case GAUSS_JORDAN: {
                 Matrix m = this.appendMatrix(Matrix.getIdentityMatrix(this.maxC));
                 m = m.getReducedEchelonForm(m.getMaxColumn()/2);
                 return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
             }
-            default: // GAUSS and INVERSE are not supported (?)
+            case ADJOIN: {
+                return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
+            }
+            default: // CRAMER, GAUSS, and INVERSE are not supported (?)
                 throw new RuntimeException("Method " + method + " is not supported for getting inverse matrix.");
         }
     }

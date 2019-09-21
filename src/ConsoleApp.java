@@ -7,18 +7,26 @@ import static tubes.Console.*;
 //camcam
 public class ConsoleApp {
     private static final String menu = "MENU:\n"
-                + "1. Sistem Persamaaan Linier\n"
-                + "2. Determinan\n"
-                + "3. Matriks balikan\n"
-                + "4. Matriks kofaktor\n"
-                + "5. Adjoin\n"
-                + "6. Interpolasi Polinom\n"
-                + "7. Keluar";
-    private static final String subMenu = "Pilihan metode:\n"
-                + "1. Metode eliminasi Gauss\n"
-                + "2. Metode eliminasi Gauss-Jordan\n"
-                + "3. Metode matriks balikan\n"
-                + "4. Kaidah Cramer";
+                + "1. Sistem Persamaaan Linier.\n"
+                + "2. Determinan.\n"
+                + "3. Matriks balikan.\n"
+                + "4. Matriks kofaktor.\n"
+                + "5. Adjoin.\n"
+                + "6. Interpolasi Polinom.\n"
+                + "7. Keluar.";
+    private static final String subSPLMenu = "Pilihan metode:\n"
+                + "1. Metode eliminasi Gauss.\n"
+                + "2. Metode eliminasi Gauss-Jordan.\n"
+                + "3. Metode matriks balikan.\n"
+                + "4. Kaidah Cramer.";
+    private static final String subDeterminanMenu = "Pilihan metode:\n"
+                + "1. Metode eliminasi Gauss.\n"
+                + "2. Metode eliminasi Gauss-Jordan.\n"
+                + "3. Metode matriks balikan.\n"
+                + "4. Metode ekspansi kofaktor.";
+    private static final String subInverseMenu = "Pilihan metode:\n"
+                + "1. Metode eliminasi Gauss-Jordan.\n"
+                + "2. Metode adjoin.";
 
     public static void start() {
         try {
@@ -33,11 +41,10 @@ public class ConsoleApp {
                 printSubMenu(menu);
                 out("Pilih metode: ");
                 subMenu = num();line();
-                if (menu >= 1 && menu <= 3 && (subMenu < 1 || subMenu > 4))
+                if (menu >= 1 && menu <= 2 && subMenu > 4 || menu == 3 && subMenu > 2 || subMenu < 1)
                     throw new RuntimeException("Index \"" + subMenu + "\" tidak termasuk pilihan index menu metode!");
             }
             if (menu != 7) {
-                // Error
                 out("Nama file input (kosongkan untuk menulis sendiri): ");
                 fileName = line();
             }
@@ -52,10 +59,17 @@ public class ConsoleApp {
     private static void selectMenu(int menuIndex, int subMenuIndex, String fileName) {
         try {
             boolean useFile = !fileName.isBlank();
-            Matrix m = 1 <= menuIndex && menuIndex <= 5 ? useFile ? Matrix.readFile(fileName) : 
-                2 <= menuIndex && menuIndex <= 4 ? readSquareMatrix() : readMatrix() : null;
-            Method method = subMenuIndex >= 1 && subMenuIndex <= 4 ? Method.values()[subMenuIndex-1] : null;
+            Matrix m = null;
+            if (menuIndex >= 1 && menuIndex <= 5) {
+                if (useFile)
+                    m = Matrix.readFile(fileName);
+                else if (menuIndex >= 2 && menuIndex <= 4)
+                    m = readSquareMatrix();
+                else
+                    m = readMatrix();
+            }
             Object res = null;
+            Method method = subMenuIndex > 0 ? Method.values()[subMenuIndex-1] : null;
             switch (menuIndex) {
                 case 1:
                     res = m.getSistemPersamaanLinear(method);
@@ -63,12 +77,12 @@ public class ConsoleApp {
                     out(res);
                     break;
                 case 2:
-                    res = m.getDeterminan(method);
+                    res = m.getDeterminan(subMenuIndex == 4 ? Method.COFACTOR_EXPANSION : method);
                     outln("Determinan-nya:");
                     outln(res);
                     break;
                 case 3:
-                    res = m.getInverseMatrix(method);
+                    res = m.getInverseMatrix(subMenuIndex == 1 ? Method.GAUSS_JORDAN : Method.ADJOIN);
                     outln("Matrix inverse-nya:");
                     outln(res);
                     break;
@@ -95,7 +109,6 @@ public class ConsoleApp {
                     break;
             }
             if (res != null) {
-                // Error
                 out("Nama file output (kosongkan jika tidak perlu): ");
                 fileName = line();
                 if (!fileName.isBlank())
@@ -157,7 +170,12 @@ public class ConsoleApp {
     }
 
     private static void printSubMenu(int menu) {
-        outln(subMenu);
+        if (menu == 1)
+            outln(subSPLMenu);
+        else if (menu == 2)
+            outln(subDeterminanMenu);
+        else if (menu == 3)
+            outln(subInverseMenu);
     }
 
     private static void error(Exception e) {
@@ -167,8 +185,6 @@ public class ConsoleApp {
         } else {
             err(e.getMessage());
         }
-        //debug
-        // e.printStackTrace();
     }
 
     private static void writeFile(String fileName, Object o) throws Exception {
