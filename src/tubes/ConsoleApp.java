@@ -255,8 +255,8 @@ public class ConsoleApp {
             err(((MatrixException)e).errorType.msg);
         } else {
             err(e.getMessage());
-            e.printStackTrace();
         }
+        e.printStackTrace();
     }
 
     /**
