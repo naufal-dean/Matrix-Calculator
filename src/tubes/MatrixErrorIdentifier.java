@@ -27,7 +27,7 @@ public enum MatrixErrorIdentifier {
     /**
      * Matriks menghasilkan determinan nol.
      */
-    DETERMINANT_ZERO_ERROR("determinant_zero_error", "Max row and max column are not the same! No determinant."),
+    DETERMINANT_ZERO_ERROR("determinant_zero_error", "Determinant is zero."),
 
     /**
      * Matriks tidak termasuk augmented matriks.

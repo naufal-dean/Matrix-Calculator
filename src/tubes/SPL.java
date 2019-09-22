@@ -63,12 +63,12 @@ public class SPL {
      * F.S Melakukan substutusi variabel yang didapatkan dari SPL dari Gauss.
      */
     public void substituteEquations() {
-        for (int i = this.content.length-1; i >= 1; i--) {
+        for (int i = this.content.length-2; i >= 1; i--) {
             for (int j = i+1; j < this.content[i].length; j++) {
                 double s_up = this.content[i][j];
                 this.content[i][j] = 0;
                 this.content[i][0] += s_up*this.content[j][0];
-                for (int jj = j; jj < this.content[i].length; jj++)
+                for (int jj = j; jj < this.content[i].length-1; jj++)
                     this.content[i][jj] += s_up*this.content[j][jj];
             }
         }
@@ -106,7 +106,7 @@ public class SPL {
         content = new double[c+1][c+1];
         content[0] = new double[0];
         Matrix m = new Matrix(c, c+1);
-        for (int i = 1; i <= Math.min(r, c); i++)
+        for (int i = 1; i <= c; i++)
             for (int j = 1; j <= c+1; j++)
                 m.setElement(i, j, in.getElement(i, j));
         int j = 1;
