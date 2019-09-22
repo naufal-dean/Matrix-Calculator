@@ -1,5 +1,36 @@
 package tubes;
 
+/**
+ * Enum Method untuk mengidentifikasi jenis metode untuk menjalankan implementasi algoritma matriks.
+ */
 public enum Method {
-    GAUSS, GAUSS_JORDAN, INVERSE, CRAMER, COFACTOR_EXPANSION, ADJOIN
+    /**
+     * Metode Eliminasi Gauss.
+     */
+    GAUSS,
+    
+    /**
+     * Metode Eliminasi Gauss-Jordan.
+     */
+    GAUSS_JORDAN,
+    
+    /**
+     * Metode matriks balikan.
+     */
+    INVERSE,
+    
+    /**
+     * Kaidah Cramer.
+     */
+    CRAMER,
+    
+    /**
+     * Metode ekspansi kofaktor.
+     */
+    COFACTOR_EXPANSION,
+    
+    /**
+     * Metode pemanfaatan adjoin.
+     */
+    ADJOIN;
 }

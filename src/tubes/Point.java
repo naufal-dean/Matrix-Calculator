@@ -7,10 +7,26 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * Class Point sebagai bentuk obyek titik pada koordinat kartesius.
+ */
 public class Point {
-    private double x, y;
+    /**
+     * Komponen absis pada titik.
+     */
+    private double x;
+
+    /**
+     * Komponen ordinat pada titik.
+     */
+    private double y;
 
     //** Konstruktor **//
+    /**
+     * F.S Menghasilkan point dengan atribut x bernilai x dan atribut y.
+     * @param x Komponen absis point.
+     * @param y Komponen ordinat point.
+     */
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
@@ -18,24 +34,45 @@ public class Point {
 
     //** Selektor **//
     //-- Selektor: Get --//
+    /**
+     * F.S Mendapatkan nilai x point.
+     * @return Nilai x point.
+     */
     public double getX() {
         return this.x;
     }
 
+    /**
+     * F.S Mendapatkan nilai y point.
+     * @return Nilai y point.
+     */
     public double getY() {
         return this.y;
     }
 
     //-- Selektor: Set --//
+    /**
+     * F.S Mengubah nilai x point dengan x.
+     * @param x Nilai x point yang baru.
+     */
     public void setX(double x) {
         this.x = x;
     }
 
+    /**
+     * F.S Mengubah nilai y point dengan y.
+     * @param y Nilai y point yang baru.
+     */
     public void setY(double y) {
         this.y = y;
     }
 
     // ** Interpolasi **//
+    /**
+     * F.S Mengubah array of point menjadi bermatriks berdimensi (panjang array x 2)
+     * @param p Konten isi point yang akan diubah menjadi matriks.
+     * @return Matriks hasil.
+     */
     public static Matrix toMatrix(Point[] p) {
         double[][] tempVal = new double[p.length][p.length+1];
 
@@ -48,10 +85,21 @@ public class Point {
         return new Matrix(tempVal);
     }
 
+    /**
+     * F.S Mengubah array of point menjadi SPL.
+     * @param p Konten isi point yang akan diubah menjadi SPL.
+     * @return Sistem persamaan linear hasil.
+     */
     public static SPL interpolatePoint(Point[] p) {
         return Point.toMatrix(p).getSistemPersamaanLinear(Method.GAUSS);
     }
     
+    /**
+     * F.S Membaca Point melalui sebuah file fileName.
+     * @param fileName Nama file.
+     * @return Array of point dari hasil membaca file.
+     * @throws Exception Jika akses file gagal atau input tidak valid.
+     */
     public static Point[] readFile(String fileName) throws Exception {
         Scanner scan = new Scanner(new File(fileName));
         List<Point> list = new ArrayList<>();
@@ -71,6 +119,9 @@ public class Point {
     }
 
     //** Utility **//
+    /**
+     * F.S Menghasilkan true jika obyek o sama dengan Point ini.
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Point))
@@ -79,6 +130,9 @@ public class Point {
         return Utils.doubleEquals(x, p.x) && Utils.doubleEquals(y, p.y);
     }
 
+    /**
+     * F.S Mengubah point ke dalam string.
+     */
     @Override
     public String toString() {
         return String.format("<%.2f,%.2f>", x, y);
