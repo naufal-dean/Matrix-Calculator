@@ -97,7 +97,7 @@ public class ConsoleApp {
             if (menuIndex >= 1 && menuIndex <= 5) {
                 if (useFile)
                     m = Matrix.readFile(fileName);
-                else if (menuIndex == 1)
+                else if (menuIndex != 1)
                     m = readSquareMatrix();
                 else
                     m = readMatrix();
@@ -255,6 +255,7 @@ public class ConsoleApp {
             err(((MatrixException)e).errorType.msg);
         } else {
             err(e.getMessage());
+            e.printStackTrace();
         }
     }
 

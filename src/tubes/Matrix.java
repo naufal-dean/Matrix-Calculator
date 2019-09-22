@@ -653,12 +653,12 @@ public class Matrix {
 
     //** Fungsi Sistem Persamaaan Linear **//
     /**
+     * I.S Matriks yang diproses adalah matriks augmented.<br>
      * F.S Menghasilkan bentuk SPL dari Matrix dengan metode method.
      * @param method Metode mencari sistem persamaan linear.
      * @return Sebuah sistem persamaan linear.
      */
     public SPL getSistemPersamaanLinear(Method method) {
-        // Prekondisi: matriks yang diproses adalah matriks augmented
         double[] sol = new double[this.maxR+1];
         Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
