@@ -2,7 +2,6 @@ package tubes;
 
 import java.util.*;
 
-//camcam
 public class Console {
     public static String green = "", red = "", yellow = "", white = "";
     public static boolean usingColor = false;

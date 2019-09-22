@@ -1,6 +1,5 @@
 package tubes;
 
-import static tubes.Console.*;
 import java.util.*;
 
 public class SPL {

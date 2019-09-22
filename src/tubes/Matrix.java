@@ -97,7 +97,6 @@ public class Matrix {
         return sub;
     }
 
-    //dean
     public Matrix appendMatrix(Matrix mInput) {
         // Prekondisi: jumlah baris matriks ini == mInput
         double[][] m1 = this.subMatrixContent(1, 1);
@@ -160,7 +159,6 @@ public class Matrix {
         return res;
     }
 
-    //camcam
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Matrix))
@@ -196,7 +194,6 @@ public class Matrix {
 
 
     //** Fungsi matriks **//
-    //nopal (NOTE: tambahin lagi tiap method)
     public double getDeterminan(Method method) {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.NOT_SQUARE_ERROR);
@@ -226,17 +223,15 @@ public class Matrix {
                     res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.COFACTOR_EXPANSION)*(j%2 == 0 ? -1 : 1);
                 return res;
             }
+            default:
+                throw new RuntimeException("Method " + method + " is not valid!");
         }
-        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
-    //dean
     public static Matrix getIdentityMatrix(int size) {
         Matrix m = new Matrix(size, size);
-
-        for (int i = 1; i <= size; i++) {
+        for (int i = 1; i <= size; i++)
             m.setElement(i, i, 1);
-        }
         return m;
     }
 
@@ -319,7 +314,7 @@ public class Matrix {
             case ADJOIN: {
                 return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
             }
-            default: // CRAMER, GAUSS, and INVERSE are not supported (?)
+            default:
                 throw new RuntimeException("Method " + method + " is not supported for getting inverse matrix.");
         }
     }
@@ -334,8 +329,7 @@ public class Matrix {
 
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
         Matrix m = this.scaledPartialPivoting(rowStart, colStart, colMax);
-        if (rowStart == m.getMaxRow() || colStart == colMax) { // base
-            //nambahin ini buat kasus baris matrix yang sama smua isinya
+        if (rowStart == m.getMaxRow() || colStart == colMax) {
             if (m.getElement(rowStart, colStart)!=0){
                 m.scaledDet *= (1/m.getElement(rowStart, colStart));
                 m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
@@ -347,11 +341,10 @@ public class Matrix {
                 }
             }
             return m;
-        } else { // recurrence
-            if ((m.getElement(rowStart,colStart) == 0)){
+        } else {
+            if ((m.getElement(rowStart,colStart) == 0)) {
                 return m.getEchelonForm(rowStart, colStart+1 ,colMax);
             }
-            //nambahinnya sampe sini ya {nopal}
             m.scaledDet *= (1/m.getElement(rowStart, colStart));
             m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
             for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
@@ -375,12 +368,12 @@ public class Matrix {
     public Matrix getReducedEchelonForm(int rowStart, int colStart, int colMax) {
         Matrix m = this.copyMatrix();
 
-        if (rowStart == m.getMaxRow() || colStart == colMax) { // base
+        if (rowStart == m.getMaxRow() || colStart == colMax) {
             for (int i = 1; i < rowStart; i++) {
                 m.addOBE(i, rowStart, -m.getElement(i, colStart));
             }
             return m;
-        } else { // recurrence
+        } else {
             if ((m.getElement(rowStart,colStart) == 0)){
                 return m.getReducedEchelonForm(rowStart, colStart+1 ,colMax);
             }
@@ -427,7 +420,7 @@ public class Matrix {
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
 
         switch (method) {
-            case CRAMER: { // hanya untuk matriks augmented (n)*(n+1)
+            case CRAMER: {
                 if (!isAugmentedSize())
                     throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
@@ -447,7 +440,7 @@ public class Matrix {
             case GAUSS_JORDAN: {
                 return SPL.getReducedEchelonFormMethod(this);
             }
-            case INVERSE: { // hanya untuk matriks augmented (n)*(n+1)
+            case INVERSE: {
                 if (!isAugmentedSize())
                     throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);
                 Matrix solM = (coefM.getInverseMatrix(Method.GAUSS_JORDAN)).multiplyOPR(constM);
@@ -457,8 +450,9 @@ public class Matrix {
                 }
                 return new SPL(sol);
             }
+            default:
+                throw new RuntimeException("Method " + method + " is not valid!");
         }
-        throw new RuntimeException("Method " + method + " is not valid!");
     }
 
     public boolean isAugmentedSize() {

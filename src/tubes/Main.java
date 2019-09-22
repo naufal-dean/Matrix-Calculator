@@ -1,9 +1,5 @@
 package tubes;
 
-import java.io.File;
-import java.io.FileInputStream;
-import tubes.Console.*;
-
 import static tubes.Console.*;
 
 public class Main {

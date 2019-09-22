@@ -5,9 +5,7 @@ import java.util.Scanner;
 
 import static tubes.Console.*;
 
-//camcam
 public class Test {
-    // region Test
     private static int succeed, failed, index;
     public static void main(String[] args) {
         useColor();
@@ -147,7 +145,6 @@ public class Test {
             pts[i] = new Point(scan.nextDouble(), scan.nextDouble());
         return pts;
     }
-    // endregion
     private static void doTheTests() {
         test("Test awal", new Matrix(new double[][] {
             {1,1},

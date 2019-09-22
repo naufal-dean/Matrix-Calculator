@@ -4,7 +4,6 @@ import java.io.FileWriter;
 
 import static tubes.Console.*;
 
-//camcam
 public class ConsoleApp {
     private static final String menu = "MENU:\n"
                 + "1. Sistem Persamaaan Linier.\n"

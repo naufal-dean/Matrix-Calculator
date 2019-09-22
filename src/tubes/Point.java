@@ -59,8 +59,10 @@ public class Point {
         while (scan.hasNextLine()) {
             String[] strs = scan.nextLine().split(" ");
             double x = Double.parseDouble(strs[0]);
-            if (xs.contains(x))
+            if (xs.contains(x)) {
+                scan.close();
                 throw new MatrixException(MatrixErrorIdentifier.INTERPOLATION_ERROR);
+            }
             xs.add(x);
             list.add(new Point(x, Double.parseDouble(strs[1])));
         }
