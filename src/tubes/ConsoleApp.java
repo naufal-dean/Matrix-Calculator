@@ -4,7 +4,14 @@ import java.io.FileWriter;
 
 import static tubes.Console.*;
 
+/**
+ * Class ConsoleApp untuk menjalankan program utama di konsol.
+ */
 public class ConsoleApp {
+    private ConsoleApp() {}
+    /**
+     * String list menu.
+     */
     private static final String menu = "MENU:\n"
                 + "1. Sistem Persamaaan Linier.\n"
                 + "2. Determinan.\n"
@@ -13,20 +20,33 @@ public class ConsoleApp {
                 + "5. Adjoin.\n"
                 + "6. Interpolasi Polinom.\n"
                 + "7. Keluar.";
+    /**
+     * String list submenu dari menu sistem persamaan linier.
+     */
     private static final String subSPLMenu = "Pilihan metode:\n"
                 + "1. Metode eliminasi Gauss.\n"
                 + "2. Metode eliminasi Gauss-Jordan.\n"
                 + "3. Metode matriks balikan.\n"
                 + "4. Kaidah Cramer.";
+    /**
+     * String list submenu dari menu determinan.
+     */
     private static final String subDeterminanMenu = "Pilihan metode:\n"
                 + "1. Metode eliminasi Gauss.\n"
                 + "2. Metode eliminasi Gauss-Jordan.\n"
                 + "3. Metode matriks balikan.\n"
                 + "4. Metode ekspansi kofaktor.";
+    /**
+     * String list submenu dari menu inverse.
+     */
     private static final String subInverseMenu = "Pilihan metode:\n"
                 + "1. Metode eliminasi Gauss-Jordan.\n"
                 + "2. Metode adjoin.";
 
+    /**
+     * Prosedur menjalankan program.
+     * Memanggil prosedur printMenu, selectMenu, error, enterToContinue dan memanggil fungsi ini kembali
+     */
     public static void start() {
         try {
             printMenu();
@@ -55,6 +75,13 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * Prosedur memilih pilihan menu.
+     * Memanggil fungsi-fungsi sesuai menu yang dipilih.
+     * @param menuIndex Pilihan indeks menu utama.
+     * @param subMenuIndex Pilihan indeks menu metode.
+     * @param fileName Nama file input.
+     */
     private static void selectMenu(int menuIndex, int subMenuIndex, String fileName) {
         try {
             boolean useFile = !fileName.isBlank();
@@ -121,6 +148,12 @@ public class ConsoleApp {
         start();
     }
 
+    /**
+     * Fungsi membaca matriks,
+     * dimulai dari membaca jumlah kolom dan baris.
+     * @return Sebuah matriks.
+     * @throws Exception Saat input tidak valid.
+     */
     private static Matrix readMatrix() throws Exception {
         out("Ukuran baris(row): ");
         int r = num();line();
@@ -129,14 +162,27 @@ public class ConsoleApp {
         return readMatrix(r, c);
     }
 
+    /**
+     * Fungsi membaca matriks bujur sangkar,
+     * dimulai dari membaca sisi matrix.
+     * @return Sebuah matriks bujur sangkar.
+     * @throws Exception Saat input tidak valid.
+     */
     private static Matrix readSquareMatrix() throws Exception {
         out("Ukuran matriks: ");
         int size = num();line();
         return readMatrix(size, size);
     }
 
+    /**
+     * Fungsi membaca elemen matriks dengan dimensi r x c.
+     * @param r Panjang baris.
+     * @param c Panjang kolom.
+     * @return Sebuah matriks.
+     * @throws Exception Saat input tidak valid.
+     */
     private static Matrix readMatrix(int r, int c) throws Exception {
-        outln("Masukkan matrix:");
+        outln("Masukkan matriks:");
         Matrix m = new Matrix(r, c);
         for (int i = 1; i <= r; i++) {
             String[] line = line().split(" ");
@@ -148,6 +194,10 @@ public class ConsoleApp {
         return m;
     }
 
+    /**
+     * Fungsi membaca point.
+     * @return Sebuah array point.
+     */
     private static Point[] readPoints() {
         out("Banyak point: ");
         int n = num();line();
@@ -158,16 +208,26 @@ public class ConsoleApp {
         return pts;
     }
 
+    /**
+     * Prosedur untuk memberi pilihan enter untuk melanjutkan proses program.
+     */
     private static void enterToContinue() {
         out("Tekan enter untuk kembali ke menu.");
         line();
         clear();
     }
 
+    /**
+     * Prosedur mencetak daftar pilihan menu. 
+     */
     private static void printMenu() {
         outln(menu);
     }
 
+    /**
+     * Prosedur mencetak daftar pilihan submenu.
+     * @param menu Indeks submenu.
+     */
     private static void printSubMenu(int menu) {
         if (menu == 1)
             outln(subSPLMenu);
@@ -177,6 +237,10 @@ public class ConsoleApp {
             outln(subInverseMenu);
     }
 
+    /**
+     * Prosedur untuk menampilkan jenis error jika terjadi.
+     * @param e Obyek error dengan tipe data Exception.
+     */
     private static void error(Exception e) {
         out(red + "Error: ");
         if (e instanceof MatrixException) {
@@ -186,6 +250,12 @@ public class ConsoleApp {
         }
     }
 
+    /**
+     * Prosedur penulisan suatu obyek pada file.
+     * @param fileName Nama file.
+     * @param o Obyek yang akan ditulis.
+     * @throws Exception Jika akses file gagal.
+     */
     private static void writeFile(String fileName, Object o) throws Exception {
         FileWriter writer = new FileWriter(fileName);
         for (char c : o.toString().toCharArray())

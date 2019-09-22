@@ -4,17 +4,39 @@ import java.io.File;
 import java.util.*;
 
 public class Matrix {
+    /**
+     * Elemen dari matriks.
+     */
     private double[][] content;
-    private int maxR, maxC;
+    /**
+     * Panjang / indeks maksimum baris matriks.
+     */
+    private int maxR;
+    /**
+     * Panjang / indeks maksimum kolom matriks.
+     */
+    private int maxC;
+    /**
+     * Perbandingan determinan baru dengan determinan sebelumnya.
+     */
     private double scaledDet = 1;
 
     //** Konstruktor **//
+    /**
+     * F.S Membuat matrix baru dengan dimensi maxR*maxC.
+     * @param maxR Panjang / indeks maksimum baris matriks.
+     * @param maxC Panjang / indeks maksimum kolom matriks.
+     */
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
         this.maxC = maxC;
         this.content = new double[maxR+1][maxC+1];
     }
 
+    /**
+     * F.S Membuat Matrix baru dengan elemen pada sebuah array of array of double.
+     * @param arr Konten isi matriks yang akan dibuat.
+     */
     public Matrix(double[][] arr) {
         this(arr.length, arr.length > 0 ? arr[0].length : 0);
         setContent(arr);
@@ -22,26 +44,50 @@ public class Matrix {
 
     //** Selektor **//
     //-- Selektor: Get --//
+    /**
+     * F.S Mengembalikan panjang / indeks maksimum baris matriks.
+     * @return Panjang / indeks maksimum baris matriks.
+     */
     public int getMaxRow() {
       return this.maxR;
     }
 
+    /**
+     * F.S Mengembalikan panjang / indeks maksimum kolom matriks.
+     * @return Panjang / indeks maksimum kolom matriks.
+     */
     public int getMaxColumn() {
         return this.maxC;
     }
 
+    /**
+     * F.S Mengembalikan isi elemen matriks.
+     * @return Konten isi elemen matriks dalam bentuk tipe data array of array of double.
+     */
     public double[][] getContent() {
         return this.content;
     }
 
+    /**
+     * F.S Mendapatkan elemen matriks dengan indeks baris r dan kolom c.
+     * @param r Indeks baris.
+     * @param c Indeks kolom.
+     * @return Elemen matriks.
+     */
     public double getElement(int r, int c) {
         return this.content[r][c];
     }
 
+    /**
+     * F.S Mendapatkan baris matrix dengan indeks r.
+     * @param r Indeks baris.
+     * @return Satu baris elemen-elemen matriks dalam bentuk tipe data array of double.
+     */
     public double[] getRow(int r) {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
 
+    
     public double[] getColumn(int c) {
         double[] col = new double[this.maxR];
         for (int i = 0; i < this.maxR; i++) {
