@@ -113,7 +113,7 @@ public class ConsoleApp {
                 case 2:
                     res = m.getDeterminan(subMenuIndex == 4 ? Method.COFACTOR_EXPANSION : method);
                     outln("Determinan-nya:");
-                    outln(res);
+                    outln(String.format("%.2f", res));
                     break;
                 case 3:
                     res = m.getInverseMatrix(subMenuIndex == 1 ? Method.GAUSS_JORDAN : Method.ADJOIN);

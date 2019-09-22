@@ -499,7 +499,7 @@ public class Matrix {
     public Matrix getInverseMatrix(Method method) {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.DIFFERENT_SIZE_ERROR);
-        if (this.getDeterminan(Method.GAUSS) == 0)
+        if (Utils.doubleEquals(this.getDeterminan(Method.COFACTOR_EXPANSION), 0))
             throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
         switch (method) {
             case GAUSS_JORDAN: {
