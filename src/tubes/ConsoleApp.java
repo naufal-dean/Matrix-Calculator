@@ -195,7 +195,7 @@ public class ConsoleApp {
         for (int i = 1; i <= r; i++) {
             String[] line = line().split(" ");
             for (int j = 1; j <= c; j++)
-                m.setElement(i, j, Float.parseFloat(line[j-1]));
+                m.setElement(i, j, Double.parseDouble(line[j-1]));
         }
         outln("Matrix yang Anda masukkan:");
         outln(m);
