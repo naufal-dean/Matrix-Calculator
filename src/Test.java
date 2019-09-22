@@ -32,7 +32,10 @@ public class Test {
         return value;
     }
     private static void test(String msg, Object a, Object b) {
-        if (!check(msg, a.equals(b))) {
+        boolean test = a.equals(b);
+        if (a instanceof Double && b instanceof Double)
+            test = Utils.doubleEquals((double)a, (double)b);
+        if (!check(msg, test)) {
             out(yellow);
             outln(a);
             outln(red + "DOESN'T EQUAL");
