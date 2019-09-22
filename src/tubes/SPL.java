@@ -2,23 +2,45 @@ package tubes;
 
 import java.util.*;
 
+/**
+ * Class SPL digunakan untuk membuat sebuah sistem persamaan linier dari sebuah matriks.
+ */
 public class SPL {
+    /**
+     * Konten dari sistem persamaan linier yang bisa mempunyai variabel bebas.
+     */
     public double[][] content;
-    // i: untuk Xi
-    // j: j == 0 -> no var, j == 1 -> s1, j == 2 -> s2, dst
-    // cth: X1 = 4 - s1 + 2s2
-    // content[1][0] = 4;
-    // content[1][1] = -1;
-    // content[1][2] = 2;
 
+    /**
+     * Konstruktor SPL.
+     */
     public SPL() {}
 
+    /**
+     * Konstruktor SPL dengan solusi yang sudah didefinisikan.
+     * @param sol Solusi dalam bentuk array of double.
+     */
+    public SPL(double[] sol) {
+        content = new double[sol.length][sol.length];
+        for (int i = 1; i < sol.length; i++)
+            content[i][0] = sol[i];
+    }
+    
+    /**
+     * Konstruktor SPL dengan menggunakan solusi SPL yang sudah ada.
+     * @param sol Solusi dalam bentuk array of array of double.
+     */
     public SPL(double[][] sol) {
         this.content = new double[sol.length+1][];
         for (int i = 0; i < sol.length; i++)
             this.content[i+1] = Arrays.copyOf(sol[i], sol[i].length);
     }
 
+    /**
+     * F.S Membuat SPL dari sebuah matrix m dengan mengubah ke bentuk echelon form.
+     * @param m Matriks sembarang.
+     * @return Sistem persamaan linier hasil dari matriks m.
+     */
     public static SPL getEchelonFormMethod(Matrix m) {
         SPL spl = new SPL();
         spl.initREF(m.getEchelonForm(m.getMaxColumn()-1));
@@ -26,12 +48,20 @@ public class SPL {
         return spl;
     }
 
+    /**
+     * F.S Membuat SPL dari sebuah matrix m dengan mengubah ke bentuk reduced echelon form.
+     * @param m Matriks sembarang.
+     * @return Sistem persamaan linier hasil dari matriks m.
+     */
     public static SPL getReducedEchelonFormMethod(Matrix m) {
         SPL spl = new SPL();
         spl.initREF(m.getReducedEchelonForm(m.getMaxColumn()-1));
         return spl;
     }
 
+    /**
+     * F.S Melakukan substutusi variabel yang didapatkan dari SPL dari Gauss.
+     */
     public void substituteEquations() {
         for (int i = this.content.length-2; i >= 1; i--) {
             for (int j = i+1; j < this.content[i].length; j++) {
@@ -44,6 +74,9 @@ public class SPL {
         }
     }
 
+    /**
+     * F.S Menghasilkan true jika o adalah obyek SPL yang sama dengan SPL ini.
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof SPL))
@@ -61,12 +94,10 @@ public class SPL {
         return true;
     }
 
-    public SPL(double[] sol) {
-        content = new double[sol.length][sol.length];
-        for (int i = 1; i < sol.length; i++)
-            content[i][0] = sol[i];
-    }
-
+    /**
+     * F.S Mengubah marrix in menjadi bentuk SPL.
+     * @param in Matriks echelon / reduced echelon form.
+     */
     public void initREF(Matrix in) {
         int r = in.getMaxRow(), c = in.getMaxColumn()-1;
         for (int i = c+1; i <= r; i++)
@@ -99,6 +130,9 @@ public class SPL {
         }
     }
 
+    /**
+     * F.S Merepresentasikan SPL ini dalam bentuk string.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -109,13 +143,13 @@ public class SPL {
                 double v = content[i][j];
                 if (v == 0 && j > 0)
                     continue;
-                    if (j > 0 && found) {
-                        if (v < 0) {
-                            v = -v;
-                            sb.append(" - ");
-                        } else
-                            sb.append(" + ");
-                    }
+                if (j > 0 && found) {
+                    if (v < 0) {
+                        v = -v;
+                        sb.append(" - ");
+                    } else
+                        sb.append(" + ");
+                }
                 if (v != 0)
                     found = true;
                 if (v != 0)
@@ -131,6 +165,10 @@ public class SPL {
         return sb.toString();
     }
 
+    /**
+     * F.S Mengubah bentuk SPL ini menjadi string persamaan berdasarkan variabel bebas.
+     * @return Representasi persamaan dalam bentuk string.
+     */
     public String toPersamaanString() {
         StringBuilder sb = new StringBuilder("y = ");
         boolean found = false;
@@ -138,17 +176,17 @@ public class SPL {
             double v = content[i][0];
             if (Utils.doubleEquals(v, 0))
                 continue;
-            found = true;
-            if (i < content.length-1) {
+            if (found) {
                 if (v < 0) {
                     v = -v;
                     sb.append(" - ");
                 } else
                     sb.append(" + ");
             }
+            found = true;
             boolean isOne = Utils.doubleEquals(v, 1);
             if (isOne && i == 1 || !isOne)
-                sb.append(String.format("(%.2f)", v));
+                sb.append(String.format("(%.10f)", v));
             if (i >= 2) {
                 sb.append("x");
                 if (i >= 3)
