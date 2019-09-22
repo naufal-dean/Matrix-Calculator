@@ -97,10 +97,10 @@ public class ConsoleApp {
             if (menuIndex >= 1 && menuIndex <= 5) {
                 if (useFile)
                     m = Matrix.readFile(fileName);
-                else if (menuIndex != 1)
-                    m = readSquareMatrix();
-                else
+                else if (menuIndex == 1)
                     m = readMatrix();
+                else
+                    m = readSquareMatrix();
             }
             Object res = null;
             Method method = subMenuIndex > 0 ? Method.values()[subMenuIndex-1] : null;

@@ -78,7 +78,7 @@ public class Test {
         if (!check(msg, test)) {
             out(yellow);
             outln(a);
-            outln(red + "DOESN'T EQUAL");
+            outln(red + "EXPECTED:");
             out(yellow);
             outln(b);
         }
@@ -144,10 +144,10 @@ public class Test {
                                 default:
                                     continue;
                             }
-                            test(msg, expected, res);
+                            test(msg, res, expected);
                         } catch (Exception e) {
                             if (e instanceof MatrixException && expected == null)
-                                test(msg, scan.nextLine(), ((MatrixException)e).errorType.identifier);
+                                test(msg, ((MatrixException)e).errorType.identifier, scan.nextLine());
                             else
                                 throw e;
                         }
@@ -167,11 +167,10 @@ public class Test {
      */
     private static SPL readSPL(Scanner scan) {
         int n = scan.nextInt();scan.nextLine();
-        double[][] sol = new double[n+1][n+1];
-        for (int i = 1; i <= n; i++)
+        double[][] sol = new double[n][n+1];
+        for (int i = 0; i < n; i++)
             for (int j = 0; j <= n; j++)
                 sol[i][j] = scan.nextDouble();
-        scan.nextLine();
         return new SPL(sol);
     }
 
