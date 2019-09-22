@@ -5,8 +5,7 @@ package tubes;
  */
 public class MatrixException extends RuntimeException {
     /**
-     * A unique serial version identifier
-     * @see Serializable#serialVersionUID
+     * Sebuah unique serial version identifier
      */
     private static final long serialVersionUID = 1L;
 

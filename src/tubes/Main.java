@@ -7,6 +7,12 @@ import static tubes.Console.*;
  */
 public class Main {
     /**
+     * @deprecated Tidak dibutuhkan dalam bentuk obyek.
+     */
+    @Deprecated
+    private Main() {}
+    
+    /**
      * Prosedur pertama untuk menjalankan program.
      * @param args Argumen-argumen dari command line.
      */

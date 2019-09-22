@@ -8,7 +8,12 @@ import static tubes.Console.*;
  * Class ConsoleApp untuk menjalankan program utama di konsol.
  */
 public class ConsoleApp {
+    /**
+     * @deprecated Tidak dibutuhkan dalam bentuk obyek.
+     */
+    @Deprecated
     private ConsoleApp() {}
+    
     /**
      * String list menu.
      */
@@ -20,6 +25,7 @@ public class ConsoleApp {
                 + "5. Adjoin.\n"
                 + "6. Interpolasi Polinom.\n"
                 + "7. Keluar.";
+    
     /**
      * String list submenu dari menu sistem persamaan linier.
      */
@@ -28,6 +34,7 @@ public class ConsoleApp {
                 + "2. Metode eliminasi Gauss-Jordan.\n"
                 + "3. Metode matriks balikan.\n"
                 + "4. Kaidah Cramer.";
+    
     /**
      * String list submenu dari menu determinan.
      */
@@ -36,6 +43,7 @@ public class ConsoleApp {
                 + "2. Metode eliminasi Gauss-Jordan.\n"
                 + "3. Metode matriks balikan.\n"
                 + "4. Metode ekspansi kofaktor.";
+    
     /**
      * String list submenu dari menu inverse.
      */

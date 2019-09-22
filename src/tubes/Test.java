@@ -5,8 +5,35 @@ import java.util.Scanner;
 
 import static tubes.Console.*;
 
+/**
+ * Class Test digunakan untuk melakukan testing test-case untuk mengecek kevalidan program ini.
+ */
 public class Test {
-    private static int succeed, failed, index;
+    /**
+     * @deprecated Tidak dibutuhkan dalam bentuk obyek.
+     */
+    @Deprecated
+    private Test() {}
+
+    /**
+     * Jumlah test-case yang sukses.
+     */
+    private static int succeed;
+
+    /**
+     * Jumlah test-case yang gagal.
+     */
+    private static int failed;
+
+    /**
+     * Indeks test-case.
+     */
+    private static int index;
+
+    /**
+     * Prosedur pertama untuk menjalankan program test.
+     * @param args Argumen-argumen dari command line.
+     */
     public static void main(String[] args) {
         useColor();
         outln(yellow + "=====================================");
@@ -21,6 +48,13 @@ public class Test {
         }
         outln(yellow + "=====[" + green + "SUCCEED: " + succeed + yellow + "]====[" + red + "FAILED: " + failed + yellow + "]=====");
     }
+
+    /**
+     * Menambah index dan jika benar menambah nilai succeed, jika salah menambah nilai failed.
+     * @param msg Pesan test.
+     * @param value Nilai boolean hasil test.
+     * @return Nilai boolean value.
+     */
     private static boolean check(String msg, boolean value) {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
         if (value)
@@ -29,6 +63,14 @@ public class Test {
             ++failed;
         return value;
     }
+
+    /**
+     * F.S Mencetak kebenaran suatu test.
+     * Jika tidak setara kedua obyek itu dicetak
+     * @param msg Pesan test.
+     * @param a Obyek komparasi.
+     * @param b Obyek komparasi.
+     */
     private static void test(String msg, Object a, Object b) {
         boolean test = a.equals(b);
         if (a instanceof Double && b instanceof Double)
@@ -41,6 +83,10 @@ public class Test {
             outln(b);
         }
     }
+
+    /**
+     * F.S mengimplementasikan fungsi fungsi test untuk testing program dengan membandingkan object-object yang seharusnya benar dari pembacaan file-file test.
+     */
     private static void doTheTestFromFile() {
         File[] files = new File("test/").listFiles();
         Scanner scan = null;
@@ -113,6 +159,12 @@ public class Test {
                 }
             }
     }
+
+    /**
+     * Membaca input dari Scanner scan ke bentuk SPL.
+     * @param scan Scanner untuk dibaca inputnya.
+     * @return Sebuah obyek SPL hasil membaca scan.
+     */
     private static SPL readSPL(Scanner scan) {
         int n = scan.nextInt();scan.nextLine();
         double[][] sol = new double[n+1][n+1];
@@ -122,14 +174,34 @@ public class Test {
         scan.nextLine();
         return new SPL(sol);
     }
+
+    /**
+     * Membaca input dari Scanner scan ke bentuk matriks.
+     * @param scan Scanner untuk dibaca inputnya.
+     * @return Sebuah obyek matriks hasil membaca scan.
+     */
     private static Matrix readMatrix(Scanner scan) {
         int r = scan.nextInt(), c = scan.nextInt();scan.nextLine();
         return readMatrix(scan, r, c);
     }
+
+    /**
+     * Membaca input dari Scanner scan ke bentuk matriks bujur sangkar.
+     * @param scan Scanner untuk dibaca inputnya.
+     * @return Sebuah obyek matriks bujur sangkar hasil membaca scan.
+     */
     private static Matrix readSquareMatrix(Scanner scan) {
         int size = scan.nextInt();scan.nextLine();
         return readMatrix(scan, size, size);
     }
+
+    /**
+     * Membaca input dari Scanner scan ke bentuk matriks berukuran r x c.
+     * @param scan Scanner untuk dibaca inputnya.
+     * @param r Ukuran baris matriks.
+     * @param c Ukuran kolom matriks.
+     * @return Sebuah obyek matriks hasil membaca scan.
+     */
     private static Matrix readMatrix(Scanner scan, int r, int c) {
         Matrix m = new Matrix(r, c);
         for (int i = 1; i <= r; i++) {
@@ -139,6 +211,12 @@ public class Test {
         }
         return m;
     }
+
+    /**
+     * Membaca input dari Scanner scan ke bentuk array of point.
+     * @param scan Scanner untuk dibaca inputnya.
+     * @return Sebuah array of point hasil membaca scan.
+     */
     private static Point[] readPoints(Scanner scan) {
         int n = scan.nextInt();scan.nextLine();
         Point[] pts = new Point[n];
@@ -146,6 +224,10 @@ public class Test {
             pts[i] = new Point(scan.nextDouble(), scan.nextDouble());
         return pts;
     }
+
+    /**
+     * F.S mengimplementasikan fungsi fungsi test untuk testing program dengan membandingkan object-object yang seharusnya benar.
+     */
     private static void doTheTests() {
         test("Test awal", new Matrix(new double[][] {
             {1,1},
