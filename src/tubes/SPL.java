@@ -60,21 +60,6 @@ public class SPL {
     }
 
     /**
-     * F.S Melakukan substutusi variabel yang didapatkan dari SPL dari Gauss.
-     */
-    public void substituteEquations() {
-        for (int i = this.content.length-2; i >= 1; i--) {
-            for (int j = i+1; j < this.content[i].length; j++) {
-                double s_up = this.content[i][j];
-                this.content[i][j] = 0;
-                this.content[i][0] += s_up*this.content[j][0];
-                for (int jj = j; jj < this.content[i].length-1; jj++)
-                    this.content[i][jj] += s_up*this.content[j][jj];
-            }
-        }
-    }
-
-    /**
      * F.S Menghasilkan true jika o adalah obyek SPL yang sama dengan SPL ini.
      */
     @Override
@@ -95,38 +80,54 @@ public class SPL {
     }
 
     /**
-     * F.S Mengubah marrix in menjadi bentuk SPL.
+     * F.S Melakukan substutusi variabel yang didapatkan dari SPL dari Gauss.
+     */
+    public void substituteEquations() {
+        for (int i = this.content.length-2; i >= 1; i--) {
+            for (int j = i+1; j < this.content[i].length; j++) {
+                double s_up = this.content[i][j];
+                this.content[i][j] = 0;
+                this.content[i][0] += s_up*this.content[j][0];
+                for (int jj = j; jj < this.content[i].length; jj++)
+                    this.content[i][jj] += s_up*this.content[j][jj];
+            }
+        }
+    }
+
+    /**
+     * I.S Matriks in merupakan sebuah echelon form atau reduced echelon form.
+     * F.S Mengubah matriks in menjadi bentuk SPL.
      * @param in Matriks echelon / reduced echelon form.
      */
     public void initREF(Matrix in) {
-        int r = in.getMaxRow(), c = in.getMaxColumn()-1;
-        for (int i = c+1; i <= r; i++)
+        int r = in.getMaxRow(), size = in.getMaxColumn()-1;
+        for (int i = size+1; i <= r; i++)
             if (in.getElement(i, in.getMaxColumn()) != 0)
                 throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
-        content = new double[c+1][c+1];
+        content = new double[size+1][size+1];
         content[0] = new double[0];
-        Matrix m = new Matrix(c, c+1);
-        for (int i = 1; i <= Math.min(r, c); i++)
-            for (int j = 1; j <= c+1; j++)
+        Matrix m = new Matrix(size, size+1);
+        for (int i = 1; i <= Math.min(r, size); i++)
+            for (int j = 1; j <= size+1; j++)
                 m.setElement(i, j, in.getElement(i, j));
-        int j = 1;
-        for (int i = 1; i <= c; i++) {
-            if (j > c) {
-                if (m.getElement(i, j) != 0)
+        int emptyColCount = 0;
+        for (int i = 1; i <= size; i++) {
+            int j = 0;
+            while (j+1 <= size+1 && m.getElement(i, ++j) == 0);
+            if (j == size+1) {
+                if (!Utils.doubleEquals(m.getElement(i, j), 0))
                     throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
+                if (j > i+emptyColCount)
+                    this.content[i+emptyColCount][i+emptyColCount] = 1;    
                 break;
             }
-            if (m.getElement(i, j) == 0) {
-                content[j][j] = 1;
-                j++;
-                i--;
-                continue;
+            if (j > i+emptyColCount) {
+                this.content[i+emptyColCount][i+emptyColCount] = 1;
+                ++emptyColCount;
             }
-            content[j][0] = m.getElement(i, c+1);
-            for (int j2 = j+1; j2 <= c; j2++)
-                if (m.getElement(i, j2) != 0)
-                    content[i][j2] = -m.getElement(i, j2);
-            j++;
+            this.content[j][0] = m.getElement(i, size+1);
+            for (int jj = j+1; jj <= size; jj++)
+                this.content[j][jj] = -m.getElement(i, jj) + 0;
         }
     }
 
