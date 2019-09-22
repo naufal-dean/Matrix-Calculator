@@ -14,3 +14,10 @@ Test inverse return determinant zero error
 7 8 9
 determinant_zero_error
 
+Test inconsistent matrix
+1 1
+3 4
+0 0 0 1
+1 2 3 4
+1 2 2 2
+inconsistent_error

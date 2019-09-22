@@ -79,7 +79,7 @@ public class Matrix {
     }
 
     /**
-     * F.S Mendapatkan baris matrix dengan indeks r.
+     * F.S Mendapatkan baris matrix dengan indeks baris.
      * @param r Indeks baris.
      * @return Satu baris elemen-elemen matriks dalam bentuk tipe data array of double.
      */
@@ -87,7 +87,11 @@ public class Matrix {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
 
-    
+    /**
+     * F.S Mendapatkan baris matrix dengan indeks kolom.
+     * @param c Indeks kolom.
+     * @return Satu kolom elemen-elemen matriks dalam bentuk tipe data array of double.
+     */
     public double[] getColumn(int c) {
         double[] col = new double[this.maxR];
         for (int i = 0; i < this.maxR; i++) {
@@ -97,6 +101,10 @@ public class Matrix {
     }
 
     //-- Selektor: Set --//
+    /**
+     * F.S mengganti nilai maxR pada matrix
+     * @param maxR
+     */
     public void setMaxRow(int maxR) {
         this.maxR = maxR;
     }

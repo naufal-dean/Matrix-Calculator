@@ -71,7 +71,7 @@ public class SPL {
         int r = in.getMaxRow(), c = in.getMaxColumn()-1;
         for (int i = c+1; i <= r; i++)
             if (in.getElement(i, in.getMaxColumn()) != 0)
-                throw new RuntimeException("Matrix is inconsistent!");
+                throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
         content = new double[c+1][c+1];
         content[0] = new double[0];
         Matrix m = new Matrix(c, c+1);
@@ -82,7 +82,7 @@ public class SPL {
         for (int i = 1; i <= c; i++) {
             if (j > c) {
                 if (m.getElement(i, j) != 0)
-                    throw new RuntimeException("Matrix is inconsistent!");
+                    throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
                 break;
             }
             if (m.getElement(i, j) == 0) {

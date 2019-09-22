@@ -109,6 +109,7 @@ public class Test {
                 } catch (Exception e) {
                     outln(red + "Skipping file: " + yellow + f);
                     outln(red + "Error: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
     }
