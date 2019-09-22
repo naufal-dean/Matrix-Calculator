@@ -3,6 +3,9 @@ package tubes;
 import java.io.File;
 import java.util.*;
 
+/**
+ * Class Matrix digunakan untuk melakukan operasi-operasi matriks dan menjalankan implementasi algoritma-algoritma dari berbagai macam metode.
+ */
 public class Matrix {
     /**
      * Elemen dari matriks.
@@ -102,31 +105,60 @@ public class Matrix {
 
     //-- Selektor: Set --//
     /**
-     * F.S mengganti nilai maxR pada matrix
-     * @param maxR
+     * I.S maxR &gt;= 0.
+     * F.S mengganti nilai maxR pada matriks.
+     * @param maxR Nilai maksimum baris matriks yang baru.
      */
     public void setMaxRow(int maxR) {
         this.maxR = maxR;
     }
 
+    /**
+     * I.S maxC &gt;= 0.
+     * F.S mengganti nilai maxC pada matriks.
+     * @param maxC Nilai maksimum kolom matriks yang baru.
+     */
     public void setMaxColumn(int maxC) {
         this.maxC = maxC;
     }
 
+    /**
+     * I.S Dimensi matrix dan array of array arr adalah sama.
+     * F.S Mengganti elemen pada matriks.
+     * @param arr Konten matriks yang baru.
+     */
     public void setContent(double[][] arr) {
         for (int r = 0; r < this.maxR; r++)
             for (int c = 0; c < this.maxC; c++)
                 this.content[r+1][c+1] = arr[r][c];
     }
 
+    /**
+     * I.S r dan c merupakan indeks valid pada matriks.
+     * F.S Mengganti nilai elemen matrix  berindeks baris r dan berindeks kolom c dengan nilai val.
+     * @param r Indeks baris matriks.
+     * @param c Indeks kolom matriks.
+     * @param val Nilai elemen matriks.
+     */
     public void setElement(int r, int c, double val) {
         this.content[r][c] = val;
     }
 
+    /**
+     * I.S r merupkan indeks valid matriks dan row mempunyai nilai panjang yang sama dengan maxC.
+     * F.S mengganti nilai elemen matriks berindeks baris r dengan row.
+     * @param r Indeks baris matriks.
+     * @param row Konten baris matriks.
+     */
     public void setRow(int r, double[] row) {
         this.content[r] = Arrays.copyOf(row, row.length);
     }
 
+    /**
+     * I.S c merupkan indeks valid matrix dan kolom mempunyai nilai panjang.
+     * @param c Indeks kolom matriks.
+     * @param col Konten kolom matriks.
+     */
     public void setColumn(int c, double[] col) {
         for (int i = 0; i < this.maxR; i++) {
             this.setElement(i+1, c, col[i]);
@@ -134,16 +166,36 @@ public class Matrix {
     }
 
     //** Utility **//
+    /**
+     * F.S menduplikasi keseluruhan atribut matriks.
+     * @return Matriks baru hasil duplikasi.
+     */
     public Matrix copyMatrix() {
         Matrix M = new Matrix(this.subMatrixContent(1, 1));
         M.scaledDet = this.scaledDet;
         return M;
     }
 
+    /**
+     * I.S 0 &lt;= startR &lt;= maxR dan 0 &lt;= startC &lt;= maxC.
+     * F.S membuat submatrix yang dimulai dari indeks baris startR dan indeks.
+     * @param startR Indeks mulai baris matriks.
+     * @param startC Indeks mulai kolom matriks.
+     * @return Konten matriks.
+     */
     public double[][] subMatrixContent(int startR, int startC) {
         return subMatrixContent(startR, startC, this.maxR, this.maxC);
     }
 
+    /**
+     * I.S 0 &lt;= startR &lt;= maxR dan 0 &lt;= startC &lt;= maxC.
+     * F.S membuat submatrix yang dimulai dari indeks baris startR dan indeks kolom startC hingga indeks baris endR dan indeks kolom endC.
+     * @param startR Indeks mulai baris matriks.
+     * @param startC Indeks mulai kolom matriks.
+     * @param endR Indeks akhir baris matriks.
+     * @param endC Indeks akhir kolom matriks.
+     * @return Konten matriks.
+     */
     public double[][] subMatrixContent(int startR, int startC, int endR, int endC) {
         double[][] sub = new double[endR + 1 - startR][endC + 1 - startC];
         for (int i = 0; i < (endR + 1 - startR); i++)
@@ -151,8 +203,13 @@ public class Matrix {
         return sub;
     }
 
+    /**
+     * I.S Jumlah baris matriks ini == mInput.
+     * F.S Menambahkan kolom pada suatu matriks.
+     * @param mInput Matriks yang ditempelkan pada matriks ini.
+     * @return Matriks baru hasil penempelan.
+     */
     public Matrix appendMatrix(Matrix mInput) {
-        // Prekondisi: jumlah baris matriks ini == mInput
         double[][] m1 = this.subMatrixContent(1, 1);
         double[][] m2 = mInput.subMatrixContent(1, 1);
         double[][] tempVal = new double[m1.length][m1[0].length + m2[0].length];
@@ -166,6 +223,9 @@ public class Matrix {
         return new Matrix(tempVal);
     }
 
+    /**
+     * Representasi obyek dalam bentuk string.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -178,6 +238,12 @@ public class Matrix {
     }
 
     //** Operasi pada matriks **//
+    /**
+     * I.S maxC matriks ini sama dengan maxR matriks m.
+     * F.S menghasilkan matrix yang merupakan hasil perkalian matriks ini dengan matriks m.
+     * @param m Matriks yang digunakan untuk perkalian.
+     * @return Matriks baru hasil perkalian.
+     */
     public Matrix multiplyOPR(Matrix m) {
         if (this.maxC != m.maxR)
             throw new MatrixException(MatrixErrorIdentifier.MULTIPLY_ERROR);
@@ -195,6 +261,11 @@ public class Matrix {
         return res;
     }
 
+    /**
+     * F.S Menghasilkan matriks yang merupakan perkalian skalar matriks ini dengan x.
+     * @param x Nilai bilangan riil untuk dikalikan ke matriks.
+     * @return Matriks baru hasil perkalian skalar matriks.
+     */
     public Matrix scalarMultiplyOPR(double x) {
         Matrix res = copyMatrix();
         for (int i = 1; i <= this.maxR; i++)
@@ -203,6 +274,12 @@ public class Matrix {
         return res;
     }
 
+    /**
+     * I.S Dimensi matriks ini sama dengan matriks matrix m.
+     * F.S menghasilkan matriks yang merupakan hasil penjumlahan matriks ini dengan matriks m.
+     * @param m Matriks yang digunakan untuk dijumlahkan pada matriks ini.
+     * @return Matriks baru hasil penjumlahan matriks.
+     */
     public Matrix addOPR(Matrix m) {
         if (this.maxR != m.maxR || this.maxC != m.maxC)
             throw new MatrixException(MatrixErrorIdentifier.DIFFERENT_SIZE_ERROR);
@@ -213,6 +290,10 @@ public class Matrix {
         return res;
     }
 
+    /**
+     * F.S Menghasilkan true jika objek o sama dengan obyek matriks ini.
+     * @param o Obyek yang akan dikomparasikan.
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Matrix))
@@ -228,6 +309,12 @@ public class Matrix {
     }
 
     //** OBE **//
+    /**
+     * I.S r1 dan r2 merupakan indeks baris yang valid pada matrix ini.
+     * F.S Menukar baris r1 dan r2.
+     * @param r1 Indeks baris matriks.
+     * @param r2 Indeks baris matriks.
+     */
     private void swapOBE(int r1, int r2) {
         double[] temp;
         temp = this.content[r1];
@@ -235,19 +322,37 @@ public class Matrix {
         this.content[r2] = temp;
     }
 
+    /**
+     * I.S r merupakan indeks baris valid matriks.
+     * F.S Mengalikan baris r dengan bilangan skalar scale.
+     * @param r Indeks baris matriks.
+     * @param scale Skala dalam bentuk nilai riil.
+     */
     private void scaleOBE(int r, double scale) {
         for (int c = 1; c <= maxC; c++) {
             this.content[r][c] *= scale;
         }
     }
 
+    /**
+     * I.S r1 dan r2 merupakan indeks baris yang valid pada matrix ini.
+     * F.S Menambahkan elemen-elemen di baris r1 dengan baris r2 dengan skala scale.
+     * @param r1 Indeks baris matriks.
+     * @param r2 Indeks baris matriks.
+     * @param scale Skala dalam bentuk nilai riil.
+     */
     private void addOBE(int r1, int r2, double scale) {
         for (int c = 1; c <= maxC; c++)
             this.content[r1][c] += (this.content[r2][c] * scale);
     }
 
-
     //** Fungsi matriks **//
+    /**
+     * I.S Matriks harus bujur sangkar.
+     * F.S Menghasilkan determinan matrix ini dengan metode method.
+     * @param method Metode mencari determinan.
+     * @return Nilai riil hasil determinan matriks.
+     */
     public double getDeterminan(Method method) {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.NOT_SQUARE_ERROR);
@@ -282,6 +387,12 @@ public class Matrix {
         }
     }
 
+    /**
+     * I.S size &gt;=0
+     * F.S Menghasilkan matrix identitas dengan dimensi size*size.
+     * @param size Ukuran matriks.
+     * @return Identitas matriks dengan ukuran size.
+     */
     public static Matrix getIdentityMatrix(int size) {
         Matrix m = new Matrix(size, size);
         for (int i = 1; i <= size; i++)
@@ -289,6 +400,12 @@ public class Matrix {
         return m;
     }
 
+    /**
+     * F.S Menghasilkan matrix hasil baca dari file
+     * @param fileName Nama file.
+     * @return Matriks hasil dari membaca file.
+     * @throws Exception Saat akses file gagal atau input tidak valid.
+     */
     public static Matrix readFile(String fileName) throws Exception {
         Scanner scan = new Scanner(new File(fileName));
         List<String> list = new ArrayList<>();
@@ -306,6 +423,10 @@ public class Matrix {
         return m;
     }
     
+    /**
+     * F.S Menghasilkan matrix tranpos dari matriks ini.
+     * @return Matriks transpos dari matriks ini.
+     */
     public Matrix getTransposeMatrix() {
         double[][] tempVal = new double[this.maxC][this.maxR];
         double[][] subC = this.subMatrixContent(1, 1);
@@ -318,6 +439,13 @@ public class Matrix {
         return new Matrix(tempVal);
     }
 
+    /**
+     * I.S Matriks merupakan matrix persegi.
+     * F.S Menghasilkan Entry Matrix matrix ini pada indeks baris r dan indeks kolom c
+     * @param r Indeks baris matriks.
+     * @param c Indeks kolom matriks.
+     * @return Matriks entri matriks ini.
+     */
     public Matrix getEntryMatrix(int r, int c) {
         double[][] tempVal = new double[this.maxR-1][this.maxC-1];
         double[][] subC = this.subMatrixContent(1, 1);
@@ -338,6 +466,11 @@ public class Matrix {
         return new Matrix(tempVal);
     }
 
+    /**
+     * I.S Matriks merupakan matriks persegi.
+     * F.S Menghasilkan matriks kofaktor pada matriks ini.
+     * @return Matriks kofaktor matriks ini.
+     */
     public Matrix getCofactorMatrix() {
         double[][] tempVal = new double[this.maxR][this.maxC];
 
@@ -350,10 +483,20 @@ public class Matrix {
         return new Matrix(tempVal);
     }
 
+    /**
+     * I.S Matriks merupakan matriks persegi.
+     * F.S Menghasilkan matriks adjoin pada matriks ini.
+     * @return Matriks adjoin matriks ini.
+     */
     public Matrix getAdjointMatrix() {
         return (this.getCofactorMatrix()).getTransposeMatrix();
     }
 
+    /**
+     * F.S Menghasilkan matriks balikan pada matriks ini dengan metode method.
+     * @param method Metode mencari matriks balikan.
+     * @return Matriks balikan matriks ini.
+     */
     public Matrix getInverseMatrix(Method method) {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.DIFFERENT_SIZE_ERROR);
@@ -373,14 +516,31 @@ public class Matrix {
         }
     }
 
+    /**
+     * F.S Menghasilkan Echelon form dari matriks yang berdimensi maxR*(maxC-1).
+     * @return Matriks echelon form matriks ini.
+     */
     public Matrix getEchelonForm() {
         return this.getEchelonForm(this.maxC-1);
     }
 
+    /**
+     * I.S colMax merupakan kolom valid pada indeks kolom.
+     * F.S Menghasilkan Echelon form dari matriks yang berdimensi maxR*colMax.
+     * @param colMax Indeks kolom maksimal yang diperhitungkan.
+     * @return Matriks echelon form matriks ini.
+     */
     public Matrix getEchelonForm(int colMax) {
         return this.getEchelonForm(1, 1, colMax);
     }
 
+    /**
+     * F.S Menghasilkan Echelon form dari matriks yang berdimensi maxR*colMax.
+     * @param rowStart Indeks mulai baris matriks.
+     * @param colStart Indeks mulai kolom matriks.
+     * @param colMax Indeks kolom maksimal yang diperhitungkan.
+     * @return Matriks echelon form matriks ini.
+     */
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
         Matrix m = this.scaledPartialPivoting(rowStart, colStart, colMax);
         if (rowStart == m.getMaxRow() || colStart == colMax) {
@@ -408,10 +568,20 @@ public class Matrix {
         }
     }
 
+    /**
+     * I.S Matriks merupakan suatu augmented matriks.
+     * F.S Menghasilkan Reduced Echelon form dari matriks ini.
+     * @return Matriks reduced echelon form dari matriks ini.
+     */
     public Matrix getReducedEchelonForm() {
         return getReducedEchelonForm(this.maxC-1);
     }
 
+    /**
+     * F.S Menghasilkan Reduce Echelon form dari matriks yang berdimensi maxR*colMax
+     * @param colMax Kolom maksimal matriks yang diperhitungkan.
+     * @return Matriks reduced echelon form dari matriks ini.
+     */
     public Matrix getReducedEchelonForm(int colMax) {
         Matrix m = this.copyMatrix();
 
@@ -419,6 +589,13 @@ public class Matrix {
         return m.getReducedEchelonForm(1, 1, colMax);
     }
 
+    /**
+     * F.S Menghasilkan Reduced Echelon form dari matriks yang berdimensi maxR*colMax.
+     * @param rowStart Indeks mulai baris matriks.
+     * @param colStart Indeks mulai kolom matriks.
+     * @param colMax Indeks kolom maksimal yang diperhitungkan.
+     * @return Matriks reduced echelon form matriks ini.
+     */
     public Matrix getReducedEchelonForm(int rowStart, int colStart, int colMax) {
         Matrix m = this.copyMatrix();
 
@@ -438,6 +615,14 @@ public class Matrix {
         }
     }
 
+    /**
+     * I.S rowStart adalah indeks baris valid pada matriks serta colStart dan colMax adalah indeks kolom valid pada matriks.
+     * F.S Menghasilkan matriks yang sudah teroptimisasi ketelitian presisinya untuk dilakukan OBE.
+     * @param rowStart Indeks mulai baris matriks.
+     * @param colStart Indeks mulai kolom matriks.
+     * @param colMax Indeks kolom maksimal yang diperhitungkan.
+     * @return Matriks yang sudah teroptimisasi ketelitian presisinya untuk dilakukan OBE.
+     */
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
         double rowMax;
         double scaledMax = -1;
@@ -467,6 +652,11 @@ public class Matrix {
     }
 
     //** Fungsi Sistem Persamaaan Linear **//
+    /**
+     * F.S Menghasilkan bentuk SPL dari Matrix dengan metode method.
+     * @param method Metode mencari sistem persamaan linear.
+     * @return Sebuah sistem persamaan linear.
+     */
     public SPL getSistemPersamaanLinear(Method method) {
         // Prekondisi: matriks yang diproses adalah matriks augmented
         double[] sol = new double[this.maxR+1];
@@ -509,6 +699,10 @@ public class Matrix {
         }
     }
 
+    /**
+     * Menghasilkan true apabila jumlah kolom matriks lebih satu jumlah dari jumlah baris matriks.
+     * @return Jumlah kolom matriks lebih satu jumlah dari jumlah baris matriks.
+     */
     public boolean isAugmentedSize() {
         return this.maxC == this.maxR+1;
     }
