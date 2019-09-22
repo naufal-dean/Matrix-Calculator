@@ -52,7 +52,7 @@ public class ConsoleApp {
                 + "2. Metode adjoin.";
 
     /**
-     * Prosedur menjalankan program.
+     * Prosedur menjalankan program.<br>
      * Memanggil prosedur printMenu, selectMenu, error, enterToContinue dan memanggil fungsi ini kembali
      */
     public static void start() {

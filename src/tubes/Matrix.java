@@ -105,7 +105,7 @@ public class Matrix {
 
     //-- Selektor: Set --//
     /**
-     * I.S maxR &gt;= 0.
+     * I.S maxR &gt;= 0.<br>
      * F.S mengganti nilai maxR pada matriks.
      * @param maxR Nilai maksimum baris matriks yang baru.
      */
@@ -114,7 +114,7 @@ public class Matrix {
     }
 
     /**
-     * I.S maxC &gt;= 0.
+     * I.S maxC &gt;= 0.<br>
      * F.S mengganti nilai maxC pada matriks.
      * @param maxC Nilai maksimum kolom matriks yang baru.
      */
@@ -123,7 +123,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Dimensi matrix dan array of array arr adalah sama.
+     * I.S Dimensi matrix dan array of array arr adalah sama.<br>
      * F.S Mengganti elemen pada matriks.
      * @param arr Konten matriks yang baru.
      */
@@ -134,7 +134,7 @@ public class Matrix {
     }
 
     /**
-     * I.S r dan c merupakan indeks valid pada matriks.
+     * I.S r dan c merupakan indeks valid pada matriks.<br>
      * F.S Mengganti nilai elemen matrix  berindeks baris r dan berindeks kolom c dengan nilai val.
      * @param r Indeks baris matriks.
      * @param c Indeks kolom matriks.
@@ -145,7 +145,7 @@ public class Matrix {
     }
 
     /**
-     * I.S r merupkan indeks valid matriks dan row mempunyai nilai panjang yang sama dengan maxC.
+     * I.S r merupkan indeks valid matriks dan row mempunyai nilai panjang yang sama dengan maxC.<br>
      * F.S mengganti nilai elemen matriks berindeks baris r dengan row.
      * @param r Indeks baris matriks.
      * @param row Konten baris matriks.
@@ -177,7 +177,7 @@ public class Matrix {
     }
 
     /**
-     * I.S 0 &lt;= startR &lt;= maxR dan 0 &lt;= startC &lt;= maxC.
+     * I.S 0 &lt;= startR &lt;= maxR dan 0 &lt;= startC &lt;= maxC.<br>
      * F.S membuat submatrix yang dimulai dari indeks baris startR dan indeks.
      * @param startR Indeks mulai baris matriks.
      * @param startC Indeks mulai kolom matriks.
@@ -188,7 +188,7 @@ public class Matrix {
     }
 
     /**
-     * I.S 0 &lt;= startR &lt;= maxR dan 0 &lt;= startC &lt;= maxC.
+     * I.S 0 &lt;= startR &lt;= maxR dan 0 &lt;= startC &lt;= maxC.<br>
      * F.S membuat submatrix yang dimulai dari indeks baris startR dan indeks kolom startC hingga indeks baris endR dan indeks kolom endC.
      * @param startR Indeks mulai baris matriks.
      * @param startC Indeks mulai kolom matriks.
@@ -204,7 +204,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Jumlah baris matriks ini == mInput.
+     * I.S Jumlah baris matriks ini == mInput.<br>
      * F.S Menambahkan kolom pada suatu matriks.
      * @param mInput Matriks yang ditempelkan pada matriks ini.
      * @return Matriks baru hasil penempelan.
@@ -239,7 +239,7 @@ public class Matrix {
 
     //** Operasi pada matriks **//
     /**
-     * I.S maxC matriks ini sama dengan maxR matriks m.
+     * I.S maxC matriks ini sama dengan maxR matriks m.<br>
      * F.S menghasilkan matrix yang merupakan hasil perkalian matriks ini dengan matriks m.
      * @param m Matriks yang digunakan untuk perkalian.
      * @return Matriks baru hasil perkalian.
@@ -275,7 +275,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Dimensi matriks ini sama dengan matriks matrix m.
+     * I.S Dimensi matriks ini sama dengan matriks matrix m.<br>
      * F.S menghasilkan matriks yang merupakan hasil penjumlahan matriks ini dengan matriks m.
      * @param m Matriks yang digunakan untuk dijumlahkan pada matriks ini.
      * @return Matriks baru hasil penjumlahan matriks.
@@ -310,7 +310,7 @@ public class Matrix {
 
     //** OBE **//
     /**
-     * I.S r1 dan r2 merupakan indeks baris yang valid pada matrix ini.
+     * I.S r1 dan r2 merupakan indeks baris yang valid pada matrix ini.<br>
      * F.S Menukar baris r1 dan r2.
      * @param r1 Indeks baris matriks.
      * @param r2 Indeks baris matriks.
@@ -323,7 +323,7 @@ public class Matrix {
     }
 
     /**
-     * I.S r merupakan indeks baris valid matriks.
+     * I.S r merupakan indeks baris valid matriks.<br>
      * F.S Mengalikan baris r dengan bilangan skalar scale.
      * @param r Indeks baris matriks.
      * @param scale Skala dalam bentuk nilai riil.
@@ -335,7 +335,7 @@ public class Matrix {
     }
 
     /**
-     * I.S r1 dan r2 merupakan indeks baris yang valid pada matrix ini.
+     * I.S r1 dan r2 merupakan indeks baris yang valid pada matrix ini.<br>
      * F.S Menambahkan elemen-elemen di baris r1 dengan baris r2 dengan skala scale.
      * @param r1 Indeks baris matriks.
      * @param r2 Indeks baris matriks.
@@ -348,7 +348,7 @@ public class Matrix {
 
     //** Fungsi matriks **//
     /**
-     * I.S Matriks harus bujur sangkar.
+     * I.S Matriks harus bujur sangkar.<br>
      * F.S Menghasilkan determinan matrix ini dengan metode method.
      * @param method Metode mencari determinan.
      * @return Nilai riil hasil determinan matriks.
@@ -388,7 +388,7 @@ public class Matrix {
     }
 
     /**
-     * I.S size &gt;=0
+     * I.S size &gt;=0<br>
      * F.S Menghasilkan matrix identitas dengan dimensi size*size.
      * @param size Ukuran matriks.
      * @return Identitas matriks dengan ukuran size.
@@ -440,7 +440,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Matriks merupakan matrix persegi.
+     * I.S Matriks merupakan matrix persegi.<br>
      * F.S Menghasilkan Entry Matrix matrix ini pada indeks baris r dan indeks kolom c
      * @param r Indeks baris matriks.
      * @param c Indeks kolom matriks.
@@ -467,7 +467,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Matriks merupakan matriks persegi.
+     * I.S Matriks merupakan matriks persegi.<br>
      * F.S Menghasilkan matriks kofaktor pada matriks ini.
      * @return Matriks kofaktor matriks ini.
      */
@@ -484,7 +484,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Matriks merupakan matriks persegi.
+     * I.S Matriks merupakan matriks persegi.<br>
      * F.S Menghasilkan matriks adjoin pada matriks ini.
      * @return Matriks adjoin matriks ini.
      */
@@ -525,7 +525,7 @@ public class Matrix {
     }
 
     /**
-     * I.S colMax merupakan kolom valid pada indeks kolom.
+     * I.S colMax merupakan kolom valid pada indeks kolom.<br>
      * F.S Menghasilkan Echelon form dari matriks yang berdimensi maxR*colMax.
      * @param colMax Indeks kolom maksimal yang diperhitungkan.
      * @return Matriks echelon form matriks ini.
@@ -569,7 +569,7 @@ public class Matrix {
     }
 
     /**
-     * I.S Matriks merupakan suatu augmented matriks.
+     * I.S Matriks merupakan suatu augmented matriks.<br>
      * F.S Menghasilkan Reduced Echelon form dari matriks ini.
      * @return Matriks reduced echelon form dari matriks ini.
      */
@@ -616,7 +616,7 @@ public class Matrix {
     }
 
     /**
-     * I.S rowStart adalah indeks baris valid pada matriks serta colStart dan colMax adalah indeks kolom valid pada matriks.
+     * I.S rowStart adalah indeks baris valid pada matriks serta colStart dan colMax adalah indeks kolom valid pada matriks.<br>
      * F.S Menghasilkan matriks yang sudah teroptimisasi ketelitian presisinya untuk dilakukan OBE.
      * @param rowStart Indeks mulai baris matriks.
      * @param colStart Indeks mulai kolom matriks.
