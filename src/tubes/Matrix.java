@@ -372,7 +372,7 @@ public class Matrix {
                 return (newDet/M.scaledDet);
             }
             case INVERSE: {
-                return 1/this.getInverseMatrix(Method.CRAMER).getDeterminan(Method.COFACTOR_EXPANSION);
+                return 1d/this.getInverseMatrix(Method.GAUSS_JORDAN).getDeterminan(Method.COFACTOR_EXPANSION);
             }
             case COFACTOR_EXPANSION: {
                 if (this.maxR == 1)
@@ -476,8 +476,7 @@ public class Matrix {
 
         for (int i = 0; i < this.maxR; i++) {
             for (int j = 0; j < this.maxC; j++) {
-                tempVal[i][j] = ((i + j) % 2 == 0)  ? ((this.getEntryMatrix(i+1, j+1)).getDeterminan(Method.GAUSS))
-                                                    : (-(this.getEntryMatrix(i+1, j+1)).getDeterminan(Method.GAUSS));
+                tempVal[i][j] = this.getEntryMatrix(i+1, j+1).getDeterminan(Method.GAUSS) * ((i + j) % 2 == 0 ? 1 : -1);
             }
         }
         return new Matrix(tempVal);

@@ -153,8 +153,9 @@ public class Test {
                         }
                     }
                 } catch (Exception e) {
-                    outln(red + "Skipping file: " + yellow + f);
+                    outln(red + ++index + ". Skipping file: " + yellow + f);
                     outln(red + "Error: " + e.getMessage());
+                    ++failed;
                     e.printStackTrace();
                 }
             }
@@ -180,7 +181,8 @@ public class Test {
      * @return Sebuah obyek matriks hasil membaca scan.
      */
     private static Matrix readMatrix(Scanner scan) {
-        int r = scan.nextInt(), c = scan.nextInt();scan.nextLine();
+        String[] strs = scan.nextLine().split(" ");
+        int r = Integer.parseInt(strs[0]), c = strs.length > 0 ? Integer.parseInt(strs[1]) : r;
         return readMatrix(scan, r, c);
     }
 
