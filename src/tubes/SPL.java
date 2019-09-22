@@ -119,7 +119,7 @@ public class SPL {
                     throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
                 if (j > i+emptyColCount)
                     this.content[i+emptyColCount][i+emptyColCount] = 1;    
-                break;
+                continue;
             }
             if (j > i+emptyColCount) {
                 this.content[i+emptyColCount][i+emptyColCount] = 1;
