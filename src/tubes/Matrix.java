@@ -372,7 +372,7 @@ public class Matrix {
                 return (newDet/M.scaledDet);
             }
             case INVERSE: {
-                return 1/this.getInverseMatrix(Method.CRAMER).getDeterminan(Method.COFACTOR_EXPANSION);
+                return 1/this.getInverseMatrix(Method.GAUSS_JORDAN).getDeterminan(Method.COFACTOR_EXPANSION);
             }
             case COFACTOR_EXPANSION: {
                 if (this.maxR == 1)
@@ -422,7 +422,7 @@ public class Matrix {
         }
         return m;
     }
-    
+
     /**
      * F.S Menghasilkan matrix tranpos dari matriks ini.
      * @return Matriks transpos dari matriks ini.
