@@ -106,7 +106,7 @@ public class SPL {
         content = new double[c+1][c+1];
         content[0] = new double[0];
         Matrix m = new Matrix(c, c+1);
-        for (int i = 1; i <= c; i++)
+        for (int i = 1; i <= Math.min(r, c); i++)
             for (int j = 1; j <= c+1; j++)
                 m.setElement(i, j, in.getElement(i, j));
         int j = 1;

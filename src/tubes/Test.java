@@ -206,7 +206,7 @@ public class Test {
         for (int i = 1; i <= r; i++) {
             String[] line = scan.nextLine().split(" ");
             for (int j = 1; j <= c; j++)
-                m.setElement(i, j, Float.parseFloat(line[j-1]));
+                m.setElement(i, j, Double.parseDouble(line[j-1]));
         }
         return m;
     }
