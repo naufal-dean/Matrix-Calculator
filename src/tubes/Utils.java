@@ -9,11 +9,11 @@ public class Utils {
      */
     @Deprecated
     private Utils() {}
-    
+
     /**
      * Konstanta THRESHOLD untuk galat komparasi bilangan riil.
      */
-    private static final double THRESHOLD = 1e-3;
+    private static final double THRESHOLD = 1e-2;
 
     /**
      * Menghasilkan true apabila a dan b bernilai sama dengan galat THRESHOLD.
