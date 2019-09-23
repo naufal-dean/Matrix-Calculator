@@ -73,7 +73,7 @@ public class Test {
      */
     private static void test(String msg, Object a, Object b) {
         boolean test = a.equals(b);
-        if (a instanceof Double || b instanceof Double)
+        if (a instanceof Double && b instanceof Double)
             test = Utils.doubleEquals((double)a, (double)b);
         if (!check(msg, test)) {
             out(yellow);
@@ -349,14 +349,14 @@ public class Test {
         }));
         test("No 5 jumlah penduduk jawa barat", Point.interpolatePoint( new Point []
             {
-                new Point(1971 , 21.6 ),
-                new Point(1980 , 27.4 ),
-                new Point(1990, 35.4 ),
+                new Point(1971, 21.6),
+                new Point(1980, 27.4),
+                new Point(1990, 35.4),
                 new Point(1995, 39.2),
                 new Point(2000, 35.7),
-                new Point(2010 , 43.2 ),
-                new Point(2015 , 46.7 ),
-                new Point(2019, 49.1 )
+                new Point(2010, 43.2),
+                new Point(2015, 46.7),
+                new Point(2019, 49.1)
             }
         ), new SPL (new double [][]{
             {75337000000.0, 0,0,0,0,0},
