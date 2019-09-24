@@ -132,9 +132,8 @@ public class SPL {
     }
 
     /**
-     *
-     *
-     *
+     * F.S Mengevaluasi nilai polinom hasil interpolasi di x.
+     * @param x Nilai x yang ingin dievaluasi.
      */
     public double eval(double x) {
         double res = 0;
