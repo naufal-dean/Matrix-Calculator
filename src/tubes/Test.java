@@ -138,8 +138,8 @@ public class Test {
                                     expected = readSquareMatrix(scan);
                                     break;
                                 case 6:
-                                    res = Point.interpolatePoint(readPoints(scan)).toPersamaanString();
-                                    expected = scan.nextLine();
+                                    res = Point.interpolatePoint(readPoints(scan));
+                                    expected = readSPL(scan);
                                     break;
                                 default:
                                     continue;
@@ -367,22 +367,6 @@ public class Test {
             {0, 0,0,0,0,0, 0,0,0},
             {0, 0, 0, 0,0,0, 0,0,0 },
             {0, 0, 0, 0,0,0, 0,0,0 },
-        }));
-        test("No 6 yang yang (2-0)/5", Point.interpolatePoint( new Point []
-            {
-                new Point(0.4 , 0.418884230141255 ),
-                new Point(0.8 , 0.5071579685304316 ),
-                new Point(1.2, 0.5609246748146806),
-                new Point(1.6, 0.5836856612868684),
-                new Point(2.0, 0.576651529751722)
-            }
-        ), new SPL (new double [][]{
-            {0.290311, 0, 0, 0,0,0 },
-            {0.378064, 0,0,0,0,0},
-            {-0.150597, 0, 0, 0,0,0 },
-            {0.0240315, 0 , 0, 0, 0,0 },
-            {-0.00372837, 0, 0, 0, 0,0},
-
         }));
     }
 

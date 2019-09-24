@@ -105,7 +105,7 @@ Kasus 2 Soal 2
 1 0 0 0 0
 1 0 0 0 0
 
-Kasus 3 Soal 1
+Kasus 2 Soal i
 1 1
 4 5
 8 1 3 2 0
@@ -118,7 +118,7 @@ Kasus 3 Soal 1
 0.71 0 0 0 0
 -0.26 0 0 0 0
 
-Kasus 3 Soal 2
+Kasus 2 Soal ii
 1 1
 12 10
 0 0 0 0 0 0 1 1 1 13.00
@@ -135,7 +135,7 @@ Kasus 3 Soal 2
 0.04289 0 0 0.75 0.04289 0 0.61396 0.75 0.04289 7.04
 inconsistent_error
 
-Kasus 4 Soal 1 (Determinan)
+Kasus 3 Soal 1 (Determinan)
 2 1
 5
 1 2 3 4 5
@@ -145,7 +145,7 @@ Kasus 4 Soal 1 (Determinan)
 21 22 23 24 25
 0
 
-Kasus 4 Soal 1 (Inverse)
+Kasus 3 Soal 1 (Inverse)
 3 1
 5
 1 2 3 4 5
@@ -155,7 +155,7 @@ Kasus 4 Soal 1 (Inverse)
 21 22 23 24 25
 determinant_zero_error
 
-Kasus 4 Soal 1 (Kofaktor)
+Kasus 3 Soal 1 (Kofaktor)
 4
 5
 1 2 3 4 5
@@ -170,7 +170,7 @@ Kasus 4 Soal 1 (Kofaktor)
 0 0 0 0 0
 0 0 0 0 0
 
-Kasus 4 Soal 1 (Adjoin)
+Kasus 3 Soal 1 (Adjoin)
 4
 5
 1 2 3 4 5
@@ -185,8 +185,8 @@ Kasus 4 Soal 1 (Adjoin)
 0 0 0 0 0
 0 0 0 0 0
 
-Kasus 4 Soal 2 (Determinan) -- blm jadi tcnya
-2 4
+Kasus 3 Soal 2 (Determinan) -- blm jadi tcnya
+2 1
 10
 -138 -827 -492 -811 29 -377 137 -389 221 -5
 -936 160 558 -217 -110 175 494 -118 -803 619
@@ -200,3 +200,17 @@ Kasus 4 Soal 2 (Determinan) -- blm jadi tcnya
 843 343 -121 463 369 -137 -979 -591 78 -155
 0
 
+Kasus 6
+6
+5
+0.4 0.418884230141255
+0.8 0.5071579685304316
+1.2 0.5609246748146806
+1.6 0.5836856612868684
+2.0 0.576651529751722
+5
+0.290311 0 0 0 0 0
+0.378064 0 0 0 0 0
+-0.150597 0 0 0 0 0
+0.0240315 0 0 0 0 0
+-0.00372837 0 0 0 0 0
