@@ -131,9 +131,17 @@ public class ConsoleApp {
                     outln(res);
                     break;
                 case 6:
-                    res = Point.interpolatePoint(useFile ? Point.readFile(fileName) : readPoints()).toPersamaanString();
+                    SPL spl = Point.interpolatePoint(useFile ? Point.readFile(fileName) : readPoints());
+                    res = spl.toPersamaanString();
                     outln("Hasil interpolasi poin:");
-                    outln(res);
+                    outln(res);line();
+                    String xVal;
+                    do {
+                        out("Masukkan nilai x yang ingin diaproksimasi nilai f(x)-nya (kosongkan untuk keluar): ");
+                        xVal = line();
+                        if (!xVal.isBlank())
+                            outln("y = " + spl.eval(Double.parseDouble(xVal)));
+                    } while (!xVal.isBlank());
                     break;
                 case 7:
                     System.exit(0);
