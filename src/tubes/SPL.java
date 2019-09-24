@@ -25,7 +25,7 @@ public class SPL {
         for (int i = 1; i < sol.length; i++)
             content[i][0] = sol[i];
     }
-    
+
     /**
      * Konstruktor SPL dengan menggunakan solusi SPL yang sudah ada.
      * @param sol Solusi dalam bentuk array of array of double.
@@ -118,7 +118,7 @@ public class SPL {
                 if (!Utils.doubleEquals(m.getElement(i, j), 0))
                     throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
                 if (j > i+emptyColCount)
-                    this.content[i+emptyColCount][i+emptyColCount] = 1;    
+                    this.content[i+emptyColCount][i+emptyColCount] = 1;
                 continue;
             }
             if (j > i+emptyColCount) {
@@ -129,6 +129,18 @@ public class SPL {
             for (int jj = j+1; jj <= size; jj++)
                 this.content[j][jj] = -m.getElement(i, jj) + 0;
         }
+    }
+
+    /**
+     *
+     *
+     *
+     */
+    public double eval(double x) {
+        double res = 0;
+        for (int i = 1; i < content.length; i++)
+            res += content[i][0]*Math.pow(x, i-1);
+        return res;
     }
 
     /**
