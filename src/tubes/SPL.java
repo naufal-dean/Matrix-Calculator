@@ -138,6 +138,7 @@ public class SPL {
     /**
      * F.S Mengevaluasi nilai polinom hasil interpolasi di x.
      * @param x Nilai x yang ingin dievaluasi.
+     * @return Hasil evaluasi.
      */
     public BigDecimal eval(double x) {
         BigDecimal res = BigDecimal.ZERO;

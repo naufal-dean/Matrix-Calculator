@@ -177,6 +177,7 @@ public class Test {
     /**
      * Membaca input dari Scanner scan ke bentuk SPL.
      * @param scan Scanner untuk dibaca inputnya.
+     * @param n Jumlah persamaan.
      * @return Sebuah obyek SPL hasil membaca scan.
      */
     private static SPL readSPL(Scanner scan, int n) {
