@@ -235,7 +235,7 @@ public class Matrix {
         for (int r = 1; r <= this.maxR; r++)
             for (int c = 1; c <= this.maxC; c++) {
                 BigDecimal v = this.content[r][c];
-                sb.append(String.format("%.2f", BD.eq0(v) ? 0 : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
+                sb.append(BD.format(BD.eq0(v) ? BigDecimal.ZERO : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
             }
         return sb.toString();
     }
