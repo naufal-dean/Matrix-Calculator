@@ -1,6 +1,7 @@
 package tubes;
 
 import java.io.FileWriter;
+import java.math.BigDecimal;
 
 import static tubes.Console.*;
 
@@ -134,13 +135,13 @@ public class ConsoleApp {
                     SPL spl = Point.interpolatePoint(useFile ? Point.readFile(fileName) : readPoints());
                     res = spl.toPersamaanString();
                     outln("Hasil interpolasi poin:");
-                    outln(res);line();
+                    outln(res);
                     String xVal;
                     do {
                         out("Masukkan nilai x yang ingin diaproksimasi nilai f(x)-nya (kosongkan untuk keluar): ");
                         xVal = line();
                         if (!xVal.isBlank())
-                            outln("y = " + spl.eval(Double.parseDouble(xVal)));
+                            outln("y = " + BD.format(spl.eval(Double.parseDouble(xVal))));
                     } while (!xVal.isBlank());
                     break;
                 case 7:
@@ -203,7 +204,7 @@ public class ConsoleApp {
         for (int i = 1; i <= r; i++) {
             String[] line = line().split(" ");
             for (int j = 1; j <= c; j++)
-                m.setElement(i, j, Double.parseDouble(line[j-1]));
+                m.setElement(i, j, new BigDecimal(line[j-1]));
         }
         outln("Matrix yang Anda masukkan:");
         outln(m);
@@ -220,7 +221,7 @@ public class ConsoleApp {
         outln("Masukkan point:");
         Point[] pts = new Point[n];
         for (int i = 0; i < n; i++)
-            pts[i] = new Point(real(), real());
+            pts[i] = new Point(new BigDecimal(next()), new BigDecimal(next()));
         return pts;
     }
 

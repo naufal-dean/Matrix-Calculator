@@ -1,6 +1,8 @@
 package tubes;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 /**
@@ -10,7 +12,7 @@ public class Matrix {
     /**
      * Elemen dari matriks.
      */
-    private double[][] content;
+    private BigDecimal[][] content;
     /**
      * Panjang / indeks maksimum baris matriks.
      */
@@ -22,7 +24,7 @@ public class Matrix {
     /**
      * Perbandingan determinan baru dengan determinan sebelumnya.
      */
-    private double scaledDet = 1;
+    private BigDecimal scaledDet = BigDecimal.ONE;
 
     //** Konstruktor **//
     /**
@@ -33,14 +35,17 @@ public class Matrix {
     public Matrix(int maxR, int maxC) {
         this.maxR = maxR;
         this.maxC = maxC;
-        this.content = new double[maxR+1][maxC+1];
+        this.content = new BigDecimal[maxR+1][maxC+1];
+        for (int i = 0; i <= maxR; i++)
+            for (int j = 0; j <= maxC; j++)
+                this.content[i][j] = BigDecimal.ZERO;
     }
 
     /**
      * F.S Membuat Matrix baru dengan elemen pada sebuah array of array of double.
      * @param arr Konten isi matriks yang akan dibuat.
      */
-    public Matrix(double[][] arr) {
+    public Matrix(BigDecimal[][] arr) {
         this(arr.length, arr.length > 0 ? arr[0].length : 0);
         setContent(arr);
     }
@@ -67,7 +72,7 @@ public class Matrix {
      * F.S Mengembalikan isi elemen matriks.
      * @return Konten isi elemen matriks dalam bentuk tipe data array of array of double.
      */
-    public double[][] getContent() {
+    public BigDecimal[][] getContent() {
         return this.content;
     }
 
@@ -77,7 +82,7 @@ public class Matrix {
      * @param c Indeks kolom.
      * @return Elemen matriks.
      */
-    public double getElement(int r, int c) {
+    public BigDecimal getElement(int r, int c) {
         return this.content[r][c];
     }
 
@@ -86,7 +91,7 @@ public class Matrix {
      * @param r Indeks baris.
      * @return Satu baris elemen-elemen matriks dalam bentuk tipe data array of double.
      */
-    public double[] getRow(int r) {
+    public BigDecimal[] getRow(int r) {
         return Arrays.copyOf(this.content[r], this.content[r].length);
     }
 
@@ -95,11 +100,10 @@ public class Matrix {
      * @param c Indeks kolom.
      * @return Satu kolom elemen-elemen matriks dalam bentuk tipe data array of double.
      */
-    public double[] getColumn(int c) {
-        double[] col = new double[this.maxR];
-        for (int i = 0; i < this.maxR; i++) {
+    public BigDecimal[] getColumn(int c) {
+        BigDecimal[] col = new BigDecimal[this.maxR];
+        for (int i = 0; i < this.maxR; i++)
             col[i] = this.getElement(i+1, c);
-        }
         return col;
     }
 
@@ -127,7 +131,7 @@ public class Matrix {
      * F.S Mengganti elemen pada matriks.
      * @param arr Konten matriks yang baru.
      */
-    public void setContent(double[][] arr) {
+    public void setContent(BigDecimal[][] arr) {
         for (int r = 0; r < this.maxR; r++)
             for (int c = 0; c < this.maxC; c++)
                 this.content[r+1][c+1] = arr[r][c];
@@ -140,7 +144,7 @@ public class Matrix {
      * @param c Indeks kolom matriks.
      * @param val Nilai elemen matriks.
      */
-    public void setElement(int r, int c, double val) {
+    public void setElement(int r, int c, BigDecimal val) {
         this.content[r][c] = val;
     }
 
@@ -150,7 +154,7 @@ public class Matrix {
      * @param r Indeks baris matriks.
      * @param row Konten baris matriks.
      */
-    public void setRow(int r, double[] row) {
+    public void setRow(int r, BigDecimal[] row) {
         this.content[r] = Arrays.copyOf(row, row.length);
     }
 
@@ -159,7 +163,7 @@ public class Matrix {
      * @param c Indeks kolom matriks.
      * @param col Konten kolom matriks.
      */
-    public void setColumn(int c, double[] col) {
+    public void setColumn(int c, BigDecimal[] col) {
         for (int i = 0; i < this.maxR; i++) {
             this.setElement(i+1, c, col[i]);
         }
@@ -183,7 +187,7 @@ public class Matrix {
      * @param startC Indeks mulai kolom matriks.
      * @return Konten matriks.
      */
-    public double[][] subMatrixContent(int startR, int startC) {
+    public BigDecimal[][] subMatrixContent(int startR, int startC) {
         return subMatrixContent(startR, startC, this.maxR, this.maxC);
     }
 
@@ -196,8 +200,8 @@ public class Matrix {
      * @param endC Indeks akhir kolom matriks.
      * @return Konten matriks.
      */
-    public double[][] subMatrixContent(int startR, int startC, int endR, int endC) {
-        double[][] sub = new double[endR + 1 - startR][endC + 1 - startC];
+    public BigDecimal[][] subMatrixContent(int startR, int startC, int endR, int endC) {
+        BigDecimal[][] sub = new BigDecimal[endR + 1 - startR][endC + 1 - startC];
         for (int i = 0; i < (endR + 1 - startR); i++)
             sub[i] = Arrays.copyOfRange(this.content[i + startR], startC, endC + 1);
         return sub;
@@ -210,15 +214,14 @@ public class Matrix {
      * @return Matriks baru hasil penempelan.
      */
     public Matrix appendMatrix(Matrix mInput) {
-        double[][] m1 = this.subMatrixContent(1, 1);
-        double[][] m2 = mInput.subMatrixContent(1, 1);
-        double[][] tempVal = new double[m1.length][m1[0].length + m2[0].length];
+        BigDecimal[][] m1 = this.subMatrixContent(1, 1);
+        BigDecimal[][] m2 = mInput.subMatrixContent(1, 1);
+        BigDecimal[][] tempVal = new BigDecimal[m1.length][m1[0].length + m2[0].length];
 
         for (int i = 0; i < m1.length; i++) {
             tempVal[i] = Arrays.copyOf(m1[i], tempVal[i].length);
-            for (int j = 0; j < m2[i].length; j++) {
+            for (int j = 0; j < m2[i].length; j++)
                 tempVal[i][m1[i].length + j] = m2[i][j];
-            }
         }
         return new Matrix(tempVal);
     }
@@ -231,8 +234,8 @@ public class Matrix {
         StringBuilder sb = new StringBuilder();
         for (int r = 1; r <= this.maxR; r++)
             for (int c = 1; c <= this.maxC; c++) {
-                double v = this.content[r][c];
-                sb.append(String.format("%.2f", v == 0 ? 0 : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
+                BigDecimal v = this.content[r][c];
+                sb.append(String.format("%.2f", BD.eq0(v) ? 0 : v) + (c == this.maxC ? r < this.maxR ? "\n" : "" : " "));
             }
         return sb.toString();
     }
@@ -247,14 +250,13 @@ public class Matrix {
     public Matrix multiplyOPR(Matrix m) {
         if (this.maxC != m.maxR)
             throw new MatrixException(MatrixErrorIdentifier.MULTIPLY_ERROR);
-        double temp = 0;
+        BigDecimal temp = BigDecimal.ZERO;
         Matrix res = new Matrix(this.maxR, m.maxC);
         for (int i = 1; i <= this.maxR; i++) {
             for (int j = 1; j <= m.maxC; j++) {
-                temp = 0;
-                for (int k = 1; k <= this.maxC; k++) {
-                    temp += this.getElement(i, k)*m.getElement(k, j);
-                }
+                temp = BigDecimal.ZERO;
+                for (int k = 1; k <= this.maxC; k++)
+                    temp = temp.add(this.getElement(i, k).multiply(m.getElement(k, j)));
                 res.setElement(i, j, temp);
             }
         }
@@ -266,11 +268,11 @@ public class Matrix {
      * @param x Nilai bilangan riil untuk dikalikan ke matriks.
      * @return Matriks baru hasil perkalian skalar matriks.
      */
-    public Matrix scalarMultiplyOPR(double x) {
+    public Matrix scalarMultiplyOPR(BigDecimal x) {
         Matrix res = copyMatrix();
         for (int i = 1; i <= this.maxR; i++)
             for (int j = 1; j <= this.maxC; j++)
-                res.content[i][j] *= x;
+                res.content[i][j] = res.content[i][j].multiply(x);
         return res;
     }
 
@@ -286,7 +288,7 @@ public class Matrix {
         Matrix res = copyMatrix();
         for (int i = 1; i <= maxR; i++)
             for (int j = 1; j <= maxC; j++)
-                res.setElement(i, j, res.getElement(i,j) + m.getElement(i,j));
+                res.setElement(i, j, res.getElement(i,j).add(m.getElement(i,j)));
         return res;
     }
 
@@ -303,7 +305,7 @@ public class Matrix {
             return false;
         for (int r = 1; r <= this.maxR; ++r)
             for (int c = 1; c <= this.maxC; ++c)
-                if (!Utils.doubleEquals(m.getElement(r, c), this.content[r][c]))
+                if (!BD.eqTest(m.getElement(r, c), this.content[r][c]))
                     return false;
         return true;
     }
@@ -316,8 +318,7 @@ public class Matrix {
      * @param r2 Indeks baris matriks.
      */
     private void swapOBE(int r1, int r2) {
-        double[] temp;
-        temp = this.content[r1];
+        BigDecimal[] temp = this.content[r1];
         this.content[r1] = this.content[r2];
         this.content[r2] = temp;
     }
@@ -328,10 +329,9 @@ public class Matrix {
      * @param r Indeks baris matriks.
      * @param scale Skala dalam bentuk nilai riil.
      */
-    private void scaleOBE(int r, double scale) {
-        for (int c = 1; c <= maxC; c++) {
-            this.content[r][c] *= scale;
-        }
+    private void scaleOBE(int r, BigDecimal scale) {
+        for (int c = 1; c <= maxC; c++)
+            this.content[r][c] = this.content[r][c].multiply(scale);
     }
 
     /**
@@ -341,9 +341,9 @@ public class Matrix {
      * @param r2 Indeks baris matriks.
      * @param scale Skala dalam bentuk nilai riil.
      */
-    private void addOBE(int r1, int r2, double scale) {
+    private void addOBE(int r1, int r2, BigDecimal scale) {
         for (int c = 1; c <= maxC; c++)
-            this.content[r1][c] += (this.content[r2][c] * scale);
+            this.content[r1][c] = this.content[r1][c].add(this.content[r2][c].multiply(scale));
     }
 
     //** Fungsi matriks **//
@@ -353,33 +353,33 @@ public class Matrix {
      * @param method Metode mencari determinan.
      * @return Nilai riil hasil determinan matriks.
      */
-    public double getDeterminan(Method method) {
+    public BigDecimal getDeterminan(Method method) {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.NOT_SQUARE_ERROR);
         switch (method) {
             case GAUSS: {
-                double newDet = 1;
+                BigDecimal newDet = BigDecimal.ONE;
                 Matrix M = this.getEchelonForm(this.maxC);
                 for (int i = 1; i <= M.maxC; i++)
-                    newDet *= M.getElement(i, i);
-                return (newDet/M.scaledDet);
+                    newDet = newDet.multiply(M.getElement(i, i));
+                return newDet.divide(M.scaledDet, BD.SCALE, RoundingMode.HALF_UP);
             }
             case GAUSS_JORDAN: {
-                double newDet = 1;
+                BigDecimal newDet = BigDecimal.ONE;
                 Matrix M = this.getReducedEchelonForm(this.maxC);
                 for (int i = 1; i <= M.maxC; i++)
-                    newDet *= M.getElement(i, i);
-                return (newDet/M.scaledDet);
+                    newDet = newDet.multiply(M.getElement(i, i));
+                return newDet.divide(M.scaledDet, BD.SCALE, RoundingMode.HALF_UP);
             }
             case INVERSE: {
-                return 1d/this.getInverseMatrix(Method.GAUSS_JORDAN).getDeterminan(Method.COFACTOR_EXPANSION);
+                return BigDecimal.ONE.divide(this.getInverseMatrix(Method.GAUSS_JORDAN).getDeterminan(Method.COFACTOR_EXPANSION));
             }
             case COFACTOR_EXPANSION: {
                 if (this.maxR == 1)
                     return this.content[1][1];
-                float res = 0;
+                BigDecimal res = BigDecimal.ZERO;
                 for (int j = 1; j <= this.maxC; j++)
-                    res += this.content[1][j]*this.getEntryMatrix(1, j).getDeterminan(Method.COFACTOR_EXPANSION)*(j%2 == 0 ? -1 : 1);
+                    res = res.add(this.content[1][j].multiply(this.getEntryMatrix(1, j).getDeterminan(Method.COFACTOR_EXPANSION).multiply(j%2 == 0 ? BigDecimal.ONE.negate() : BigDecimal.ONE)));
                 return res;
             }
             default:
@@ -396,7 +396,7 @@ public class Matrix {
     public static Matrix getIdentityMatrix(int size) {
         Matrix m = new Matrix(size, size);
         for (int i = 1; i <= size; i++)
-            m.setElement(i, i, 1);
+            m.setElement(i, i, BigDecimal.ONE);
         return m;
     }
 
@@ -418,7 +418,7 @@ public class Matrix {
         for (int i = 1; i <= m.maxR; i++) {
             String[] strs = list.get(i-1).split(" ");
             for (int j = 1; j <= m.maxC; j++)
-                m.setElement(i, j, Double.parseDouble(strs[j-1]));
+                m.setElement(i, j, new BigDecimal(strs[j-1]));
         }
         return m;
     }
@@ -428,14 +428,12 @@ public class Matrix {
      * @return Matriks transpos dari matriks ini.
      */
     public Matrix getTransposeMatrix() {
-        double[][] tempVal = new double[this.maxC][this.maxR];
-        double[][] subC = this.subMatrixContent(1, 1);
+        BigDecimal[][] tempVal = new BigDecimal[this.maxC][this.maxR];
+        BigDecimal[][] subC = this.subMatrixContent(1, 1);
 
-        for (int i = 0; i < this.maxR; i++) {
-            for (int j = 0; j < this.maxC; j++) {
+        for (int i = 0; i < this.maxR; i++)
+            for (int j = 0; j < this.maxC; j++)
                 tempVal[j][i] = subC[i][j];
-            }
-        }
         return new Matrix(tempVal);
     }
 
@@ -447,8 +445,8 @@ public class Matrix {
      * @return Matriks entri matriks ini.
      */
     public Matrix getEntryMatrix(int r, int c) {
-        double[][] tempVal = new double[this.maxR-1][this.maxC-1];
-        double[][] subC = this.subMatrixContent(1, 1);
+        BigDecimal[][] tempVal = new BigDecimal[this.maxR-1][this.maxC-1];
+        BigDecimal[][] subC = this.subMatrixContent(1, 1);
 
         for (int i = 0; i < this.maxR; i++) {
             for (int j = 0; j < this.maxC; j++) {
@@ -472,13 +470,11 @@ public class Matrix {
      * @return Matriks kofaktor matriks ini.
      */
     public Matrix getCofactorMatrix() {
-        double[][] tempVal = new double[this.maxR][this.maxC];
+        BigDecimal[][] tempVal = new BigDecimal[this.maxR][this.maxC];
 
-        for (int i = 0; i < this.maxR; i++) {
-            for (int j = 0; j < this.maxC; j++) {
-                tempVal[i][j] = this.getEntryMatrix(i+1, j+1).getDeterminan(Method.GAUSS) * ((i + j) % 2 == 0 ? 1 : -1);
-            }
-        }
+        for (int i = 0; i < this.maxR; i++)
+            for (int j = 0; j < this.maxC; j++)
+                tempVal[i][j] = this.getEntryMatrix(i+1, j+1).getDeterminan(Method.GAUSS).multiply((i + j) % 2 == 0 ? BigDecimal.ONE : BigDecimal.ONE.negate());
         return new Matrix(tempVal);
     }
 
@@ -488,7 +484,7 @@ public class Matrix {
      * @return Matriks adjoin matriks ini.
      */
     public Matrix getAdjointMatrix() {
-        return (this.getCofactorMatrix()).getTransposeMatrix();
+        return this.getCofactorMatrix().getTransposeMatrix();
     }
 
     /**
@@ -499,7 +495,7 @@ public class Matrix {
     public Matrix getInverseMatrix(Method method) {
         if (this.maxR != this.maxC)
             throw new MatrixException(MatrixErrorIdentifier.DIFFERENT_SIZE_ERROR);
-        if (Utils.doubleEquals(this.getDeterminan(Method.COFACTOR_EXPANSION), 0))
+        if (BD.eq0(this.getDeterminan(Method.COFACTOR_EXPANSION)))
             throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
         switch (method) {
             case GAUSS_JORDAN: {
@@ -507,9 +503,8 @@ public class Matrix {
                 m = m.getReducedEchelonForm(m.getMaxColumn()/2);
                 return new Matrix(m.subMatrixContent(1, ((m.getMaxColumn()/2)+1), m.getMaxRow(), m.getMaxColumn()));
             }
-            case ADJOIN: {
-                return (this.getAdjointMatrix()).scalarMultiplyOPR(1/this.getDeterminan(Method.GAUSS));
-            }
+            case ADJOIN:
+                return (this.getAdjointMatrix()).scalarMultiplyOPR(BigDecimal.ONE.divide(this.getDeterminan(Method.GAUSS), BD.SCALE, RoundingMode.HALF_UP));
             default:
                 throw new RuntimeException("Method " + method + " is not supported for getting inverse matrix.");
         }
@@ -543,28 +538,22 @@ public class Matrix {
     private Matrix getEchelonForm(int rowStart, int colStart, int colMax) {
         Matrix m = this.scaledPartialPivoting(rowStart, colStart, colMax);
         if (rowStart == m.getMaxRow() || colStart == colMax) {
-            if (m.getElement(rowStart, colStart)!=0){
-                m.scaledDet *= (1/m.getElement(rowStart, colStart));
-                m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
+            if (!BD.eq0(m.getElement(rowStart, colStart))){
+                m.scaledDet = m.scaledDet.multiply(BigDecimal.ONE.divide(m.getElement(rowStart, colStart), BD.SCALE, RoundingMode.HALF_UP));
+                m.scaleOBE(rowStart, BigDecimal.ONE.divide(m.getElement(rowStart, colStart), BD.SCALE, RoundingMode.HALF_UP));
             }
-
-            if (colStart == colMax && rowStart < m.getMaxRow()) {
-                for (int i = m.getMaxRow(); i > rowStart; i--) {
-                    m.addOBE(i, rowStart, -m.getElement(i, colMax));
-                }
-            }
+            if (colStart == colMax && rowStart < m.getMaxRow())
+                for (int i = m.getMaxRow(); i > rowStart; i--)
+                    m.addOBE(i, rowStart, m.getElement(i, colMax).negate());
             return m;
-        } else {
-            if ((m.getElement(rowStart,colStart) == 0)) {
-                return m.getEchelonForm(rowStart, colStart+1 ,colMax);
-            }
-            m.scaledDet *= (1/m.getElement(rowStart, colStart));
-            m.scaleOBE(rowStart, (1/m.getElement(rowStart, colStart)));
-            for (int i = rowStart + 1; i <= m.getMaxRow(); i++) {
-                m.addOBE(i, rowStart, -m.getElement(i, colStart));
-            }
-            return m.getEchelonForm(rowStart + 1, colStart + 1, colMax);
         }
+        if (BD.eq0(m.getElement(rowStart,colStart)))
+            return m.getEchelonForm(rowStart, colStart+1 ,colMax);
+        m.scaledDet = m.scaledDet.multiply(BigDecimal.ONE.divide(m.getElement(rowStart, colStart), BD.SCALE, RoundingMode.HALF_UP));
+        m.scaleOBE(rowStart, BigDecimal.ONE.divide(m.getElement(rowStart, colStart), BD.SCALE, RoundingMode.HALF_UP));
+        for (int i = rowStart + 1; i <= m.getMaxRow(); i++)
+            m.addOBE(i, rowStart, m.getElement(i, colStart).negate());
+        return m.getEchelonForm(rowStart + 1, colStart + 1, colMax);
     }
 
     /**
@@ -599,19 +588,15 @@ public class Matrix {
         Matrix m = this.copyMatrix();
 
         if (rowStart == m.getMaxRow() || colStart == colMax) {
-            for (int i = 1; i < rowStart; i++) {
-                m.addOBE(i, rowStart, -m.getElement(i, colStart));
-            }
+            for (int i = 1; i < rowStart; i++)
+                m.addOBE(i, rowStart, m.getElement(i, colStart).negate());
             return m;
-        } else {
-            if ((m.getElement(rowStart,colStart) == 0)){
-                return m.getReducedEchelonForm(rowStart, colStart+1 ,colMax);
-            }
-            for (int i = 1; i < rowStart; i++) {
-                m.addOBE(i, rowStart, -m.getElement(i, colStart));
-            }
-            return m.getReducedEchelonForm(rowStart + 1, colStart + 1, colMax);
         }
+        if (BD.eq0(m.getElement(rowStart,colStart)))
+            return m.getReducedEchelonForm(rowStart, colStart+1 ,colMax);
+        for (int i = 1; i < rowStart; i++)
+            m.addOBE(i, rowStart, m.getElement(i, colStart).negate());
+        return m.getReducedEchelonForm(rowStart + 1, colStart + 1, colMax);
     }
 
     /**
@@ -623,28 +608,27 @@ public class Matrix {
      * @return Matriks yang sudah teroptimisasi ketelitian presisinya untuk dilakukan OBE.
      */
     private Matrix scaledPartialPivoting(int rowStart, int colStart, int colMax) {
-        double rowMax;
-        double scaledMax = -1;
+        BigDecimal rowMax;
+        BigDecimal scaledMax = BigDecimal.ONE.negate();
         int scaledMaxIdx = rowStart;
 
         Matrix m = this.copyMatrix();
 
         for (int i = rowStart; i <= m.maxR; i++) {
-            rowMax = -1;
-            for (int j = colStart; j <= colMax; j++) {
-                if (Math.abs(m.getElement(i, j)) > rowMax) {
-                    rowMax = Math.abs(m.getElement(i, j));
-                }
-            }
-            if (rowMax != 0) {
-                if (Math.abs(m.getElement(i, colStart)/rowMax) > scaledMax) {
-                    scaledMax = Math.abs(m.getElement(i, colStart)/rowMax);
+            rowMax = BigDecimal.ONE.negate();
+            for (int j = colStart; j <= colMax; j++)
+                if (BD.gt(m.getElement(i, j).abs(), rowMax))
+                    rowMax = m.getElement(i, j).abs();
+            if (!BD.eq0(rowMax)) {
+                BigDecimal absValue = m.getElement(i, colStart).divide(rowMax, BD.SCALE, RoundingMode.HALF_UP).abs();
+                if (BD.gt(absValue, scaledMax)) {
+                    scaledMax = absValue;
                     scaledMaxIdx = i;
                 }
             }
         }
         if (scaledMaxIdx != rowStart) {
-            m.scaledDet *= (-1);
+            m.scaledDet = m.scaledDet.negate();
             m.swapOBE(scaledMaxIdx, rowStart);
         }
         return m;
@@ -658,7 +642,7 @@ public class Matrix {
      * @return Sebuah sistem persamaan linear.
      */
     public SPL getSistemPersamaanLinear(Method method) {
-        double[] sol = new double[this.maxR+1];
+        BigDecimal[] sol = new BigDecimal[this.maxR+1];
         Matrix coefM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
         Matrix constM = new Matrix(this.subMatrixContent(1, this.maxC, this.maxR, this.maxC));
 
@@ -667,22 +651,20 @@ public class Matrix {
                 if (!isAugmentedSize())
                     throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);
                 Matrix cramM = new Matrix(this.subMatrixContent(1, 1, this.maxR, this.maxC-1));
-                double detCoef = coefM.getDeterminan(Method.GAUSS);
-                if (Utils.doubleEquals(detCoef, 0))
+                BigDecimal detCoef = coefM.getDeterminan(Method.GAUSS);
+                if (BD.eq0(detCoef))
                     throw new MatrixException(MatrixErrorIdentifier.DETERMINANT_ZERO_ERROR);
                 for (int i = 1; i <= this.maxR; i++) {
                     cramM.setColumn(i, this.getColumn(this.maxC));
-                    sol[i] = cramM.getDeterminan(Method.GAUSS)/detCoef;
+                    sol[i] = cramM.getDeterminan(Method.GAUSS).divide(detCoef, BD.SCALE, RoundingMode.HALF_UP);
                     cramM.setColumn(i, coefM.getColumn(i));
                 }
                 return new SPL(sol);
             }
-            case GAUSS: {
+            case GAUSS:
                 return SPL.getEchelonFormMethod(this);
-            }
-            case GAUSS_JORDAN: {
+            case GAUSS_JORDAN:
                 return SPL.getReducedEchelonFormMethod(this);
-            }
             case INVERSE: {
                 if (!isAugmentedSize())
                     throw new MatrixException(MatrixErrorIdentifier.NOT_AUGMENTED_ERROR);

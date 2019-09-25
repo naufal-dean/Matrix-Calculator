@@ -1,11 +1,10 @@
 package tubes;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Class Point sebagai bentuk obyek titik pada koordinat kartesius.
@@ -14,12 +13,12 @@ public class Point {
     /**
      * Komponen absis pada titik.
      */
-    private double x;
+    private BigDecimal x;
 
     /**
      * Komponen ordinat pada titik.
      */
-    private double y;
+    private BigDecimal y;
 
     //** Konstruktor **//
     /**
@@ -27,7 +26,7 @@ public class Point {
      * @param x Komponen absis point.
      * @param y Komponen ordinat point.
      */
-    public Point(double x, double y) {
+    public Point(BigDecimal x, BigDecimal y) {
         this.x = x;
         this.y = y;
     }
@@ -38,7 +37,7 @@ public class Point {
      * F.S Mendapatkan nilai x point.
      * @return Nilai x point.
      */
-    public double getX() {
+    public BigDecimal getX() {
         return this.x;
     }
 
@@ -46,7 +45,7 @@ public class Point {
      * F.S Mendapatkan nilai y point.
      * @return Nilai y point.
      */
-    public double getY() {
+    public BigDecimal getY() {
         return this.y;
     }
 
@@ -55,7 +54,7 @@ public class Point {
      * F.S Mengubah nilai x point dengan x.
      * @param x Nilai x point yang baru.
      */
-    public void setX(double x) {
+    public void setX(BigDecimal x) {
         this.x = x;
     }
 
@@ -63,7 +62,7 @@ public class Point {
      * F.S Mengubah nilai y point dengan y.
      * @param y Nilai y point yang baru.
      */
-    public void setY(double y) {
+    public void setY(BigDecimal y) {
         this.y = y;
     }
 
@@ -74,12 +73,11 @@ public class Point {
      * @return Matriks hasil.
      */
     public static Matrix toMatrix(Point[] p) {
-        double[][] tempVal = new double[p.length][p.length+1];
+        BigDecimal[][] tempVal = new BigDecimal[p.length][p.length+1];
 
         for (int i = 0; i < p.length; i++) {
-            for (int j = 0; j < p.length; j++) {
-                tempVal[i][j] = Math.pow(p[i].getX(), j);
-            }
+            for (int j = 0; j < p.length; j++)
+                tempVal[i][j] = p[i].getX().pow(j);
             tempVal[i][p.length] = p[i].getY();
         }
         return new Matrix(tempVal);
@@ -103,16 +101,16 @@ public class Point {
     public static Point[] readFile(String fileName) throws Exception {
         Scanner scan = new Scanner(new File(fileName));
         List<Point> list = new ArrayList<>();
-        Set<Double> xs = new HashSet<>();
+        List<BigDecimal> xs = new ArrayList<>();
         while (scan.hasNextLine()) {
             String[] strs = scan.nextLine().split(" ");
-            double x = Double.parseDouble(strs[0]);
-            if (xs.contains(x)) {
+            BigDecimal x = new BigDecimal(strs[0]);
+            if (xs.stream().anyMatch(v -> BD.eq(v, x))) {
                 scan.close();
                 throw new MatrixException(MatrixErrorIdentifier.INTERPOLATION_ERROR);
             }
             xs.add(x);
-            list.add(new Point(x, Double.parseDouble(strs[1])));
+            list.add(new Point(x, new BigDecimal(strs[1])));
         }
         scan.close();
         return list.toArray(new Point[list.size()]);
@@ -127,7 +125,7 @@ public class Point {
         if (!(o instanceof Point))
             return false;
         Point p = (Point)o;
-        return Utils.doubleEquals(x, p.x) && Utils.doubleEquals(y, p.y);
+        return BD.eqTest(x, p.x) && BD.eqTest(y, p.y);
     }
 
     /**

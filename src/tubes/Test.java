@@ -1,6 +1,7 @@
 package tubes;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import static tubes.Console.*;
@@ -18,12 +19,12 @@ public class Test {
     /**
      * Jumlah test-case yang sukses.
      */
-    private static int succeed;
+    private static int succeedCount;
 
     /**
      * Jumlah test-case yang gagal.
      */
-    private static int failed;
+    private static int failedCount;
 
     /**
      * Indeks test-case.
@@ -37,16 +38,8 @@ public class Test {
     public static void main(String[] args) {
         useColor();
         outln(yellow + "=====================================");
-        outln(yellow + "Testing from test files:");
         doTheTestFromFile();
-        outln(yellow + "Testing from hard-coded tests:");
-        try {
-            doTheTests();
-        } catch (Exception e) {
-            err("~ Uncaught exception! Error while doing the hard-coded tests.");
-            e.printStackTrace();
-        }
-        outln(yellow + "=====[" + green + "SUCCEED: " + succeed + yellow + "]====[" + red + "FAILED: " + failed + yellow + "]=====");
+        outln(yellow + "=====[" + green + "SUCCEED: " + succeedCount + yellow + "]====[" + red + "FAILED: " + failedCount + yellow + "]=====");
     }
 
     /**
@@ -58,9 +51,9 @@ public class Test {
     private static boolean check(String msg, boolean value) {
         outln((value ? green : red) + ++index + ". " + (usingColor ? "" : value ? "SUCCEED" : "FAILED ") + (usingColor ? "" : " - ") + msg);
         if (value)
-            ++succeed;
+            ++succeedCount;
         else
-            ++failed;
+            ++failedCount;
         return value;
     }
 
@@ -73,8 +66,8 @@ public class Test {
      */
     private static void test(String msg, Object a, Object b) {
         boolean test = a.equals(b);
-        if (a instanceof Double && b instanceof Double)
-            test = Utils.doubleEquals((double)a, (double)b);
+        if (a instanceof BigDecimal && b instanceof BigDecimal)
+            test = BD.eqTest((BigDecimal)a, (BigDecimal)b);
         if (!check(msg, test)) {
             out(yellow);
             outln(a);
@@ -95,6 +88,7 @@ public class Test {
                 if (!f.getName().endsWith(".test"))
                     continue;
                 try {
+                    outln(yellow + "FILE " + f.getName() + ":");
                     scan = new Scanner(f);
                     while (scan.hasNextLine()) {
                         String msg = scan.nextLine();
@@ -112,42 +106,61 @@ public class Test {
                             Method method = subMenuIndex > 0 ? Method.values()[subMenuIndex-1] : null;
                             Matrix m = null;
                             if (menuIndex >= 1 && menuIndex <= 5)
-                                if (menuIndex == 1)
-                                    m = readMatrix(scan);
-                                else
-                                    m = readSquareMatrix(scan);
+                                if (menuIndex == 1) {
+                                    int a = scan.nextInt(), b = scan.nextInt();scan.nextLine();
+                                    m = readMatrix(scan, a, b);
+                                } else {
+                                    int n = scan.nextInt();scan.nextLine();
+                                    m = readMatrix(scan, n, n);
+                                }
+                            else if (menuIndex == 6)
+                                res = Point.interpolatePoint(readPoints(scan));
+                            expected = scan.nextLine();
+                            int a = -1, b = -1;
+                            if (menuIndex != 2 && !((String)expected).matches("^[A-Za-z_]+$")) {
+                                String[] str = ((String)expected).split(" ");
+                                if (str.length > 0)
+                                    a = Integer.parseInt(str[0]);
+                                if (str.length > 1)
+                                    b = Integer.parseInt(str[1]);
+                                expected = null;
+                            }
                             switch (menuIndex) {
                                 case 1:
+                                    if (expected == null)
+                                        expected = readSPL(scan, a);
                                     res = m.getSistemPersamaanLinear(method);
-                                    expected = readSPL(scan);
                                     break;
                                 case 2:
+                                    expected = new BigDecimal((String)expected);
                                     res = m.getDeterminan(subMenuIndex == 4 ? Method.COFACTOR_EXPANSION : method);
-                                    expected = scan.nextDouble();scan.nextLine();
                                     break;
                                 case 3:
+                                    if (expected == null)
+                                        expected = readMatrix(scan, a, b);
                                     res = m.getInverseMatrix(subMenuIndex == 1 ? Method.GAUSS_JORDAN : Method.ADJOIN);
-                                    expected = readSquareMatrix(scan);
                                     break;
                                 case 4:
+                                    if (expected == null)
+                                        expected = readMatrix(scan, a, b);
                                     res = m.getCofactorMatrix();
-                                    expected = readSquareMatrix(scan);
                                     break;
                                 case 5:
+                                    if (expected == null)
+                                        expected = readMatrix(scan, a, b);
                                     res = m.getAdjointMatrix();
-                                    expected = readSquareMatrix(scan);
                                     break;
                                 case 6:
-                                    res = Point.interpolatePoint(readPoints(scan));
-                                    expected = readSPL(scan);
+                                    if (expected == null)
+                                        expected = readSPL(scan, a);
                                     break;
                                 default:
                                     continue;
                             }
                             test(msg, res, expected);
                         } catch (Exception e) {
-                            if (e instanceof MatrixException && expected == null)
-                                test(msg, ((MatrixException)e).errorType.identifier, scan.nextLine());
+                            if (e instanceof MatrixException)
+                                test(msg, ((MatrixException)e).errorType.identifier, expected);
                             else
                                 throw e;
                         }
@@ -155,7 +168,7 @@ public class Test {
                 } catch (Exception e) {
                     outln(red + ++index + ". Skipping file: " + yellow + f);
                     outln(red + "Error: " + e.getMessage());
-                    ++failed;
+                    ++failedCount;
                     e.printStackTrace();
                 }
             }
@@ -166,34 +179,12 @@ public class Test {
      * @param scan Scanner untuk dibaca inputnya.
      * @return Sebuah obyek SPL hasil membaca scan.
      */
-    private static SPL readSPL(Scanner scan) {
-        int n = scan.nextInt();scan.nextLine();
-        double[][] sol = new double[n][n+1];
+    private static SPL readSPL(Scanner scan, int n) {
+        BigDecimal[][] sol = new BigDecimal[n][n+1];
         for (int i = 0; i < n; i++)
             for (int j = 0; j <= n; j++)
-                sol[i][j] = scan.nextDouble();
+                sol[i][j] = new BigDecimal(scan.next());
         return new SPL(sol);
-    }
-
-    /**
-     * Membaca input dari Scanner scan ke bentuk matriks.
-     * @param scan Scanner untuk dibaca inputnya.
-     * @return Sebuah obyek matriks hasil membaca scan.
-     */
-    private static Matrix readMatrix(Scanner scan) {
-        String[] strs = scan.nextLine().split(" ");
-        int r = Integer.parseInt(strs[0]), c = strs.length > 0 ? Integer.parseInt(strs[1]) : r;
-        return readMatrix(scan, r, c);
-    }
-
-    /**
-     * Membaca input dari Scanner scan ke bentuk matriks bujur sangkar.
-     * @param scan Scanner untuk dibaca inputnya.
-     * @return Sebuah obyek matriks bujur sangkar hasil membaca scan.
-     */
-    private static Matrix readSquareMatrix(Scanner scan) {
-        int size = scan.nextInt();scan.nextLine();
-        return readMatrix(scan, size, size);
     }
 
     /**
@@ -208,7 +199,7 @@ public class Test {
         for (int i = 1; i <= r; i++) {
             String[] line = scan.nextLine().split(" ");
             for (int j = 1; j <= c; j++)
-                m.setElement(i, j, Double.parseDouble(line[j-1]));
+                m.setElement(i, j, new BigDecimal(line[j-1]));
         }
         return m;
     }
@@ -222,131 +213,8 @@ public class Test {
         int n = scan.nextInt();scan.nextLine();
         Point[] pts = new Point[n];
         for (int i = 0; i < n; i++)
-            pts[i] = new Point(scan.nextDouble(), scan.nextDouble());
+            pts[i] = new Point(new BigDecimal(scan.next()), new BigDecimal(scan.next()));
+        scan.nextLine();
         return pts;
     }
-
-    /**
-     * F.S mengimplementasikan fungsi fungsi test untuk testing program dengan membandingkan object-object yang seharusnya benar.
-     */
-    private static void doTheTests() {
-        test("Test awal", new Matrix(new double[][] {
-            {1,1},
-            {1,2}
-        }).getEchelonForm(2), (new Matrix(new double[][] {
-            {1,1},
-            {0,1}
-        })));
-
-        test("Test presisi scaled pivot 1", new Matrix(new double[][] {
-            {0.0000000000000003,59.14,59.17},
-            {5.29, -6.13, 46.78}
-        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN), (new SPL(new double[] {
-            0,
-            31292813d/3128506d,
-            5917d/5914d
-        })));
-
-        test("Test presisi scaled pivot 2", new Matrix(new double[][] {
-            {3,59140,59170},
-            {5.29, -6.13, 46.78}
-        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN), (new SPL(new double[] {
-            0,
-            312928130d/31286899d,
-            31286896d/31286899d
-        })));
-
-        test("Cek nilai SPL yang ada 1 free variable di x4", new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 0, 0 }
-        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN), (new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 1 }
-        })));
-
-        test("Cek nilai SPL(gauss_jordan) rownya lebih banyak", new Matrix(new double[][] {
-            { 1, 1, 3, 0, 12 },
-            { 0, 1, 1, 0, 5 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-        }).getSistemPersamaanLinear(Method.GAUSS_JORDAN), (new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 1 }
-        })));
-
-        test("Cek nilai SPL(gauss) rownya lebih banyak", new Matrix(new double[][] {
-            { 1, 1, 3, 0, 12 },
-            { 0, 1, 1, 0, 5 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 },
-        }).getSistemPersamaanLinear(Method.GAUSS), (new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 1 }
-        })));
-
-        test("Cek nilai SPL tanpa free variabel dengan metode CRAMER", new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 1, 0 }
-        }).getSistemPersamaanLinear(Method.CRAMER), (new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 }
-        })));
-
-        test("Cek nilai SPL tanpa free variabel dengan metode GAUSS", new Matrix(new double[][] {
-            { 1, 0, 0, 0, 1 },
-            { 0, 1, 0, 0, 2 },
-            { 0, 0, 1, 0, 3 },
-            { 0, 0, 0, 1, 0 }
-        }).getSistemPersamaanLinear(Method.GAUSS), (new SPL(new double[][] {
-            { 1, 0, 0, 0, 0 },
-            { 2, 0, 0, 0, 0 },
-            { 3, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0 }
-        })));
-
-        test("Cek nilai SPL tanpa free variabel dengan metode GAUSS no telp", new Matrix(new double[][] {
-            { 0, 8, 3, 2, 5 },
-            { 4, 0, 9, 3, 2 },
-            { 9, 1, 0, 8, 5 },
-            { 8, 1, 5, 8, 5 }
-        }).getSistemPersamaanLinear(Method.GAUSS), new SPL(new double[][] {
-            { 95d/727, 0, 0, 0, 0 },
-            { 372d/727, 0, 0, 0, 0 },
-            { 19d/727, 0, 0, 0, 0 },
-            { 301d/727, 0, 0, 0, 0 }
-        }));
-
-        test("Cek REF", new Matrix(new double[][] {
-            {1, 2, -1, -4},
-            {2, 3, -1, -11},
-            {-2, 0, -3, 22}
-        }).getReducedEchelonForm(), new Matrix(new double[][] {
-            {1, 0, 0, -8},
-            {0, 1, 0, 1},
-            {0, 0, 1, -2}
-        }));
-    }
-
 }

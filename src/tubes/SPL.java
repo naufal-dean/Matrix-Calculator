@@ -1,5 +1,6 @@
 package tubes;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -9,19 +10,19 @@ public class SPL {
     /**
      * Konten dari sistem persamaan linier yang bisa mempunyai variabel bebas.
      */
-    public double[][] content;
+    public BigDecimal[][] content;
 
     /**
      * Konstruktor SPL.
      */
-    public SPL() {}
+    private SPL() {}
 
     /**
      * Konstruktor SPL dengan solusi yang sudah didefinisikan.
      * @param sol Solusi dalam bentuk array of double.
      */
-    public SPL(double[] sol) {
-        content = new double[sol.length][sol.length];
+    public SPL(BigDecimal[] sol) {
+        content = new BigDecimal[sol.length][sol.length];
         for (int i = 1; i < sol.length; i++)
             content[i][0] = sol[i];
     }
@@ -30,8 +31,8 @@ public class SPL {
      * Konstruktor SPL dengan menggunakan solusi SPL yang sudah ada.
      * @param sol Solusi dalam bentuk array of array of double.
      */
-    public SPL(double[][] sol) {
-        this.content = new double[sol.length+1][];
+    public SPL(BigDecimal[][] sol) {
+        this.content = new BigDecimal[sol.length+1][];
         for (int i = 0; i < sol.length; i++)
             this.content[i+1] = Arrays.copyOf(sol[i], sol[i].length);
     }
@@ -66,14 +67,14 @@ public class SPL {
     public boolean equals(Object o) {
         if (!(o instanceof SPL))
             return false;
-        double[][] content2 = ((SPL)o).content;
+            BigDecimal[][] content2 = ((SPL)o).content;
         if (content.length != content2.length)
             return false;
         for (int i = 1; i < content.length; i++) {
             if (content[i].length != content2[i].length)
                 return false;
             for (int j = 0; j < content[i].length; j++)
-                if (!Utils.doubleEquals(content[i][j], content2[i][j]))
+                if (!BD.eqTest(content[i][j], content2[i][j]))
                   return false;
         }
         return true;
@@ -85,11 +86,11 @@ public class SPL {
     public void substituteEquations() {
         for (int i = this.content.length-2; i >= 1; i--) {
             for (int j = i+1; j < this.content[i].length; j++) {
-                double s_up = this.content[i][j];
-                this.content[i][j] = 0;
-                this.content[i][0] += s_up*this.content[j][0];
+                BigDecimal s_up = this.content[i][j];
+                this.content[i][j] = BigDecimal.ZERO;
+                this.content[i][0] = this.content[i][0].add(s_up.multiply(this.content[j][0]));
                 for (int jj = j; jj < this.content[i].length; jj++)
-                    this.content[i][jj] += s_up*this.content[j][jj];
+                    this.content[i][jj] = this.content[i][jj].add(s_up.multiply(this.content[j][jj]));
             }
         }
     }
@@ -102,10 +103,13 @@ public class SPL {
     public void initREF(Matrix in) {
         int r = in.getMaxRow(), size = in.getMaxColumn()-1;
         for (int i = size+1; i <= r; i++)
-            if (in.getElement(i, in.getMaxColumn()) != 0)
+            if (!BD.eq0(in.getElement(i, in.getMaxColumn())))
                 throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
-        content = new double[size+1][size+1];
-        content[0] = new double[0];
+        content = new BigDecimal[size+1][size+1];
+        content[0] = new BigDecimal[0];
+        for (int i = 1; i <= size; i++)
+            for (int j = 0; j <= size; j++)
+                content[i][j] = BigDecimal.ZERO;
         Matrix m = new Matrix(size, size+1);
         for (int i = 1; i <= Math.min(r, size); i++)
             for (int j = 1; j <= size+1; j++)
@@ -113,21 +117,21 @@ public class SPL {
         int emptyColCount = 0;
         for (int i = 1; i <= size; i++) {
             int j = 0;
-            while (j+1 <= size+1 && m.getElement(i, ++j) == 0);
+            while (j+1 <= size+1 && BD.eq0(m.getElement(i, ++j)));
             if (j == size+1) {
-                if (!Utils.doubleEquals(m.getElement(i, j), 0))
+                if (!BD.eq0(m.getElement(i, j)))
                     throw new MatrixException(MatrixErrorIdentifier.INCONSISTENT_ERROR);
                 if (j > i+emptyColCount)
-                    this.content[i+emptyColCount][i+emptyColCount] = 1;
+                    this.content[i+emptyColCount][i+emptyColCount] = BigDecimal.ONE;
                 continue;
             }
             if (j > i+emptyColCount) {
-                this.content[i+emptyColCount][i+emptyColCount] = 1;
+                this.content[i+emptyColCount][i+emptyColCount] = BigDecimal.ONE;
                 ++emptyColCount;
             }
             this.content[j][0] = m.getElement(i, size+1);
             for (int jj = j+1; jj <= size; jj++)
-                this.content[j][jj] = -m.getElement(i, jj) + 0;
+                this.content[j][jj] = m.getElement(i, jj).negate();
         }
     }
 
@@ -135,10 +139,10 @@ public class SPL {
      * F.S Mengevaluasi nilai polinom hasil interpolasi di x.
      * @param x Nilai x yang ingin dievaluasi.
      */
-    public double eval(double x) {
-        double res = 0;
+    public BigDecimal eval(double x) {
+        BigDecimal res = BigDecimal.ZERO;
         for (int i = 1; i < content.length; i++)
-            res += content[i][0]*Math.pow(x, i-1);
+            res = res.add(content[i][0].multiply(new BigDecimal(x).pow(i-1)));
         return res;
     }
 
@@ -152,25 +156,25 @@ public class SPL {
             sb.append("x" + i + " = ");
             boolean found = false;
             for (int j = 0; j < content[i].length; j++) {
-                double v = content[i][j];
-                if (v == 0 && j > 0)
+                BigDecimal v = content[i][j];
+                if (BD.eq0(v) && j > 0)
                     continue;
                 if (j > 0 && found) {
-                    if (v < 0) {
-                        v = -v;
+                    if (BD.lt(v, BigDecimal.ZERO)) {
+                        v = v.negate();
                         sb.append(" - ");
                     } else
                         sb.append(" + ");
                 }
-                if (v != 0)
+                if (!BD.eq0(v))
                     found = true;
-                if (v != 0)
-                    sb.append(String.format("(%.2f)", v));
+                if (!BD.eq0(v))
+                    sb.append(BD.format(v));
                 if (j > 0)
                     sb.append("s" + j);
             }
             if (!found)
-                sb.append(String.format("(%.2f)", content[i][0]));
+                sb.append(BD.format(content[i][0]));
             if (i < content.length-1)
                 sb.append("\n");
         }
@@ -185,20 +189,20 @@ public class SPL {
         StringBuilder sb = new StringBuilder("y = ");
         boolean found = false;
         for (int i = content.length-1; i >= 1; i--) {
-            double v = content[i][0];
-            if (Utils.doubleEquals(v, 0))
+            BigDecimal v = content[i][0];
+            if (BD.eq0(v))
                 continue;
             if (found) {
-                if (v < 0) {
-                    v = -v;
+                if (BD.lt(v, BigDecimal.ZERO)) {
+                    v = v.negate();
                     sb.append(" - ");
                 } else
                     sb.append(" + ");
             }
             found = true;
-            boolean isOne = Utils.doubleEquals(v, 1);
+            boolean isOne = BD.eq1(v);
             if (isOne && i == 1 || !isOne)
-                sb.append(String.format("(%.10f)", v));
+                sb.append(BD.formatLong(v));
             if (i >= 2) {
                 sb.append("x");
                 if (i >= 3)
