@@ -21,3 +21,12 @@ Test inconsistent matrix
 1 2 3 4
 1 2 2 2
 inconsistent_error
+
+Test scaledPartialPivoting 1
+1 1
+2 3
+0.00000000000000003 0.00000000000005914 0.00000000000005917
+5.29 -6.13 46.78
+2
+10.00 0 0
+1.00 0 0
