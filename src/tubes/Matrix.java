@@ -42,7 +42,7 @@ public class Matrix {
     }
 
     /**
-     * F.S Membuat Matrix baru dengan elemen pada sebuah array of array of double.
+     * F.S Membuat Matrix baru dengan elemen pada sebuah array of array of BigDecimal.
      * @param arr Konten isi matriks yang akan dibuat.
      */
     public Matrix(BigDecimal[][] arr) {
