@@ -372,7 +372,7 @@ public class Matrix {
                 return newDet.divide(M.scaledDet, BD.SCALE, RoundingMode.HALF_UP);
             }
             case INVERSE: {
-                return BigDecimal.ONE.divide(this.getInverseMatrix(Method.GAUSS_JORDAN).getDeterminan(Method.COFACTOR_EXPANSION));
+                return BigDecimal.ONE.divide(this.getInverseMatrix(Method.GAUSS_JORDAN).getDeterminan(Method.COFACTOR_EXPANSION), BD.SCALE, RoundingMode.HALF_UP);
             }
             case COFACTOR_EXPANSION: {
                 if (this.maxR == 1)
