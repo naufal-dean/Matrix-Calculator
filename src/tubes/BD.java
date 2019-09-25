@@ -26,7 +26,7 @@ public class BD {
     /**
      * Konstanta untuk ketelitian komparasi saat test.
      */
-    public static final int PRECISION_TEST = 16;
+    public static final int PRECISION_TEST = 2;
 
     /**
      * Menghasilkan true apabila a dan b bernilai sama dengan galat PRECISION.
