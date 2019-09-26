@@ -85,7 +85,7 @@ public class ConsoleApp {
     }
 
     /**
-     * Prosedur memilih pilihan menu.
+     * Prosedur memilih pilihan menu.<br>
      * Memanggil fungsi-fungsi sesuai menu yang dipilih.
      * @param menuIndex Pilihan indeks menu utama.
      * @param subMenuIndex Pilihan indeks menu metode.
@@ -135,7 +135,7 @@ public class ConsoleApp {
                     SPL spl = Point.interpolatePoint(useFile ? Point.readFile(fileName) : readPoints());
                     res = spl.toPersamaanString();
                     outln("Hasil interpolasi poin:");
-                    outln(res);
+                    outln(res);line();
                     String xVal;
                     do {
                         out("Masukkan nilai x yang ingin diaproksimasi nilai f(x)-nya (kosongkan untuk keluar): ");
@@ -158,6 +158,7 @@ public class ConsoleApp {
                     writeFile(fileName, res);
             }
         } catch (Exception e) {
+            line();
             error(e);
         }
         outln();
@@ -166,8 +167,7 @@ public class ConsoleApp {
     }
 
     /**
-     * Fungsi membaca matriks,
-     * dimulai dari membaca jumlah kolom dan baris.
+     * Fungsi membaca matriks, dimulai dari membaca jumlah kolom dan baris.
      * @return Sebuah matriks.
      * @throws Exception Saat input tidak valid.
      */
@@ -180,8 +180,7 @@ public class ConsoleApp {
     }
 
     /**
-     * Fungsi membaca matriks bujur sangkar,
-     * dimulai dari membaca sisi matrix.
+     * Fungsi membaca matriks bujur sangkar, dimulai dari membaca sisi matrix.
      * @return Sebuah matriks bujur sangkar.
      * @throws Exception Saat input tidak valid.
      */

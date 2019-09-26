@@ -16,7 +16,7 @@ public class BD {
     /**
      * Konstanta untuk galat komparasi bilangan riil.
      */
-    public static final int SCALE = 100;
+    public static final int SCALE = 30;
 
     /**
      * Konstanta untuk ketelitian komparasi.
