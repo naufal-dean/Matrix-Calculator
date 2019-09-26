@@ -36,7 +36,8 @@ public class Test {
      * @param args Argumen-argumen dari command line.
      */
     public static void main(String[] args) {
-        useColor();
+        if (args.length > 0 && args[0].equalsIgnoreCase("WITHCOLOR"))
+            useColor();
         outln(yellow + "=====================================");
         doTheTestFromFile();
         outln(yellow + "=====[" + green + "SUCCEED: " + succeedCount + yellow + "]====[" + red + "FAILED: " + failedCount + yellow + "]=====");

@@ -1,2 +1,2 @@
 ./compile.sh
-java -cp ./bin/ tubes.Test
+java -cp ./bin/ tubes.Test WITHCOLOR

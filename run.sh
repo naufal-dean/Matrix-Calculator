@@ -1,2 +1,2 @@
 ./compile.sh
-java -cp ./bin/ tubes.Main
+java -cp ./bin/ tubes.Main WITHCOLOR
