@@ -142,8 +142,10 @@ public class ConsoleApp {
                     do {
                         out("Masukkan nilai x yang ingin diaproksimasi nilai f(x)-nya (kosongkan untuk keluar): ");
                         xVal = line();
-                        if (!xVal.isBlank())
+                        if (!xVal.isBlank()) {
                             outln("y = " + BD.format(spl.eval(Double.parseDouble(xVal))));
+                            res += "\nf(" + xVal + ") = " + BD.format(spl.eval(Double.parseDouble(xVal)));
+                        }
                     } while (!xVal.isBlank());
                     break;
                 case 7:
