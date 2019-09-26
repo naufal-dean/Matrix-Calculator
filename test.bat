@@ -1,2 +1,2 @@
-javac -d ./bin/ ./src/*.java
+compile.bat &&
 java -cp ./bin/ tubes.test.Test
