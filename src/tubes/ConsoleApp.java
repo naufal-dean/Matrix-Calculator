@@ -2,6 +2,8 @@ package tubes;
 
 import java.io.FileWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static tubes.Console.*;
 
@@ -215,12 +217,18 @@ public class ConsoleApp {
      * @return Sebuah array point.
      */
     private static Point[] readPoints() {
+        List<BigDecimal> xs = new ArrayList<>();
         out("Banyak point: ");
         int n = num();line();
         outln("Masukkan point:");
         Point[] pts = new Point[n];
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++) {
             pts[i] = new Point(new BigDecimal(next()), new BigDecimal(next()));
+            BigDecimal x = pts[i].getX();
+            if (xs.stream().anyMatch(v -> BD.eq(v, x)))
+                throw new MatrixException(MatrixErrorIdentifier.INTERPOLATION_ERROR);
+            xs.add(x);
+        }
         return pts;
     }
 
