@@ -80,7 +80,8 @@ public class ConsoleApp {
             }
             selectMenu(menuIndex, subMenuIndex, fileName);
         } catch (Exception e) {
-            error(e);
+            line();
+            error(new Exception("Pilihan menu tidak sesuai!"));
             enterToContinue();
             start();
         }
@@ -163,9 +164,8 @@ public class ConsoleApp {
             }
         } catch (Exception e) {
             line();
-            error(e);
+            error(new Exception("Input tidak valid!"));
         }
-        outln();
         enterToContinue();
         start();
     }
@@ -238,7 +238,7 @@ public class ConsoleApp {
      * Prosedur untuk memberi pilihan enter untuk melanjutkan proses program.
      */
     private static void enterToContinue() {
-        out("Tekan enter untuk kembali ke menu.");
+        out("\nTekan enter untuk kembali ke menu.");
         line();
         clear();
     }
@@ -273,7 +273,6 @@ public class ConsoleApp {
             err(((MatrixException)e).errorType.msg);
         } else {
             err(e.getMessage());
-            e.printStackTrace();
         }
     }
 
