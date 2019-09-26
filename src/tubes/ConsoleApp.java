@@ -138,7 +138,7 @@ public class ConsoleApp {
                     SPL spl = Point.interpolatePoint(useFile ? Point.readFile(fileName) : readPoints());
                     res = spl.toPersamaanString();
                     outln("Hasil interpolasi poin:");
-                    outln(res);line();
+                    outln(res);
                     String xVal;
                     do {
                         out("Masukkan nilai x yang ingin diaproksimasi nilai f(x)-nya (kosongkan untuk keluar): ");
@@ -231,6 +231,7 @@ public class ConsoleApp {
                 throw new MatrixException(MatrixErrorIdentifier.INTERPOLATION_ERROR);
             xs.add(x);
         }
+        line();
         return pts;
     }
 
