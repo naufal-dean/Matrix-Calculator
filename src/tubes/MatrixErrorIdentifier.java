@@ -37,7 +37,7 @@ public enum MatrixErrorIdentifier {
     /**
      * Tidak bisa melakukan interpolasi titik.
      */
-    INTERPOLATION_ERROR("interpolation_error", "Interpolation error!");
+    INTERPOLATION_ERROR("interpolation_error", "Can't have x coord more than one!");
 
     /**
      * Tipe error dalam bentuk string.

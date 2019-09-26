@@ -17,7 +17,8 @@ public class Main {
      * @param args Argumen-argumen dari command line.
      */
     public static void main(String[] args) {
-        useColor();
+        if (args.length > 0 && args[0].equalsIgnoreCase("WITHCOLOR"))
+            useColor();
         ConsoleApp.start();
     }
 }
