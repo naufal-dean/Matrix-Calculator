@@ -168,7 +168,6 @@ public class Test {
                     outln(red + ++index + ". Skipping file: " + yellow + f);
                     outln(red + "Error: " + e.getMessage());
                     ++failedCount;
-                    e.printStackTrace();
                 }
             }
     }

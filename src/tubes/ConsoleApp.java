@@ -80,7 +80,8 @@ public class ConsoleApp {
             }
             selectMenu(menuIndex, subMenuIndex, fileName);
         } catch (Exception e) {
-            error(e);
+            line();
+            error(new Exception("Pilihan menu tidak sesuai!"));
             enterToContinue();
             start();
         }
@@ -95,7 +96,7 @@ public class ConsoleApp {
      */
     private static void selectMenu(int menuIndex, int subMenuIndex, String fileName) {
         try {
-            boolean useFile = !fileName.isBlank();
+            boolean useFile = !fileName.isEmpty();
             Matrix m = null;
             if (menuIndex >= 1 && menuIndex <= 5) {
                 if (useFile)
@@ -142,11 +143,11 @@ public class ConsoleApp {
                     do {
                         out("Masukkan nilai x yang ingin diaproksimasi nilai f(x)-nya (kosongkan untuk keluar): ");
                         xVal = line();
-                        if (!xVal.isBlank()) {
+                        if (!xVal.isEmpty()) {
                             outln("y = " + BD.format(spl.eval(Double.parseDouble(xVal))));
                             res += "\nf(" + xVal + ") = " + BD.format(spl.eval(Double.parseDouble(xVal)));
                         }
-                    } while (!xVal.isBlank());
+                    } while (!xVal.isEmpty());
                     break;
                 case 7:
                     System.exit(0);
@@ -158,14 +159,13 @@ public class ConsoleApp {
             if (res != null) {
                 out("Nama file output (kosongkan jika tidak perlu): ");
                 fileName = line();
-                if (!fileName.isBlank())
+                if (!fileName.isEmpty())
                     writeFile(fileName, res);
             }
         } catch (Exception e) {
             line();
-            error(e);
+            error(new Exception("Input tidak valid!"));
         }
-        outln();
         enterToContinue();
         start();
     }
@@ -238,7 +238,7 @@ public class ConsoleApp {
      * Prosedur untuk memberi pilihan enter untuk melanjutkan proses program.
      */
     private static void enterToContinue() {
-        out("Tekan enter untuk kembali ke menu.");
+        out("\nTekan enter untuk kembali ke menu.");
         line();
         clear();
     }
@@ -273,7 +273,6 @@ public class ConsoleApp {
             err(((MatrixException)e).errorType.msg);
         } else {
             err(e.getMessage());
-            e.printStackTrace();
         }
     }
 

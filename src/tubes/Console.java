@@ -105,6 +105,13 @@ public class Console {
      * F.S Mengosongkan konsol.
      */
     public static void clear() {
-        outln("\033[H\033[2J");
+        if (usingColor)
+            outln("\033[H\033[2J");
+        else
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (Exception _e) {
+                outln();
+            }
     }
 }
