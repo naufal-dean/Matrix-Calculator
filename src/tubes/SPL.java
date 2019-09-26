@@ -187,7 +187,7 @@ public class SPL {
      * @return Representasi persamaan dalam bentuk string.
      */
     public String toPersamaanString() {
-        StringBuilder sb = new StringBuilder("y = ");
+        StringBuilder sb = new StringBuilder("f(x) = ");
         boolean found = false;
         for (int i = content.length-1; i >= 1; i--) {
             BigDecimal v = content[i][0];
