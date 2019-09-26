@@ -70,10 +70,10 @@ public class Test {
             test = BD.eqTest((BigDecimal)a, (BigDecimal)b);
         if (!check(msg, test)) {
             out(yellow);
-            outln(a);
+            outln(a instanceof BigDecimal ? BD.format((BigDecimal)a) : a);
             outln(red + "EXPECTED:");
             out(yellow);
-            outln(b);
+            outln(b instanceof BigDecimal ? BD.format((BigDecimal)b) : b);
         }
     }
 
@@ -116,13 +116,11 @@ public class Test {
                             else if (menuIndex == 6)
                                 res = Point.interpolatePoint(readPoints(scan));
                             expected = scan.nextLine();
-                            int a = -1, b = -1;
+                            int a = -1;
                             if (menuIndex != 2 && !((String)expected).matches("^[A-Za-z_]+$")) {
                                 String[] str = ((String)expected).split(" ");
                                 if (str.length > 0)
                                     a = Integer.parseInt(str[0]);
-                                if (str.length > 1)
-                                    b = Integer.parseInt(str[1]);
                                 expected = null;
                             }
                             switch (menuIndex) {
@@ -137,17 +135,17 @@ public class Test {
                                     break;
                                 case 3:
                                     if (expected == null)
-                                        expected = readMatrix(scan, a, b);
+                                        expected = readMatrix(scan, a, a);
                                     res = m.getInverseMatrix(subMenuIndex == 1 ? Method.GAUSS_JORDAN : Method.ADJOIN);
                                     break;
                                 case 4:
                                     if (expected == null)
-                                        expected = readMatrix(scan, a, b);
+                                        expected = readMatrix(scan, a, a);
                                     res = m.getCofactorMatrix();
                                     break;
                                 case 5:
                                     if (expected == null)
-                                        expected = readMatrix(scan, a, b);
+                                        expected = readMatrix(scan, a, a);
                                     res = m.getAdjointMatrix();
                                     break;
                                 case 6:
