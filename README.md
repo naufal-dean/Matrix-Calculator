@@ -3,7 +3,7 @@
 # Program Kalkulator Matriks
 ## Oleh:
 - Naufal Arfananda G. (13518096)<br>
-- Naufal Dean (13518123)<br>
+- Naufal Dean Anugrah (13518123)<br>
 - Moch. Nafkhan Alzamzami (13518132)
 ---
 ## Cara Memulai Program:
