@@ -472,6 +472,11 @@ public class Matrix {
     public Matrix getCofactorMatrix() {
         BigDecimal[][] tempVal = new BigDecimal[this.maxR][this.maxC];
 
+        if (this.maxC == 1 || this.maxR == 1) {
+            tempVal[0][0] = this.content[1][1];
+            return new Matrix(tempVal);
+        }
+        
         for (int i = 0; i < this.maxR; i++)
             for (int j = 0; j < this.maxC; j++)
                 tempVal[i][j] = this.getEntryMatrix(i+1, j+1).getDeterminan(Method.GAUSS).multiply((i + j) % 2 == 0 ? BigDecimal.ONE : BigDecimal.ONE.negate());

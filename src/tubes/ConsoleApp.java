@@ -163,8 +163,8 @@ public class ConsoleApp {
                     writeFile(fileName, res);
             }
         } catch (Exception e) {
-            line();
             error(new Exception("Input tidak valid!"));
+            e.printStackTrace();
         }
         enterToContinue();
         start();
