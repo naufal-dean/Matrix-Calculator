@@ -163,8 +163,7 @@ public class ConsoleApp {
                     writeFile(fileName, res);
             }
         } catch (Exception e) {
-            error(new Exception("Input tidak valid!"));
-            e.printStackTrace();
+            error(e instanceof MatrixException ? e : new Exception("Input tidak valid!"));
         }
         enterToContinue();
         start();
